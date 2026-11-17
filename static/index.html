@@ -220,7 +220,7 @@ const $=id=>document.getElementById(id);
 function save(){localStorage.setItem("sie",JSON.stringify(store));renderHome()}
 function renderHome(){ const ch=$("coachHome"); if(ch){ try{ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
   const dn=store.day&&store.day.d===new Date().toDateString()?store.day.n:0; const gpct=Math.min(100,dn/10*100);
-  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b>🧑‍🏫 Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].name}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].name} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
+  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b>🧑‍🏫 Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
   <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--card);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()">▶ Continue where I left off</button><button class="ghost" onclick="speak(coachText())">🔊</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
  $("xp").textContent=store.xp;$("streak").textContent=store.streak;
  $("missedCount").textContent=Object.keys(store.missed).length;
@@ -270,7 +270,7 @@ function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choic
 function startQuiz(m,n){mode=m;
  if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first 😄"); quiz=shuffle(miss).slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
  else if(m==="exam"){quiz=buildExam(75)}
- else{ quiz=adaptiveSet(n, m==="trap") }
+ else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(GEN[i]())); const rest=adaptiveSet(n, true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3) rest.push(prepare(GEN[R(0,GEN.length-1)]())); quiz=[...seeded, ...rest.slice(0,Math.max(0,n-3))] } else{ quiz=adaptiveSet(n,false) }
  qi=0;score=0;$("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
  clearInterval(timerInt);
  if(m==="exam"){timeLeft=105*60;timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000);tick()} else $("timer").textContent="⏱️ untimed";
@@ -369,7 +369,7 @@ function coachLine(pct){
    pct>=70 ? "💪 Coach: Passing standard. Now we hunt the leak, not the average." :
    pct>=50 ? "🧑‍🏫 Coach: The knowledge is half-built. The Teacher Report shows exactly which concept is leaking." :
    "🧑‍🏫 Coach: Good — every miss just taught the model where to aim. That's data, not failure.";
- if(weakest) line += " Weakest unit in this set: <b>"+UNITS[weakest-1].name+"</b> — "+diagnose(weakest);
+ if(weakest) line += " Weakest unit in this set: <b>"+UNITS[weakest-1].n+"</b> — "+diagnose(weakest);
  if(window._newBadges&&window._newBadges.length) line += "<br>🏅 New badge"+(window._newBadges.length>1?"s":"")+": "+window._newBadges.join(", ");
  return line;
 }
@@ -411,7 +411,7 @@ function startUnitQuiz(u){ window._unit=u; mode="unit"; const pool=gensForUnit(u
  quiz=shuffle(qs).map(prepare);
  if(curLevel()==="veryhard"||curLevel()==="master"){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) quiz[quiz.length-1]=prepareShort(pick(ss)); }
  beginQuiz(); }
-function startFinalReview(){ mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
+function startFinalReview(){ if(Object.keys(store.t.done||{}).length<8){ showToast("🔒 Final Exam Review unlocks after all 8 units are cleared"); showUnits(); return } mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
 function beginQuiz(){ qi=0;score=0;window._qt=[]; ["home","lessons","units","report","result"].forEach(id=>$(id).classList.add("hidden")); $("quiz").classList.remove("hidden");
  clearInterval(timerInt); if(mode!=="exam")$("timer").textContent="⏱️ untimed"; showQ(); }
 
@@ -512,14 +512,14 @@ function beginGapDrill(){ const topic=window._gapTopic; const gi=GEN.map((g,i)=>
  while(qs.length<3) qs.push(GEN[R(0,GEN.length-1)]());
  quiz=qs.map(prepare); beginQuiz(); }
 function coachText(){ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- return "Your weakest unit is "+UNITS[weak-1].name+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"") }
+ return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"") }
 function smartContinue(){ const gaps=Object.keys(store.t.openGaps||{});
  if(gaps.length) return startGapClose(gaps[0]);
  for(let u=1;u<=8;u++) if(!store.t.done[u]) return showUnitLesson(u);
  startFinalReview(); }
 function speakReport(){ const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
  const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].name+". "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
+ speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
 
 AudioMan.preload(); renderHome();
 fetch("/api/health").then(r=>r.json()).then(d=>{if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=`🎙️ GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`}).catch(()=>{});
