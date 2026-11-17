@@ -2,38 +2,92 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SIE Mastery — Regulation, Mastered</title>
 <style>
-:root{--bg:#0b1020;--card:#141b33;--card2:#1a2342;--ink:#eef2ff;--mut:#9aa7c7;--teal:#2dd4bf;--lime:#a3e635;--pink:#f472b6;--amber:#fbbf24;--red:#fb7185;--r:18px}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:radial-gradient(900px 500px at 15% -10%,#1e3a5f,transparent),radial-gradient(800px 500px at 90% 0,#3b1454,transparent),var(--bg);color:var(--ink)}
+:root{
+  --bg-canvas:#0b0f17; --bg-surface:#141b33; --bg-elevated:#1a2342; --bg-glass:#0b1020aa;
+  --text-primary:#eef2ff; --text-secondary:#c7d0e6; --text-muted:#9aa7c7;
+  --border-subtle:#ffffff1c; --border-focus:#c2a053;
+  --accent-primary:#c2a053; --accent-subtle:#c2a05326; --accent-border:#c2a053;
+  --status-pass:#a3e635; --status-pass-bg:#a3e63533;
+  --status-warn:#fbbf24; --status-warn-bg:#fbbf2433;
+  --status-danger:#fb7185; --status-danger-bg:#fb718533;
+  --text-on-accent:#14100a;
+  --accent-gradient-a:#2dd4bf; --accent-gradient-b:#a3e635;
+  --button-gradient-a:#2dd4bf; --button-gradient-b:#38bdf8;
+  --fill-subtle:#ffffff14; --ring-track:#ffffff17; --link-bg:#ffffff2a;
+  --node-border:#ffffff33; --node-bg:#ffffff10;
+  --input-bg:#0b1020; --input-border:#ffffff2d;
+  --shadow-color:#0006; --bg-glow-1:#1e3a5f; --bg-glow-2:#3b1454;
+  --r:18px;
+  --gold:var(--accent-primary); --card:var(--bg-surface); --card2:var(--bg-elevated);
+  --ink:var(--text-primary); --mut:var(--text-muted);
+  --teal:var(--accent-gradient-a); --lime:var(--status-pass);
+  --pink:var(--status-danger); --amber:var(--status-warn); --red:var(--status-danger);
+}
+:root[data-theme="dark"]{
+  --bg-canvas:#0b0f17; --bg-surface:#141b33; --bg-elevated:#1a2342; --bg-glass:#0b1020aa;
+  --text-primary:#eef2ff; --text-secondary:#c7d0e6; --text-muted:#9aa7c7;
+  --border-subtle:#ffffff1c; --border-focus:#c2a053;
+  --accent-primary:#c2a053; --accent-subtle:#c2a05326; --accent-border:#c2a053;
+  --status-pass:#a3e635; --status-pass-bg:#a3e63533;
+  --status-warn:#fbbf24; --status-warn-bg:#fbbf2433;
+  --status-danger:#fb7185; --status-danger-bg:#fb718533;
+  --text-on-accent:#14100a;
+  --accent-gradient-a:#2dd4bf; --accent-gradient-b:#a3e635;
+  --button-gradient-a:#2dd4bf; --button-gradient-b:#38bdf8;
+  --fill-subtle:#ffffff14; --ring-track:#ffffff17; --link-bg:#ffffff2a;
+  --node-border:#ffffff33; --node-bg:#ffffff10;
+  --input-bg:#0b1020; --input-border:#ffffff2d;
+  --shadow-color:#0006; --bg-glow-1:#1e3a5f; --bg-glow-2:#3b1454;
+}
+:root[data-theme="light"]{
+  --bg-canvas:#f5f4f0; --bg-surface:#ffffff; --bg-elevated:#f2f1ec; --bg-glass:#ffffffcc;
+  --text-primary:#0f172a; --text-secondary:#334155; --text-muted:#5b6675;
+  --border-subtle:#d5d2c8; --border-focus:#856404;
+  --accent-primary:#8a6814; --accent-subtle:#8a68141a; --accent-border:#8a6814;
+  --status-pass:#3f6212; --status-pass-bg:#3f62121a;
+  --status-warn:#92400e; --status-warn-bg:#92400e1a;
+  --status-danger:#b91c1c; --status-danger-bg:#b91c1c1a;
+  --text-on-accent:#ffffff;
+  --accent-gradient-a:#8a6814; --accent-gradient-b:#a16207;
+  --button-gradient-a:#8a6814; --button-gradient-b:#a16207;
+  --fill-subtle:#0f172a0d; --ring-track:#0f172a14; --link-bg:#0f172a1a;
+  --node-border:#0f172a26; --node-bg:#0f172a0a;
+  --input-bg:#ffffff; --input-border:#d5d2c8;
+  --shadow-color:#0f172a14; --bg-glow-1:#e7e2d6; --bg-glow-2:#e3ddcf;
+}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:radial-gradient(900px 500px at 15% -10%,var(--bg-glow-1),transparent),radial-gradient(800px 500px at 90% 0,var(--bg-glow-2),transparent),var(--bg-canvas);color:var(--text-primary)}
 header{padding:22px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:26px;font-weight:900;letter-spacing:.5px}.logo span{background:linear-gradient(90deg,var(--teal),var(--lime));-webkit-background-clip:text;color:transparent}
-.sub{color:var(--mut);font-size:13px}.wrap{max-width:1080px;margin:0 auto;padding:0 18px 40px}
+.logo{font-size:26px;font-weight:900;letter-spacing:.5px}.logo span{background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));-webkit-background-clip:text;color:transparent}
+.sub{color:var(--text-muted);font-size:13px}.wrap{max-width:1080px;margin:0 auto;padding:0 18px 40px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-.card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid #ffffff1c;border-radius:var(--r);padding:18px;box-shadow:0 10px 30px #0006}
-button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:800;background:linear-gradient(90deg,var(--teal),#38bdf8);color:#04121a}
-button.ghost{background:#ffffff14;color:var(--ink);border:1px solid #ffffff2a}button.pink{background:linear-gradient(90deg,var(--pink),var(--amber));color:#221}
+.card{background:linear-gradient(160deg,var(--bg-surface),var(--bg-elevated));border:1px solid var(--border-subtle);border-radius:var(--r);padding:18px;box-shadow:0 10px 30px var(--shadow-color)}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:800;background:linear-gradient(90deg,var(--button-gradient-a),var(--button-gradient-b));color:var(--text-on-accent)}
+button.ghost{background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle)}button.pink{background:linear-gradient(90deg,var(--status-danger),var(--status-warn));color:var(--text-on-accent)}
 button:disabled{opacity:.45;cursor:not-allowed}
-.mode h3{margin:4px 0;font-size:19px}.mode p{color:var(--mut);font-size:13px;min-height:38px}
-.bar{height:10px;background:#ffffff17;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--lime))}
-.q{font-size:19px;line-height:1.5;font-weight:650}.opt{display:block;width:100%;text-align:left;margin:9px 0;background:#ffffff10;color:var(--ink);border:1px solid #ffffff22}
-.opt.sel{background:#2dd4bf33;border-color:var(--teal)}.opt.right{background:#a3e63533;border-color:var(--lime)}.opt.wrong{background:#fb718533;border-color:var(--red)}
-.explain{background:#0b1020aa;border-left:4px solid var(--amber);padding:12px 14px;border-radius:10px;line-height:1.55}
-.tag{display:inline-block;padding:3px 9px;border-radius:99px;background:#ffffff16;font-size:11px;font-weight:800;letter-spacing:.4px}
-.pill{display:inline-flex;gap:6px;align-items:center;background:#ffffff12;border:1px solid #ffffff22;padding:6px 10px;border-radius:99px;font-size:12px}
-select,input{background:#0b1020;color:var(--ink);border:1px solid #ffffff2d;border-radius:10px;padding:9px}
-.hidden{display:none!important}.big{font-size:34px;font-weight:900}.mut{color:var(--mut)} .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mode h3{margin:4px 0;font-size:19px}.mode p{color:var(--text-muted);font-size:13px;min-height:38px}
+.bar{height:10px;background:var(--ring-track);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b))}
+.q{font-size:19px;line-height:1.5;font-weight:650}.opt{display:block;width:100%;text-align:left;margin:9px 0;background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle)}
+.opt.sel{background:var(--accent-subtle);border-color:var(--accent-primary)}.opt.right{background:var(--status-pass-bg);border-color:var(--status-pass)}.opt.wrong{background:var(--status-danger-bg);border-color:var(--status-danger)}
+.explain{background:var(--bg-glass);border-left:4px solid var(--status-warn);padding:12px 14px;border-radius:10px;line-height:1.55}
+.tag{display:inline-block;padding:3px 9px;border-radius:99px;background:var(--fill-subtle);font-size:11px;font-weight:800;letter-spacing:.4px}
+.pill{display:inline-flex;gap:6px;align-items:center;background:var(--fill-subtle);border:1px solid var(--border-subtle);padding:6px 10px;border-radius:99px;font-size:12px}
+select,input{background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:10px;padding:9px}
+.hidden{display:none!important}.big{font-size:34px;font-weight:900}.mut{color:var(--text-muted)} .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .confetti{position:fixed;inset:0;pointer-events:none;font-size:24px;display:flex;justify-content:center;align-items:flex-start;padding-top:12vh}
-.lesson{line-height:1.65}.lesson b{color:var(--teal)}
+.lesson{line-height:1.65}.lesson b{color:var(--accent-primary)}
 .card{animation:fadeUp .35s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 button{transition:transform .12s,filter .12s}button:hover{transform:translateY(-1px);filter:brightness(1.1)}
-textarea{width:100%;min-height:92px;background:#0b1020;color:var(--ink);border:1px solid #ffffff2d;border-radius:12px;padding:12px;font-size:16px;line-height:1.5}
-#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:linear-gradient(90deg,var(--teal),var(--lime));color:#04121a;font-weight:900;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:all .3s;z-index:50;box-shadow:0 12px 32px #0009}
+textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:12px;padding:12px;font-size:16px;line-height:1.5}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);font-weight:900;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:all .3s;z-index:50;box-shadow:0 12px 32px var(--shadow-color)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .pathmap{display:flex;align-items:center;gap:0;margin:14px 0;flex-wrap:wrap}
-.node{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid #ffffff33;background:#ffffff10;flex:none}
-.node.done{background:linear-gradient(135deg,var(--teal),var(--lime));color:#04121a;border-color:transparent}
-.node.now{border-color:var(--amber);box-shadow:0 0 0 4px #fbbf2433}
-.link{height:3px;width:22px;background:#ffffff2a;flex:none}
-.ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:conic-gradient(var(--teal) var(--p,0%),#ffffff17 0)}
+.node{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid var(--node-border);background:var(--node-bg);flex:none}
+.node.done{background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);border-color:transparent}
+.node.now{border-color:var(--status-warn);box-shadow:0 0 0 4px var(--status-warn-bg)}
+.link{height:3px;width:22px;background:var(--link-bg);flex:none}
+.ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:conic-gradient(var(--accent-gradient-a) var(--p,0%),var(--ring-track) 0)}
+:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style></head>
 <body>
 <header>
@@ -41,6 +95,7 @@ textarea{width:100%;min-height:92px;background:#0b1020;color:var(--ink);border:1
  <div class="row">
   <span class="pill">🔥 Streak <b id="streak">0</b></span><span class="pill">⭐ XP <b id="xp">0</b></span>
   <span class="pill" id="gpuPill">🎙️ Voice: checking GPU…</span>
+   <button id="themeToggle" class="ghost" aria-pressed="false" onclick="toggleTheme()">DARK / LIGHT</button>
  </div>
 </header>
 <div class="wrap">
@@ -53,9 +108,9 @@ textarea{width:100%;min-height:92px;background:#0b1020;color:var(--ink);border:1
    <button class="ghost" onclick="playWelcome()">▶ Welcome clip</button> <button class="ghost" onclick="testVoice()">Test voice</button></div>
  </div></div>
 
- <div id="home">
-  <div id="coachHome"></div>
-  <div class="grid">
+ <div id="home" data-view="home">
+  <div id="coachHome" data-component="coach"></div>
+  <div class="grid" data-component="mode-grid">
    <div class="card mode"><div class="tag">YOUR WEAK SPOTS FIRST</div><h3>🎯 Trap Drill</h3><p>One question at a time. No reveal until you answer. SIPC, CMO tranches, freeriding — weighted to your misses.</p><button onclick="startQuiz('trap',10)">Start drill</button></div>
    <div class="card mode"><div class="tag">DYNAMIC • RANDOMIZED</div><h3>⚡ Sprint Quiz</h3><p>10 fresh questions. Numbers, names and timelines are re-rolled every run — memorized answers won't save you.</p><button onclick="startQuiz('sprint',10)">Start sprint</button></div>
    <div class="card mode"><div class="tag">REAL EXAM SIM</div><h3>📝 Practice Exam</h3><p>75 questions • 105 minutes • 70% to pass • weighted 16 / 44 / 31 / 9 like the real SIE.</p><button class="pink" onclick="startQuiz('exam',75)">Start exam</button></div>
@@ -63,21 +118,21 @@ textarea{width:100%;min-height:92px;background:#0b1020;color:var(--ink);border:1
    <div class="card mode"><div class="tag">ML TEACHER</div><h3>🧑‍🏫 Teacher Report</h3><p>Your mastery, speed and accuracy by concept — and whether a miss was a slip, a guess, or a concept you truly don't own yet.</p><button onclick="showReport()">See my report</button></div>
    <div class="card mode"><div class="tag">BEYOND THE EXAM</div><h3>🧠 Mastery Path</h3><p>Learn the rule logic: why the rule exists, who it protects, and the case pattern FINRA tests.</p><button onclick="showLessons()">Open lessons</button></div>
   </div>
-  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Section mastery</h3><div id="mastery"></div>
+  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Section mastery</h3><div id="mastery" data-component="mastery"></div>
    <div class="row" style="margin-top:12px"><button class="ghost" onclick="startQuiz('missed',10)">↻ Review Missed Bank (<span id="missedCount">0</span>)</button>
    <label class="mut">Difficulty <select id="levelSel" onchange="save()"><option value="easy">🟢 Easy</option><option value="hard" selected>🟠 Hard</option><option value="veryhard">🔴 Very Hard</option><option value="master">👑 Master</option></select></label>
    <span class="mut">Rank: <b id="level">Analyst</b> — Analyst → Associate → Compliance Pro → Regulation Master</span></div></div>
  </div>
 
- <div id="lessons" class="hidden"></div>
- <div id="units" class="hidden"></div>
- <div id="report" class="hidden"></div>
- <div id="quiz" class="hidden">
+ <div id="lessons" class="hidden" data-view="lessons"></div>
+ <div id="units" class="hidden" data-view="units"></div>
+ <div id="report" class="hidden" data-view="report"></div>
+ <div id="quiz" class="hidden" data-view="quiz">
   <div class="card">
    <div class="row" style="justify-content:space-between"><span class="tag" id="qTag">TRAP</span><span class="pill" id="timer">⏱️ --:--</span><span class="pill" id="progress">1 / 10</span></div>
    <div class="bar" style="margin:12px 0"><i id="pbar" style="width:0%"></i></div>
-   <div class="q" id="qText"></div><div id="opts"></div>
-   <div id="explain" class="hidden"></div>
+   <div class="q" id="qText"></div><div id="opts" data-component="options"></div>
+   <div id="explain" class="hidden" data-component="explanation"></div>
    <div class="row" style="margin-top:14px">
     <button class="ghost" onclick="speakCurrent()">🔊 Hear question</button>
     <button id="nextBtn" class="hidden" onclick="nextQ()">Next →</button>
@@ -85,10 +140,10 @@ textarea{width:100%;min-height:92px;background:#0b1020;color:var(--ink);border:1
    </div>
   </div>
  </div>
- <div id="result" class="hidden"></div>
+ <div id="result" class="hidden" data-view="result"></div>
 </div>
-<div id="toast"></div>
-<div id="confetti" class="confetti hidden">🎉 🎊 ✨ 🎉 🎊 ✨ 🎉</div>
+<div id="toast" data-component="toast" aria-live="polite"></div>
+<div id="confetti" class="confetti hidden" data-component="confetti">🎉 🎊 ✨ 🎉 🎊 ✨ 🎉</div>
 
 <script>
 /* ============ utilities ============ */
@@ -217,11 +272,18 @@ const LESSONS=[
 let store=JSON.parse(localStorage.getItem("sie")||'{"xp":0,"streak":0,"seen":0,"sec":{},"missed":{}}');
 let quiz=[],qi=0,score=0,mode="trap",timerInt=null,timeLeft=0,current=null,answered=false;
 const $=id=>document.getElementById(id);
+/* ============ THEME ENGINE ============ */
+const THEME_KEY="tibin_sie_theme";
+function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); const b=$("themeToggle"); if(b) b.setAttribute("aria-pressed",t==="light"?"true":"false"); }
+function toggleTheme(){ const cur=document.documentElement.getAttribute("data-theme")==="light"?"light":"dark"; const next=cur==="light"?"dark":"light"; applyTheme(next); try{localStorage.setItem(THEME_KEY,next)}catch(e){} }
+function initTheme(){ let t=null; try{t=localStorage.getItem(THEME_KEY)}catch(e){} if(t!=="dark"&&t!=="light"){ t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark"; } applyTheme(t); }
+document.addEventListener("keydown",e=>{ const el=e.target; const tag=el&&el.tagName?el.tagName.toLowerCase():""; if(tag==="input"||tag==="textarea"||tag==="select"||(el&&el.isContentEditable)) return; if((e.key==="t"||e.key==="T")&&!e.metaKey&&!e.ctrlKey&&!e.altKey){ e.preventDefault(); toggleTheme(); } });
+initTheme();
 function save(){localStorage.setItem("sie",JSON.stringify(store));renderHome()}
 function renderHome(){ const ch=$("coachHome"); if(ch){ try{ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
   const dn=store.day&&store.day.d===new Date().toDateString()?store.day.n:0; const gpct=Math.min(100,dn/10*100);
   ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b>🧑‍🏫 Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
-  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--card);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()">▶ Continue where I left off</button><button class="ghost" onclick="speak(coachText())">🔊</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
+  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()">▶ Continue where I left off</button><button class="ghost" onclick="speak(coachText())">🔊</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
  $("xp").textContent=store.xp;$("streak").textContent=store.streak;
  $("missedCount").textContent=Object.keys(store.missed).length;
  $("level").textContent=store.xp>1500?"Regulation Master":store.xp>700?"Compliance Pro":store.xp>250?"Associate":"Analyst";
@@ -281,10 +343,11 @@ function showQ(){answered=false;current=quiz[qi];window._qStart=Date.now();start
  $("pbar").style.width=(qi/quiz.length*100)+"%";$("qTag").textContent=(mode==="trap"?"🎯 TRAP • ":"")+"Section "+current.sec+" • "+current.topic;
  $("qText").textContent=current.text;$("explain").classList.add("hidden");$("nextBtn").classList.add("hidden");
  if(current.type==="short"){ $("opts").innerHTML=`<p class="mut" style="margin:4px 0">✍️ Short response — produce the rule, don't recognize it. Numbers and key concepts are graded.</p><textarea id="shortAns" placeholder="Type your answer in your own words..."></textarea><div class="row" style="margin-top:10px"><button onclick="answerShort()">Submit answer</button><button class="ghost" onclick="speak(current.text)">🔊 Hear question</button></div>`; }
- else $("opts").innerHTML=current.choices.map((c,i)=>`<button class="opt" onclick="answer(${i},this)">${"ABCD"[i]}. ${c}</button>`).join("");
+ else $("opts").innerHTML=current.choices.map((c,i)=>`<button class="opt" aria-pressed="false" data-state="idle" onclick="answer(${i},this)">${"ABCD"[i]}. ${c}</button>`).join("");
  if($("voiceOn").checked)speak(current.text);
 }
 function answer(i,btn){if(answered)return;answered=true;clearInterval(perQInt);const right=i===current.answer;const ms=Date.now()-(window._qStart||Date.now());recordPerf(current,right,ms);
+ document.querySelectorAll(".opt").forEach(b=>{b.setAttribute("aria-pressed","false");b.dataset.state="locked"}); if(btn){btn.setAttribute("aria-pressed","true");btn.dataset.state=right?"right":"wrong";}
  document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===current.answer)b.classList.add("right");if(j===i&&!right)b.classList.add("wrong")});
  store.seen++;store.sec[current.sec]=store.sec[current.sec]||{a:0,c:0};store.sec[current.sec].a++;
  const key=current.topic+current.text.slice(0,40);
