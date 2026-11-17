@@ -1,0 +1,57 @@
+{
+  "voice": "Muse voice (Helio)",
+  "generated": "2026-11-16",
+  "format": "mp3",
+  "clips": [
+    {
+      "file": "welcome.mp3",
+      "title": "Welcome \u2014 SIE Mastery intro",
+      "bytes": 168037
+    },
+    {
+      "file": "lesson-1-sipc.mp3",
+      "title": "Unit 7 lesson \u2014 SIPC: Capacity, Not Person",
+      "bytes": 261733
+    },
+    {
+      "file": "lesson-2-cmo.mp3",
+      "title": "Unit 3 lesson \u2014 CMO Tranches: Who Absorbs the Shock",
+      "bytes": 266917
+    },
+    {
+      "file": "lesson-3-freeriding.mp3",
+      "title": "Unit 6 lesson \u2014 Cash Account Discipline: Freeriding & Good Faith",
+      "bytes": 252901
+    },
+    {
+      "file": "lesson-4-numbers.mp3",
+      "title": "Reference \u2014 The Numbers Vault",
+      "bytes": 382693
+    },
+    {
+      "file": "lesson-5-prohibited.mp3",
+      "title": "Unit 8 lesson \u2014 Prohibited Activities: The Pattern Language",
+      "bytes": 253093
+    },
+    {
+      "file": "lesson-6-master-frame.mp3",
+      "title": "Unit 1 lesson \u2014 Why Regulation Exists: The Master Frame",
+      "bytes": 328741
+    },
+    {
+      "file": "lesson-7-equity.mp3",
+      "title": "Unit 2 lesson \u2014 Equity Securities",
+      "bytes": 293413
+    },
+    {
+      "file": "lesson-8-options.mp3",
+      "title": "Unit 4 lesson \u2014 Pooled Funds, Options & Packaged Products",
+      "bytes": 323557
+    },
+    {
+      "file": "lesson-9-risk.mp3",
+      "title": "Unit 5 lesson \u2014 Risk: Know What Can Hurt You",
+      "bytes": 322021
+    }
+  ]
+}
