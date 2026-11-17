@@ -16,6 +16,16 @@ os.chdir(ROOT / "static")
 PORT = int(os.environ.get("PORT", "8765"))
 
 class H(SimpleHTTPRequestHandler):
+    # --- hardening: no directory listings, baseline security headers ---
+    def list_directory(self, path):
+        return self.send_error(404)
+
+    def end_headers(self):
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        super().end_headers()
+
     def do_GET(self):
         if self.path == "/api/health":
             try:
@@ -28,6 +38,8 @@ class H(SimpleHTTPRequestHandler):
             return self._json(info)
         if self.path.startswith("/tts/"):
             f = ROOT / "tts_cache" / Path(self.path).name
+            if f.suffix != ".wav":
+                return self.send_error(404)
             if f.exists():
                 self.send_response(200); self.send_header("Content-Type", "audio/wav")
                 self.send_header("Content-Length", str(f.stat().st_size)); self.end_headers()
@@ -40,6 +52,8 @@ class H(SimpleHTTPRequestHandler):
             return self.send_error(404)
         try:
             n = int(self.headers.get("Content-Length", 0))
+            if n > 65536:
+                return self._json({"error": "request too large"}, 413)
             body = json.loads(self.rfile.read(n) or b"{}")
             text = (body.get("text") or "").strip()[:1200]
             voice = body.get("voice") or "af_heart"
