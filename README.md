@@ -12,6 +12,8 @@ timelines, exceptions, and the *why* behind each rule.
 - **Engagement UX:** coach card on Home with a smart **Continue where I left off** button (routes to your open gap, next unit, or Final Review), daily-goal ring (10 answers/day), visual 8-node path map, badge toasts, animated cards.
 - Verified: full script boots clean in a DOM harness, coach card renders, 35 MC generators × 200 runs = 7,000 questions 0 defects (v2 suite), short-answer grading 17/17, teacher diagnosis simulation all paths correct.
 
+**Production QA pass (Nov 16, 2026):** full end-to-end harness drives the real app — 36/36 checks green across 3 consecutive runs (every view, all 8 unit lessons/quizzes, Trap/Sprint/Missed Bank, 75-question exam with exact 12/33/23/7 FINRA domain mix, Final Review gating, gap open→close, all 4 levels, short-response injection, audio queue on GPU path + browser fallback + voice toggle). 17,500 generated questions swept with 0 defects; short-answer self-grading 12/12 model answers full credit, 12/12 empty answers zero. Static integrity: 22/22 button handlers defined, 27/27 element IDs present, zero external dependencies. QA caught and fixed 4 real defects: Final Review gate bypass, Trap Drill trap-seeding loss, "undefined" unit names in coach/report speech (wrong property key), and short-response questions being truncated out of Master trap drills.
+
 ## v2 — ML Teacher, 8-Unit Curriculum, 4 Levels (Nov 16, 2026)
 - **ML Teacher (in-app, no server needed):** every answer is timed and scored per concept.
   - *Bayesian Knowledge Tracing* per unit estimates the probability you actually know the concept (guess 25% / slip 10% model).
@@ -84,3 +86,7 @@ data/              # notes / future question packs
 
 ## Your weak-spot seeding
 First Trap Drill sessions are weighted to: SIPC separate capacity, CMO PAC/support + contraction vs extension, freeriding in cash accounts. As you clear them twice, weighting normalizes.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Abdulwahab Tibin.
