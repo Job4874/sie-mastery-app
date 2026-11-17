@@ -10,7 +10,7 @@ for f in ["server.py", "tts_engine.py", "static/index.html", "README.md"]:
         errors.append(f"missing {f}")
 
 html = (ROOT / "static/index.html").read_text(encoding="utf-8")
-for marker in ["const GEN=", "const LESSONS=", "startQuiz", "playLesson", "audio/welcome.mp3", "const UNITS=", "recordPerf", "diagnose", "adaptiveSet", "GEN.push(", "AudioMan", "const SHORT=", "gradeShort", "startGapClose", "smartContinue", "answerShort"]:
+for marker in ["const GEN=", "const LESSONS=", "startQuiz", "playLesson", "audio/welcome.wav", "const UNITS=", "recordPerf", "diagnose", "adaptiveSet", "GEN.push(", "AudioMan", "const SHORT=", "gradeShort", "startGapClose", "smartContinue", "answerShort"]:
     if marker not in html:
         errors.append(f"index.html missing marker: {marker}")
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="SIE Mastery — adaptive SIE exam prep with trap-only drilling, 8-unit curriculum, ML teacher diagnostics, and GPU voice tutoring. Zero emojis, institutional aesthetic."><meta property="og:title" content="SIE Mastery — Regulation, Mastered"><meta property="og:description" content="Adaptive SIE exam prep with trap-only drilling and ML teacher diagnostics."><meta property="og:type" content="website"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%230b0f17%22/%3E%3Ctext x=%2250%25%22 y=%2265%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2255%22 fill=%22%23c2a053%22 font-weight=%22bold%22%3ESM%3C/text%3E%3C/svg%3E">
 <title>SIE Mastery — Regulation, Mastered</title>
 <style>
 :root{
@@ -91,36 +91,36 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
 </style></head>
 <body>
 <header>
- <div><div class="logo">SIE <span>MASTERY</span> 🎧📈</div><div class="sub">Pass the exam. Master the regulation. Trap-only drilling for an experienced trader.</div></div>
+ <div><div class="logo">SIE <span>MASTERY</span> </div><div class="sub">Pass the exam. Master the regulation. Trap-only drilling for an experienced trader.</div></div>
  <div class="row">
-  <span class="pill">🔥 Streak <b id="streak">0</b></span><span class="pill">⭐ XP <b id="xp">0</b></span>
-  <span class="pill" id="gpuPill">🎙️ Voice: checking GPU…</span>
+  <span class="pill"> Streak <b id="streak">0</b></span><span class="pill"> XP <b id="xp">0</b></span>
+  <span class="pill" id="gpuPill"> Voice: checking GPU…</span>
    <button id="themeToggle" class="ghost" aria-pressed="false" onclick="toggleTheme()">DARK / LIGHT</button>
  </div>
 </header>
 <div class="wrap">
  <div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between">
-  <div><b>🎧 Voice Tutor</b> <span class="mut">— GPU Kokoro on localhost, browser voice as fallback. Clips are cached/saved server-side.</span></div>
+  <div><b> Voice Tutor</b> <span class="mut">— GPU Kokoro on localhost, browser voice as fallback. Clips are cached/saved server-side.</span></div>
   <div class="row"><label class="mut">Voice <select id="voiceSel">
     <option value="af_heart">Heart (F, US)</option><option value="am_michael">Michael (M, US)</option>
     <option value="bf_emma">Emma (F, UK)</option><option value="am_fenrir">Fenrir (M, deep)</option></select></label>
    <label class="mut"><input type="checkbox" id="voiceOn" checked> Read aloud</label>
-   <button class="ghost" onclick="playWelcome()">▶ Welcome clip</button> <button class="ghost" onclick="testVoice()">Test voice</button></div>
+   <button class="ghost" onclick="playWelcome()"> Welcome clip</button> <button class="ghost" onclick="testVoice()">Test voice</button></div>
  </div></div>
 
  <div id="home" data-view="home">
   <div id="coachHome" data-component="coach"></div>
   <div class="grid" data-component="mode-grid">
-   <div class="card mode"><div class="tag">YOUR WEAK SPOTS FIRST</div><h3>🎯 Trap Drill</h3><p>One question at a time. No reveal until you answer. SIPC, CMO tranches, freeriding — weighted to your misses.</p><button onclick="startQuiz('trap',10)">Start drill</button></div>
-   <div class="card mode"><div class="tag">DYNAMIC • RANDOMIZED</div><h3>⚡ Sprint Quiz</h3><p>10 fresh questions. Numbers, names and timelines are re-rolled every run — memorized answers won't save you.</p><button onclick="startQuiz('sprint',10)">Start sprint</button></div>
-   <div class="card mode"><div class="tag">REAL EXAM SIM</div><h3>📝 Practice Exam</h3><p>75 questions • 105 minutes • 70% to pass • weighted 16 / 44 / 31 / 9 like the real SIE.</p><button class="pink" onclick="startQuiz('exam',75)">Start exam</button></div>
-   <div class="card mode"><div class="tag">LESSON PLAN • 8 UNITS</div><h3>📚 Curriculum</h3><p>Detailed lesson, then a mini quiz, unit by unit through all 8 topics. Finish all 8 to unlock the Final Exam Review.</p><button onclick="showUnits()">Start lesson plan</button></div>
-   <div class="card mode"><div class="tag">ML TEACHER</div><h3>🧑‍🏫 Teacher Report</h3><p>Your mastery, speed and accuracy by concept — and whether a miss was a slip, a guess, or a concept you truly don't own yet.</p><button onclick="showReport()">See my report</button></div>
-   <div class="card mode"><div class="tag">BEYOND THE EXAM</div><h3>🧠 Mastery Path</h3><p>Learn the rule logic: why the rule exists, who it protects, and the case pattern FINRA tests.</p><button onclick="showLessons()">Open lessons</button></div>
+   <div class="card mode"><div class="tag">YOUR WEAK SPOTS FIRST</div><h3> Trap Drill</h3><p>One question at a time. No reveal until you answer. SIPC, CMO tranches, freeriding — weighted to your misses.</p><button onclick="startQuiz('trap',10)">Start drill</button></div>
+   <div class="card mode"><div class="tag">DYNAMIC • RANDOMIZED</div><h3> Sprint Quiz</h3><p>10 fresh questions. Numbers, names and timelines are re-rolled every run — memorized answers won't save you.</p><button onclick="startQuiz('sprint',10)">Start sprint</button></div>
+   <div class="card mode"><div class="tag">REAL EXAM SIM</div><h3> Practice Exam</h3><p>75 questions • 105 minutes • 70% to pass • weighted 16 / 44 / 31 / 9 like the real SIE.</p><button class="pink" onclick="startQuiz('exam',75)">Start exam</button></div>
+   <div class="card mode"><div class="tag">LESSON PLAN • 8 UNITS</div><h3> Curriculum</h3><p>Detailed lesson, then a mini quiz, unit by unit through all 8 topics. Finish all 8 to unlock the Final Exam Review.</p><button onclick="showUnits()">Start lesson plan</button></div>
+   <div class="card mode"><div class="tag">ML TEACHER</div><h3> Teacher Report</h3><p>Your mastery, speed and accuracy by concept — and whether a miss was a slip, a guess, or a concept you truly don't own yet.</p><button onclick="showReport()">See my report</button></div>
+   <div class="card mode"><div class="tag">BEYOND THE EXAM</div><h3> Mastery Path</h3><p>Learn the rule logic: why the rule exists, who it protects, and the case pattern FINRA tests.</p><button onclick="showLessons()">Open lessons</button></div>
   </div>
   <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Section mastery</h3><div id="mastery" data-component="mastery"></div>
    <div class="row" style="margin-top:12px"><button class="ghost" onclick="startQuiz('missed',10)">↻ Review Missed Bank (<span id="missedCount">0</span>)</button>
-   <label class="mut">Difficulty <select id="levelSel" onchange="save()"><option value="easy">🟢 Easy</option><option value="hard" selected>🟠 Hard</option><option value="veryhard">🔴 Very Hard</option><option value="master">👑 Master</option></select></label>
+   <label class="mut">Difficulty <select id="levelSel" onchange="save()"><option value="easy">🟢 Easy</option><option value="hard" selected>🟠 Hard</option><option value="veryhard"> Very Hard</option><option value="master"> Master</option></select></label>
    <span class="mut">Rank: <b id="level">Analyst</b> — Analyst → Associate → Compliance Pro → Regulation Master</span></div></div>
  </div>
 
@@ -129,12 +129,12 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
  <div id="report" class="hidden" data-view="report"></div>
  <div id="quiz" class="hidden" data-view="quiz">
   <div class="card">
-   <div class="row" style="justify-content:space-between"><span class="tag" id="qTag">TRAP</span><span class="pill" id="timer">⏱️ --:--</span><span class="pill" id="progress">1 / 10</span></div>
+   <div class="row" style="justify-content:space-between"><span class="tag" id="qTag">TRAP</span><span class="pill" id="timer"> --:--</span><span class="pill" id="progress">1 / 10</span></div>
    <div class="bar" style="margin:12px 0"><i id="pbar" style="width:0%"></i></div>
    <div class="q" id="qText"></div><div id="opts" data-component="options"></div>
    <div id="explain" class="hidden" data-component="explanation"></div>
    <div class="row" style="margin-top:14px">
-    <button class="ghost" onclick="speakCurrent()">🔊 Hear question</button>
+    <button class="ghost" onclick="speakCurrent()"> Hear question</button>
     <button id="nextBtn" class="hidden" onclick="nextQ()">Next →</button>
     <button class="ghost" onclick="quitQuiz()">Quit</button>
    </div>
@@ -143,7 +143,7 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
  <div id="result" class="hidden" data-view="result"></div>
 </div>
 <div id="toast" data-component="toast" aria-live="polite"></div>
-<div id="confetti" class="confetti hidden" data-component="confetti">🎉 🎊 ✨ 🎉 🎊 ✨ 🎉</div>
+<div id="confetti" class="confetti hidden" data-component="confetti">      </div>
 
 <script>
 /* ============ utilities ============ */
@@ -255,17 +255,17 @@ GEN.push(
 );
 const UNIT_BY_TOPIC={"SIPC separate capacity":7,"CMO tranches":3,"Freeriding":6,"Wash sale":6,"Reg T margin":7,"Pattern day trader":7,"Reg SHO":6,"Options — covered call":4,"Bond risk":3,"Communications":7,"Trusted contact / seniors":7,"Discretionary accounts":7,"Prohibited activities":8,"Mutual fund pricing":4,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":8,"Systematic risk":5,"Account opening / AML":7,"Fed tools":1,"MSRB":1,"Preferred vs common":2,"Stock splits":2,"Dividend dates":2,"Yield ordering":3,"Callable bonds / yield to worst":3,"Long call breakeven":4,"ETFs vs mutual funds":4,"Reinvestment risk":5,"ADR / currency risk":5,"Settlement T+1":6,"Stop orders":6,"Insider trading":8,"Selling away":8};
 const DIFF_BY_TOPIC={"SIPC separate capacity":3,"CMO tranches":3,"Freeriding":2,"Wash sale":2,"Reg T margin":1,"Pattern day trader":1,"Reg SHO":2,"Options — covered call":2,"Bond risk":2,"Communications":3,"Trusted contact / seniors":2,"Discretionary accounts":2,"Prohibited activities":1,"Mutual fund pricing":2,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":3,"Systematic risk":1,"Account opening / AML":2,"Fed tools":1,"MSRB":2,"Preferred vs common":1,"Stock splits":1,"Dividend dates":3,"Yield ordering":2,"Callable bonds / yield to worst":2,"Long call breakeven":1,"ETFs vs mutual funds":1,"Reinvestment risk":2,"ADR / currency risk":1,"Settlement T+1":1,"Stop orders":2,"Insider trading":2,"Selling away":2};
-const LEVELS={easy:{label:"🟢 Easy",mult:1,rating:800,maxDiff:1},hard:{label:"🟠 Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:"🔴 Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:"👑 Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
+const LEVELS={easy:{label:"🟢 Easy",mult:1,rating:800,maxDiff:1},hard:{label:"🟠 Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:" Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:" Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
 function curLevel(){return ($("levelSel")&&$("levelSel").value)||"hard"}
 
 /* ============ LESSONS: mastery, not memorization ============ */
 const LESSONS=[
-{t:"SIPC — Capacity, Not Person",a:"audio/lesson-1-sipc.mp3",s:"Sec 4 • Your #1 trap",b:`SIPC protects against a BD <b>failing</b> — never against market loss. The unit is <b>separate capacity</b>: individual, IRA, and joint are different capacities, each capped at <b>$500k</b>, with cash inside capped at <b>$250k</b>. A joint account is <b>one</b> capacity shared by both people — the single most-tested trap on the SIE.`},
-{t:"CMO Tranches — Who Absorbs the Shock",a:"audio/lesson-2-cmo.mp3",s:"Sec 2 • Your #2 trap",b:`A PAC tranche has a planned schedule. The <b>support/companion</b> tranche absorbs prepayment variability to defend it. Rates <b>fall</b> → prepayments surge → support gets paid early = <b>contraction</b>. Rates <b>rise</b> → prepayments vanish → support waits = <b>extension</b>. Ask 'who takes the shock?' and the answer follows.`},
-{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/lesson-3-freeriding.mp3",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell first = <b>freeriding</b> (Reg T). Liquidate something else to cover after a good-faith purchase = <b>good faith violation</b>. Three violations in 12 months → 90-day settled-funds restriction. The Fed wrote Reg T; FINRA enforces the account consequences.`},
-{t:"The Numbers Vault",a:"audio/lesson-4-numbers.mp3",s:"All sections",b:`<b>50%</b> Reg T initial • <b>25%</b> FINRA long maintenance • <b>$25k</b> PDT equity • <b>$2k</b> margin minimum • <b>30 days</b> wash sale (61-day window) • <b>>25</b> retail investors in <b>30 days</b> = retail communication • <b>65+</b> specified adult • <b>20 days</b> cooling-off • <b>25/40/90 days</b> prospectus delivery • <b>$500k/$250k</b> SIPC. Numbers are where the SIE grades you.`},
-{t:"Prohibited Activities — The Pattern Language",a:"audio/lesson-5-prohibited.mp3",s:"Sec 3",b:`FINRA tests labels by pattern: <b>front running</b> (trade ahead of a customer), <b>painting the tape / matched orders</b> (fake activity), <b>churning</b> (excessive trading for commissions — needs control + excessiveness + scienter), <b>selling away</b> (private deals off the firm's books), <b>guaranteeing against loss</b> (never allowed). Match the fact pattern to the motive and the label picks itself.`},
-{t:"Why Regulation Exists — The Master Frame",a:"audio/lesson-6-master-frame.mp3",s:"Beyond the exam",b:`Every rule here answers a historical abuse: the <b>1933 Act</b> = disclosure at issuance (prospectus, liability for lies). The <b>1934 Act</b> = ongoing markets (SEC, exchanges, anti-fraud 10b-5). <b>FINRA</b> = conduct of BDs and reps. <b>MSRB</b> = muni dealers (no regulator of muni issuers — Tower Amendment). <b>SIPC</b> (1970) = custody failure, not losses. Know the abuse, and the rule's shape becomes predictable on questions you've never seen.`},
+{t:"SIPC — Capacity, Not Person",a:"audio/lesson-1-sipc.wav",s:"Sec 4 • Your #1 trap",b:`SIPC protects against a BD <b>failing</b> — never against market loss. The unit is <b>separate capacity</b>: individual, IRA, and joint are different capacities, each capped at <b>$500k</b>, with cash inside capped at <b>$250k</b>. A joint account is <b>one</b> capacity shared by both people — the single most-tested trap on the SIE.`},
+{t:"CMO Tranches — Who Absorbs the Shock",a:"audio/lesson-2-cmo.wav",s:"Sec 2 • Your #2 trap",b:`A PAC tranche has a planned schedule. The <b>support/companion</b> tranche absorbs prepayment variability to defend it. Rates <b>fall</b> → prepayments surge → support gets paid early = <b>contraction</b>. Rates <b>rise</b> → prepayments vanish → support waits = <b>extension</b>. Ask 'who takes the shock?' and the answer follows.`},
+{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/lesson-3-freeriding.wav",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell first = <b>freeriding</b> (Reg T). Liquidate something else to cover after a good-faith purchase = <b>good faith violation</b>. Three violations in 12 months → 90-day settled-funds restriction. The Fed wrote Reg T; FINRA enforces the account consequences.`},
+{t:"The Numbers Vault",a:"audio/lesson-4-numbers.wav",s:"All sections",b:`<b>50%</b> Reg T initial • <b>25%</b> FINRA long maintenance • <b>$25k</b> PDT equity • <b>$2k</b> margin minimum • <b>30 days</b> wash sale (61-day window) • <b>>25</b> retail investors in <b>30 days</b> = retail communication • <b>65+</b> specified adult • <b>20 days</b> cooling-off • <b>25/40/90 days</b> prospectus delivery • <b>$500k/$250k</b> SIPC. Numbers are where the SIE grades you.`},
+{t:"Prohibited Activities — The Pattern Language",a:"audio/lesson-5-prohibited.wav",s:"Sec 3",b:`FINRA tests labels by pattern: <b>front running</b> (trade ahead of a customer), <b>painting the tape / matched orders</b> (fake activity), <b>churning</b> (excessive trading for commissions — needs control + excessiveness + scienter), <b>selling away</b> (private deals off the firm's books), <b>guaranteeing against loss</b> (never allowed). Match the fact pattern to the motive and the label picks itself.`},
+{t:"Why Regulation Exists — The Master Frame",a:"audio/lesson-6-master-frame.wav",s:"Beyond the exam",b:`Every rule here answers a historical abuse: the <b>1933 Act</b> = disclosure at issuance (prospectus, liability for lies). The <b>1934 Act</b> = ongoing markets (SEC, exchanges, anti-fraud 10b-5). <b>FINRA</b> = conduct of BDs and reps. <b>MSRB</b> = muni dealers (no regulator of muni issuers — Tower Amendment). <b>SIPC</b> (1970) = custody failure, not losses. Know the abuse, and the rule's shape becomes predictable on questions you've never seen.`},
 ];
 
 /* ============ state ============ */
@@ -282,8 +282,8 @@ initTheme();
 function save(){localStorage.setItem("sie",JSON.stringify(store));renderHome()}
 function renderHome(){ const ch=$("coachHome"); if(ch){ try{ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
   const dn=store.day&&store.day.d===new Date().toDateString()?store.day.n:0; const gpct=Math.min(100,dn/10*100);
-  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b>🧑‍🏫 Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
-  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()">▶ Continue where I left off</button><button class="ghost" onclick="speak(coachText())">🔊</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
+  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b> Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
+  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()"> Continue where I left off</button><button class="ghost" onclick="speak(coachText())"></button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
  $("xp").textContent=store.xp;$("streak").textContent=store.streak;
  $("missedCount").textContent=Object.keys(store.missed).length;
  $("level").textContent=store.xp>1500?"Regulation Master":store.xp>700?"Compliance Pro":store.xp>250?"Associate":"Analyst";
@@ -306,9 +306,9 @@ const AudioMan={q:[],busy:false,
   const done=()=>{ this.busy=false; this._pump() };
   const voice=$("voiceSel").value;
   try{ const r=await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice})});
-   if(!r.ok)throw 0; const d=await r.json(); $("gpuPill").textContent="🎙️ Voice: GPU (RTX • Kokoro)"+(d.cached?" • cached clip":" • new clip saved");
+   if(!r.ok)throw 0; const d=await r.json(); $("gpuPill").textContent=" Voice: GPU (RTX • Kokoro)"+(d.cached?" • cached clip":" • new clip saved");
    audio.src=d.url; audio.onended=done; audio.onerror=done; await audio.play();
-  }catch(e){ $("gpuPill").textContent="🎙️ Voice: browser (start server.py for GPU)";
+  }catch(e){ $("gpuPill").textContent=" Voice: browser (start server.py for GPU)";
    const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.onend=done; u.onerror=done; speechSynthesis.speak(u); }
  },
  preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips; m.clips.forEach(c=>{ const a=new Audio(); a.preload="auto"; a.src="audio/"+c.file }) }).catch(()=>{}) }
@@ -316,8 +316,8 @@ const AudioMan={q:[],busy:false,
 function speak(text){ AudioMan.enq(text) }
 function stopAudio(){ AudioMan.stop() }
 function testVoice(){speak("S I P C is per separate capacity. Not per person. Five hundred thousand dollars, with a two hundred fifty thousand dollar cash sub limit.")}
-function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a); $("gpuPill").textContent="🎙️ Playing saved voice clip from codebase";} else speak(l.b.replace(/<[^>]+>/g,""))}
-function playWelcome(){AudioMan.clip("audio/welcome.mp3")}
+function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a); $("gpuPill").textContent=" Playing saved voice clip from codebase";} else speak(l.b.replace(/<[^>]+>/g,""))}
+function playWelcome(){AudioMan.clip("audio/welcome.wav")}
 function speakCurrent(){if(current)speak(current.text)}
 
 /* ============ quiz engine ============ */
@@ -329,20 +329,20 @@ function buildExam(n){
  return shuffle(out).slice(0,n).map(prepare);
 }
 function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer),unit:UNIT_BY_TOPIC[q.topic]||7,diff:DIFF_BY_TOPIC[q.topic]||2}}
-function startQuiz(m,n){mode=m;
- if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first 😄"); quiz=shuffle(miss).slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
+function startQuiz(m,n){m=m||"trap";n=n||10;mode=m;
+ if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first "); quiz=shuffle(miss).slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
  else if(m==="exam"){quiz=buildExam(75)}
  else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(GEN[i]())); const rest=adaptiveSet(n, true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3) rest.push(prepare(GEN[R(0,GEN.length-1)]())); quiz=[...seeded, ...rest.slice(0,Math.max(0,n-3))] } else{ quiz=adaptiveSet(n,false) }
  qi=0;score=0;$("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
  clearInterval(timerInt);
- if(m==="exam"){timeLeft=105*60;timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000);tick()} else $("timer").textContent="⏱️ untimed";
+ if(m==="exam"){timeLeft=105*60;timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000);tick()} else $("timer").textContent=" untimed";
  showQ();
 }
-function tick(){$("timer").textContent="⏱️ "+Math.floor(timeLeft/60)+":"+String(timeLeft%60).padStart(2,"0")}
+function tick(){$("timer").textContent=" "+Math.floor(timeLeft/60)+":"+String(timeLeft%60).padStart(2,"0")}
 function showQ(){answered=false;current=quiz[qi];window._qStart=Date.now();startPerQ();$("progress").textContent=(qi+1)+" / "+quiz.length;
- $("pbar").style.width=(qi/quiz.length*100)+"%";$("qTag").textContent=(mode==="trap"?"🎯 TRAP • ":"")+"Section "+current.sec+" • "+current.topic;
+ $("pbar").style.width=(qi/quiz.length*100)+"%";$("qTag").textContent=(mode==="trap"?" TRAP • ":"")+"Section "+current.sec+" • "+current.topic;
  $("qText").textContent=current.text;$("explain").classList.add("hidden");$("nextBtn").classList.add("hidden");
- if(current.type==="short"){ $("opts").innerHTML=`<p class="mut" style="margin:4px 0">✍️ Short response — produce the rule, don't recognize it. Numbers and key concepts are graded.</p><textarea id="shortAns" placeholder="Type your answer in your own words..."></textarea><div class="row" style="margin-top:10px"><button onclick="answerShort()">Submit answer</button><button class="ghost" onclick="speak(current.text)">🔊 Hear question</button></div>`; }
+ if(current.type==="short"){ $("opts").innerHTML=`<p class="mut" style="margin:4px 0"> Short response — produce the rule, don't recognize it. Numbers and key concepts are graded.</p><textarea id="shortAns" placeholder="Type your answer in your own words..."></textarea><div class="row" style="margin-top:10px"><button onclick="answerShort()">Submit answer</button><button class="ghost" onclick="speak(current.text)"> Hear question</button></div>`; }
  else $("opts").innerHTML=current.choices.map((c,i)=>`<button class="opt" aria-pressed="false" data-state="idle" onclick="answer(${i},this)">${"ABCD"[i]}. ${c}</button>`).join("");
  if($("voiceOn").checked)speak(current.text);
 }
@@ -353,24 +353,24 @@ function answer(i,btn){if(answered)return;answered=true;clearInterval(perQInt);c
  const key=current.topic+current.text.slice(0,40);
  if(right){score++;store.xp+=Math.round((mode==="exam"?10:15)*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1));store.sec[current.sec].c++; if(store.missed[key]){store.missed[key]._cleared=(store.missed[key]._cleared||0)+1; if(store.missed[key]._cleared>=2)delete store.missed[key]}}
  else{store.missed[key]={sec:current.sec,topic:current.topic,text:current.text,choices:current.choices,answer:current.answer,explain:current.explain,rule:current.rule}}
- $("explain").innerHTML=`<b>${right?"✅ Correct.":"❌ Trap sprung."}</b> ${current.explain}<br><br>🧷 <b>Rule:</b> ${current.rule}`;
+ $("explain").innerHTML=`<b>${right?" Correct.":" Trap sprung."}</b> ${current.explain}<br><br> <b>Rule:</b> ${current.rule}`;
  $("explain").classList.remove("hidden");$("nextBtn").classList.remove("hidden");registerGap(current,right);trackMissStreak(right);save();
  if(!right||mode!=="trap")speak((right?"Correct. ":"") + current.explain);
 }
 function nextQ(){ if(window._ms&&window._ms.c>=2&&qi<quiz.length-1){ const pool=GEN.map((g,i)=>i).filter(i=>{const q=GEN[i]();return UNIT_BY_TOPIC[q.topic]===window._ms.u&&(DIFF_BY_TOPIC[q.topic]||2)===1});
-   if(pool.length){ quiz[qi+1]=prepare(GEN[pick(pool)]()); showToast("🧑‍🏫 Coach: two misses in a row — here's a confidence rep, then we climb back"); } window._ms=null; }
+   if(pool.length){ quiz[qi+1]=prepare(GEN[pick(pool)]()); showToast(" Coach: two misses in a row — here's a confidence rep, then we climb back"); } window._ms=null; }
  qi++;qi<quiz.length?showQ():finish()}
 function quitQuiz(){clearInterval(timerInt);clearInterval(perQInt);$("quiz").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
 function finish(){clearInterval(timerInt);clearInterval(perQInt);awardBadges();$("quiz").classList.add("hidden");const pct=Math.round(score/quiz.length*100);
- const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast("🩹 Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
+ const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
  $("result").innerHTML=`<div class="card" style="text-align:center"><div class="big">${score} / ${quiz.length} — ${pct}%</div>
- <p>${coachLine(pct)}</p><p class="mut">${mode==="exam"?(pass?"🎉 PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>
+ <p>${coachLine(pct)}</p><p class="mut">${mode==="exam"?(pass?" PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>
  <div class="row" style="justify-content:center">${gapBtn()}<button onclick="startQuiz('${mode}',${mode==='exam'?75:10})">Run it again</button><button class="ghost" onclick="backHome()">Home</button></div></div>`;
- $("result").classList.remove("hidden");save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast("🏅 New badge: "+window._newBadges.join(", ")),600);
+ $("result").classList.remove("hidden");save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast(" New badge: "+window._newBadges.join(", ")),600);
  speak(`You scored ${score} out of ${quiz.length}. ${pct} percent. ${mode==="exam"?(pass?"That is a pass.":"That is below the seventy percent pass line."):""}`)}
 function backHome(){$("result").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
 function showLessons(){$("home").classList.add("hidden");$("result").classList.add("hidden");
- $("lessons").innerHTML=LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})">🔊 Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
+ $("lessons").innerHTML=LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})"> Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
  $("lessons").classList.remove("hidden")}
 
 /* ============ v2: ML TEACHER (BKT mastery + Elo ability + time/accuracy diagnosis) ============ */
@@ -391,19 +391,19 @@ function recordPerf(q,right,ms){
  const today=new Date().toDateString(); if(!store.day||store.day.d!==today) store.day={d:today,n:0}; store.day.n++; save();
 }
 function diagnose(u){
- const s=unitStats(u); if(s.a<3) return "⚪ Not enough data yet — run this unit's mini quiz.";
+ const s=unitStats(u); if(s.a<3) return " Not enough data yet — run this unit's mini quiz.";
  const acc=s.c/s.a, avg=s.time/s.a/1000;
- if(s.bkt>=0.80&&acc>=0.80) return "✅ Solid — you own this. Maintenance reps only.";
- if(acc<0.55&&avg>18) return "🧠 TRUE GAP — the concept itself isn't owned yet. Do the lesson, then climb Easy → Hard.";
- if(acc<0.70&&avg<9) return "⚡ Fast & trap-prone — you're answering before the trap shows. Add 5 seconds per question.";
- if(acc>=0.75&&avg>25) return "🐢 Knows it, too slow — speed drills here will bank time on exam day.";
- return "🔧 Building — close. Focused Hard-mode reps on this unit.";
+ if(s.bkt>=0.80&&acc>=0.80) return " Solid — you own this. Maintenance reps only.";
+ if(acc<0.55&&avg>18) return " TRUE GAP — the concept itself isn't owned yet. Do the lesson, then climb Easy → Hard.";
+ if(acc<0.70&&avg<9) return " Fast & trap-prone — you're answering before the trap shows. Add 5 seconds per question.";
+ if(acc>=0.75&&avg>25) return " Knows it, too slow — speed drills here will bank time on exam day.";
+ return " Building — close. Focused Hard-mode reps on this unit.";
 }
 function prescribe(u){ const d=diagnose(u);
- if(d.includes("TRUE GAP")) return ["📖 Lesson first", "showUnitLesson("+u+")"];
- if(d.includes("too slow")) return ["⏱️ Speed drill", "startUnitQuiz("+u+")"];
- if(d.includes("Solid")) return ["👑 Master reps", "startUnitQuiz("+u+")"];
- return ["✏️ Mini quiz", "startUnitQuiz("+u+")"]; }
+ if(d.includes("TRUE GAP")) return [" Lesson first", "showUnitLesson("+u+")"];
+ if(d.includes("too slow")) return [" Speed drill", "startUnitQuiz("+u+")"];
+ if(d.includes("Solid")) return [" Master reps", "startUnitQuiz("+u+")"];
+ return [" Mini quiz", "startUnitQuiz("+u+")"]; }
 function adaptiveSet(n,trapFirst){
  const L=LEVELS[curLevel()]||LEVELS.hard; const idxs=GEN.map((_,i)=>i);
  const w=i=>{ const q0=GEN[i](); const u=UNIT_BY_TOPIC[q0.topic]||7, d=DIFF_BY_TOPIC[q0.topic]||2;
@@ -422,61 +422,61 @@ function adaptiveSet(n,trapFirst){
  return shuffle(arr);
 }
 function startPerQ(){ clearInterval(perQInt); const L=LEVELS[curLevel()];
- if(!L||!L.perQ||mode==="exam"){ if(mode!=="exam")$("timer").textContent="⏱️ untimed"; return }
- let left=L.perQ; $("timer").textContent="⏱️ "+left+"s (Master)";
- perQInt=setInterval(()=>{ left--; $("timer").textContent="⏱️ "+left+"s (Master)"; if(left<=0){clearInterval(perQInt); if(!answered)answer(-1)} },1000); }
+ if(!L||!L.perQ||mode==="exam"){ if(mode!=="exam")$("timer").textContent=" untimed"; return }
+ let left=L.perQ; $("timer").textContent=" "+left+"s (Master)";
+ perQInt=setInterval(()=>{ left--; $("timer").textContent=" "+left+"s (Master)"; if(left<=0){clearInterval(perQInt); if(!answered)answer(-1)} },1000); }
 function coachLine(pct){
  const unitsInQuiz=[...new Set(quiz.map(q=>q.unit))];
  const weakest=unitsInQuiz.sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- let line = pct>=90 ? "🏆 Coach: That's mastery-level work. The exam is becoming a formality." :
-   pct>=70 ? "💪 Coach: Passing standard. Now we hunt the leak, not the average." :
-   pct>=50 ? "🧑‍🏫 Coach: The knowledge is half-built. The Teacher Report shows exactly which concept is leaking." :
-   "🧑‍🏫 Coach: Good — every miss just taught the model where to aim. That's data, not failure.";
+ let line = pct>=90 ? " Coach: That's mastery-level work. The exam is becoming a formality." :
+   pct>=70 ? " Coach: Passing standard. Now we hunt the leak, not the average." :
+   pct>=50 ? " Coach: The knowledge is half-built. The Teacher Report shows exactly which concept is leaking." :
+   " Coach: Good — every miss just taught the model where to aim. That's data, not failure.";
  if(weakest) line += " Weakest unit in this set: <b>"+UNITS[weakest-1].n+"</b> — "+diagnose(weakest);
- if(window._newBadges&&window._newBadges.length) line += "<br>🏅 New badge"+(window._newBadges.length>1?"s":"")+": "+window._newBadges.join(", ");
+ if(window._newBadges&&window._newBadges.length) line += "<br> New badge"+(window._newBadges.length>1?"s":"")+": "+window._newBadges.join(", ");
  return line;
 }
 function awardBadges(){ window._newBadges=[]; const pct=quiz.length?score/quiz.length*100:0;
  const avg=(window._qt&&window._qt.length)?window._qt.reduce((a,b)=>a+b,0)/window._qt.length/1000:999;
  const add=b=>{ if(!store.t.badges.includes(b)){store.t.badges.push(b);window._newBadges.push(b)} };
- if(pct===100)add("🔥 Perfect Run"); if(pct>=80&&avg<9)add("⚡ Speed Demon");
- if(pct>=80&&curLevel()==="master")add("🎯 Trap Slayer"); if(pct>=80&&mode==="unit")add("📚 Unit Cleared");
+ if(pct===100)add(" Perfect Run"); if(pct>=80&&avg<9)add(" Speed Demon");
+ if(pct>=80&&curLevel()==="master")add(" Trap Slayer"); if(pct>=80&&mode==="unit")add(" Unit Cleared");
  window._qt=[]; save(); }
 
 /* ============ v2: 8-UNIT CURRICULUM (detailed lesson -> mini quiz) ============ */
 const UNITS=[
-{n:"Regulators & Capital Markets",audio:"audio/lesson-6-master-frame.mp3",lesson:`Who regulates what, and how markets are built. The <b>SEC</b> enforces the federal securities laws; <b>FINRA</b> writes and enforces conduct rules for broker-dealers and reps; the <b>MSRB</b> writes muni-dealer rules but cannot enforce them and cannot regulate issuers (Tower Amendment); the <b>Federal Reserve</b> runs monetary policy — its everyday tool is <b>open market operations</b> — and sets <b>Reg T margin at 50%</b>. <b>SIPC</b> (1970) covers custody failure, never market losses. Primary market = new issues, issuer gets the proceeds. Secondary = investors trading with each other. Know each regulator's ONE signature power and the exam's favorite swaps become free points.`},
-{n:"Equity Securities",audio:"audio/lesson-7-equity.mp3",lesson:`Common stock = ownership, voting rights, last in liquidation. Preferred = paid first, fixed dividend, usually no vote; <b>cumulative</b> preferred must catch up missed dividends before common sees a cent. Dividend timeline under T+1: declaration, then <b>ex-date = record date</b>, then payable — buy on the ex-date and the seller keeps the dividend. A <b>2-for-1 split</b> doubles shares and halves price; total value and ownership percentage do not change, and it is not a taxable event. Rights let existing holders buy below market to avoid dilution; warrants are longer-term and usually attached to other securities. ADRs add <b>currency risk</b> on top of stock risk.`},
-{n:"Debt & Bond Traps",audio:"audio/lesson-2-cmo.mp3",lesson:`Price and yield move in opposite directions — always. <b>Duration</b> measures how violently: longer maturity and lower coupon mean higher duration and bigger price swings. Yield ordering flips with price: discount bond → coupon &lt; current yield &lt; YTM; premium bond → reversed. Premium bonds are governed by <b>yield to call</b>, discount bonds by YTM — quote <b>yield to worst</b>. Convertibles track the stock when deep in-the-money and trade as bonds when far out. CMOs split prepayment risk: the <b>PAC</b> keeps its schedule because the <b>support tranche</b> absorbs the shock — falling rates mean <b>contraction</b>, rising rates mean <b>extension</b>. Treasuries: bills ≤ 1 year at a discount, notes 2–10 years, bonds 20/30 years.`},
-{n:"Pooled Funds, Options & Packaged Products",audio:"audio/lesson-8-options.mp3",lesson:`Open-end mutual funds transact once a day at the <b>next NAV after your order</b> (forward pricing, Rule 22c-1) — you never know your exact price when you order. ETFs trade intraday at market prices that can drift from NAV. Options math is three formulas: long call breakeven = <b>strike + premium</b>, max loss = premium paid; long put breakeven = strike − premium; a <b>covered call</b> caps your gain at the premium when the strike equals your purchase price, and its max loss is stock price − premium. Buyers risk only the premium; uncovered writers carry the extreme risk. Every options question is one of these three formulas wearing a costume.`},
-{n:"Risk — Know What Can Hurt You",audio:"audio/lesson-9-risk.mp3",lesson:`Two families. <b>Systematic</b> risk hits everything and cannot be diversified away: market risk, interest-rate risk, inflation (purchasing-power) risk. <b>Unsystematic</b> risk is issuer-specific and diversification kills it: business risk, single-issuer credit risk, liquidity risk of one position. The mirror pair that traps everyone: <b>interest-rate risk</b> lives in RISING rates (prices fall), <b>reinvestment risk</b> lives in FALLING rates (income gets reinvested cheaper and bonds get called). Zero-coupon bonds have zero reinvestment risk and maximum price risk. ADRs add currency risk. Match the scenario to WHO is hurt and WHEN, and the label picks itself.`},
-{n:"Trading, Settlement & Corporate Actions",audio:"audio/lesson-3-freeriding.mp3",lesson:`Regular-way settlement for equities is <b>T+1</b> — the old T+2 answer is now the trap. A <b>stop order</b> becomes a MARKET order when triggered: execution certain, price never guaranteed, and gaps blow straight through it. Short sales need a <b>locate</b> first (Reg SHO), and fails to deliver trigger close-out duties. In a cash account, selling what you bought with unsettled funds before paying is <b>freeriding</b>; the <b>wash sale</b> rule defers (never destroys) a loss when you rebuy a substantially identical security within 30 days either side — a 61-day window — and tacks the loss onto your new basis. Corporate actions — splits, dividends, rights — are tested through their dates and who ends up with what.`},
-{n:"Customer Accounts & Compliance",audio:"audio/lesson-1-sipc.mp3",lesson:`The numbers unit. <b>SIPC: $500k per separate capacity</b>, $250k cash sub-limit, joint account = ONE capacity. <b>Reg T initial margin 50%</b>; FINRA maintenance 25% long; basic margin minimum $2,000; <b>pattern day trader: 4+ day trades in 5 business days, over 6% of trades, $25,000 minimum equity</b>. Discretion needs BOTH writings: customer's written grant and firm's written acceptance — time-and-price is not discretion. Communications: more than <b>25 retail investors in 30 days</b> = retail communication needing principal approval first. CIP collects name, DOB, address, ID number. A <b>specified adult</b> is 65+, or 18+ with reasonably believed diminished capacity — that is who temporary disbursement holds protect.`},
-{n:"Prohibited Activities & The Regulatory Framework",audio:"audio/lesson-5-prohibited.mp3",lesson:`Labels follow motives. <b>Front running</b>: trading ahead of a customer order. <b>Painting the tape / matched orders</b>: faking activity. <b>Churning</b>: excessive trading for commissions — control, excessiveness, scienter. <b>Selling away</b>: private securities deals off the firm's books without prior written approval. <b>Insider trading (10b-5)</b>: trading on material nonpublic information — tippers AND knowing tippees are liable. Guaranteeing a customer against loss: never allowed. The framework underneath: the <b>1933 Act</b> governs issuance (registration, prospectus, 20-day cooling-off, 25/40/90-day delivery periods); the <b>1934 Act</b> governs the ongoing markets and created the SEC. Registration as a rep runs through the firm on Form U4, and the SIE is the entry gate to it all.`}
+{n:"Regulators & Capital Markets",audio:"audio/lesson-6-master-frame.wav",lesson:`Who regulates what, and how markets are built. The <b>SEC</b> enforces the federal securities laws; <b>FINRA</b> writes and enforces conduct rules for broker-dealers and reps; the <b>MSRB</b> writes muni-dealer rules but cannot enforce them and cannot regulate issuers (Tower Amendment); the <b>Federal Reserve</b> runs monetary policy — its everyday tool is <b>open market operations</b> — and sets <b>Reg T margin at 50%</b>. <b>SIPC</b> (1970) covers custody failure, never market losses. Primary market = new issues, issuer gets the proceeds. Secondary = investors trading with each other. Know each regulator's ONE signature power and the exam's favorite swaps become free points.`},
+{n:"Equity Securities",audio:"audio/lesson-7-equity.wav",lesson:`Common stock = ownership, voting rights, last in liquidation. Preferred = paid first, fixed dividend, usually no vote; <b>cumulative</b> preferred must catch up missed dividends before common sees a cent. Dividend timeline under T+1: declaration, then <b>ex-date = record date</b>, then payable — buy on the ex-date and the seller keeps the dividend. A <b>2-for-1 split</b> doubles shares and halves price; total value and ownership percentage do not change, and it is not a taxable event. Rights let existing holders buy below market to avoid dilution; warrants are longer-term and usually attached to other securities. ADRs add <b>currency risk</b> on top of stock risk.`},
+{n:"Debt & Bond Traps",audio:"audio/lesson-2-cmo.wav",lesson:`Price and yield move in opposite directions — always. <b>Duration</b> measures how violently: longer maturity and lower coupon mean higher duration and bigger price swings. Yield ordering flips with price: discount bond → coupon &lt; current yield &lt; YTM; premium bond → reversed. Premium bonds are governed by <b>yield to call</b>, discount bonds by YTM — quote <b>yield to worst</b>. Convertibles track the stock when deep in-the-money and trade as bonds when far out. CMOs split prepayment risk: the <b>PAC</b> keeps its schedule because the <b>support tranche</b> absorbs the shock — falling rates mean <b>contraction</b>, rising rates mean <b>extension</b>. Treasuries: bills ≤ 1 year at a discount, notes 2–10 years, bonds 20/30 years.`},
+{n:"Pooled Funds, Options & Packaged Products",audio:"audio/lesson-8-options.wav",lesson:`Open-end mutual funds transact once a day at the <b>next NAV after your order</b> (forward pricing, Rule 22c-1) — you never know your exact price when you order. ETFs trade intraday at market prices that can drift from NAV. Options math is three formulas: long call breakeven = <b>strike + premium</b>, max loss = premium paid; long put breakeven = strike − premium; a <b>covered call</b> caps your gain at the premium when the strike equals your purchase price, and its max loss is stock price − premium. Buyers risk only the premium; uncovered writers carry the extreme risk. Every options question is one of these three formulas wearing a costume.`},
+{n:"Risk — Know What Can Hurt You",audio:"audio/lesson-9-risk.wav",lesson:`Two families. <b>Systematic</b> risk hits everything and cannot be diversified away: market risk, interest-rate risk, inflation (purchasing-power) risk. <b>Unsystematic</b> risk is issuer-specific and diversification kills it: business risk, single-issuer credit risk, liquidity risk of one position. The mirror pair that traps everyone: <b>interest-rate risk</b> lives in RISING rates (prices fall), <b>reinvestment risk</b> lives in FALLING rates (income gets reinvested cheaper and bonds get called). Zero-coupon bonds have zero reinvestment risk and maximum price risk. ADRs add currency risk. Match the scenario to WHO is hurt and WHEN, and the label picks itself.`},
+{n:"Trading, Settlement & Corporate Actions",audio:"audio/lesson-3-freeriding.wav",lesson:`Regular-way settlement for equities is <b>T+1</b> — the old T+2 answer is now the trap. A <b>stop order</b> becomes a MARKET order when triggered: execution certain, price never guaranteed, and gaps blow straight through it. Short sales need a <b>locate</b> first (Reg SHO), and fails to deliver trigger close-out duties. In a cash account, selling what you bought with unsettled funds before paying is <b>freeriding</b>; the <b>wash sale</b> rule defers (never destroys) a loss when you rebuy a substantially identical security within 30 days either side — a 61-day window — and tacks the loss onto your new basis. Corporate actions — splits, dividends, rights — are tested through their dates and who ends up with what.`},
+{n:"Customer Accounts & Compliance",audio:"audio/lesson-1-sipc.wav",lesson:`The numbers unit. <b>SIPC: $500k per separate capacity</b>, $250k cash sub-limit, joint account = ONE capacity. <b>Reg T initial margin 50%</b>; FINRA maintenance 25% long; basic margin minimum $2,000; <b>pattern day trader: 4+ day trades in 5 business days, over 6% of trades, $25,000 minimum equity</b>. Discretion needs BOTH writings: customer's written grant and firm's written acceptance — time-and-price is not discretion. Communications: more than <b>25 retail investors in 30 days</b> = retail communication needing principal approval first. CIP collects name, DOB, address, ID number. A <b>specified adult</b> is 65+, or 18+ with reasonably believed diminished capacity — that is who temporary disbursement holds protect.`},
+{n:"Prohibited Activities & The Regulatory Framework",audio:"audio/lesson-5-prohibited.wav",lesson:`Labels follow motives. <b>Front running</b>: trading ahead of a customer order. <b>Painting the tape / matched orders</b>: faking activity. <b>Churning</b>: excessive trading for commissions — control, excessiveness, scienter. <b>Selling away</b>: private securities deals off the firm's books without prior written approval. <b>Insider trading (10b-5)</b>: trading on material nonpublic information — tippers AND knowing tippees are liable. Guaranteeing a customer against loss: never allowed. The framework underneath: the <b>1933 Act</b> governs issuance (registration, prospectus, 20-day cooling-off, 25/40/90-day delivery periods); the <b>1934 Act</b> governs the ongoing markets and created the SEC. Registration as a rep runs through the firm on Form U4, and the SIE is the entry gate to it all.`}
 ];
 function gensForUnit(u){ return GEN.map((g,i)=>i).filter(i=>UNIT_BY_TOPIC[GEN[i]().topic]===u) }
 function showUnits(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");
  const doneCount=Object.keys(store.t.done).length;
- $("units").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0">📚 The Lesson Plan — 8 units</h3><p class="mut">Detailed lesson → mini quiz (5 questions, 80% to clear). Your teacher re-weights every quiz toward what the data says you don't own yet. Progress: <b>${doneCount} / 8 units cleared</b></p><div class="bar"><i style="width:${doneCount/8*100}%"></i></div>
- <div class="pathmap">${UNITS.map((_,i)=>`<span class="node ${store.t.done[i+1]?"done":(i+1===doneCount+1?"now":"")}">${store.t.done[i+1]?"✓":i+1}</span>${i<7?'<span class="link"></span>':""}`).join("")}</div>
- ${doneCount>=8?'<p>🏁 All 8 units cleared — the Final Exam Review is unlocked.</p><button class="pink" onclick="startFinalReview()">🏁 Final Exam Review (25 adaptive questions)</button>':'<p class="mut">Clear all 8 units to unlock the Final Exam Review.</p>'}</div>`
+ $("units").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> The Lesson Plan — 8 units</h3><p class="mut">Detailed lesson → mini quiz (5 questions, 80% to clear). Your teacher re-weights every quiz toward what the data says you don't own yet. Progress: <b>${doneCount} / 8 units cleared</b></p><div class="bar"><i style="width:${doneCount/8*100}%"></i></div>
+ <div class="pathmap">${UNITS.map((_,i)=>`<span class="node ${store.t.done[i+1]?"done":(i+1===doneCount+1?"now":"")}">${store.t.done[i+1]?"":i+1}</span>${i<7?'<span class="link"></span>':""}`).join("")}</div>
+ ${doneCount>=8?'<p> All 8 units cleared — the Final Exam Review is unlocked.</p><button class="pink" onclick="startFinalReview()"> Final Exam Review (25 adaptive questions)</button>':'<p class="mut">Clear all 8 units to unlock the Final Exam Review.</p>'}</div>`
  + UNITS.map((un,i)=>{const u=i+1,s=unitStats(u);const pr=prescribe(u);
-  return `<div class="card" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><div class="tag">UNIT ${u} ${store.t.done[u]?"• ✅ CLEARED":""}</div><h3 style="margin:6px 0">${un.n}</h3><div class="mut" style="font-size:13px">${diagnose(u)}</div></div><div style="min-width:130px"><div class="mut" style="font-size:12px">Mastery (model)</div><div class="big" style="font-size:24px">${Math.round(s.bkt*100)}%</div><div class="bar"><i style="width:${Math.round(s.bkt*100)}%"></i></div><div class="mut" style="font-size:12px">${s.a?s.c+"/"+s.a+" correct • avg "+(s.time/s.a/1000).toFixed(1)+"s":"no attempts yet"}</div></div></div>
-  <div class="row" style="margin-top:10px"><button onclick="showUnitLesson(${u})">📖 Detailed lesson</button><button class="ghost" onclick="${pr[1]}">${pr[0]}</button></div></div>`}).join("")
+  return `<div class="card" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><div class="tag">UNIT ${u} ${store.t.done[u]?"•  CLEARED":""}</div><h3 style="margin:6px 0">${un.n}</h3><div class="mut" style="font-size:13px">${diagnose(u)}</div></div><div style="min-width:130px"><div class="mut" style="font-size:12px">Mastery (model)</div><div class="big" style="font-size:24px">${Math.round(s.bkt*100)}%</div><div class="bar"><i style="width:${Math.round(s.bkt*100)}%"></i></div><div class="mut" style="font-size:12px">${s.a?s.c+"/"+s.a+" correct • avg "+(s.time/s.a/1000).toFixed(1)+"s":"no attempts yet"}</div></div></div>
+  <div class="row" style="margin-top:10px"><button onclick="showUnitLesson(${u})"> Detailed lesson</button><button class="ghost" onclick="${pr[1]}">${pr[0]}</button></div></div>`}).join("")
  + `<button class="ghost" onclick="backHome()">← Back</button>`;
  $("units").classList.remove("hidden"); }
 function showUnitLesson(u){ const un=UNITS[u-1];
  $("units").innerHTML=`<div class="card lesson"><div class="tag">UNIT ${u} • DETAILED LESSON</div><h3>${un.n}</h3><p>${un.lesson}</p>
- <div class="row"><button class="ghost" onclick="playUnitAudio(${u})">🔊 Listen (saved clip)</button><button onclick="startUnitQuiz(${u})">✏️ Mini quiz — 5 questions</button><button class="ghost" onclick="showUnits()">All units</button></div></div>`; }
-function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a);$("gpuPill").textContent="🎙️ Playing saved voice clip"} else speak(UNITS[u-1].lesson.replace(/<[^>]+>/g,"")) }
+ <div class="row"><button class="ghost" onclick="playUnitAudio(${u})"> Listen (saved clip)</button><button onclick="startUnitQuiz(${u})"> Mini quiz — 5 questions</button><button class="ghost" onclick="showUnits()">All units</button></div></div>`; }
+function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a);$("gpuPill").textContent=" Playing saved voice clip"} else speak(UNITS[u-1].lesson.replace(/<[^>]+>/g,"")) }
 function startUnitQuiz(u){ window._unit=u; mode="unit"; const pool=gensForUnit(u);
  let qs=[]; while(qs.length<5) qs.push(GEN[pick(pool)]());
  quiz=shuffle(qs).map(prepare);
  if(curLevel()==="veryhard"||curLevel()==="master"){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) quiz[quiz.length-1]=prepareShort(pick(ss)); }
  beginQuiz(); }
-function startFinalReview(){ if(Object.keys(store.t.done||{}).length<8){ showToast("🔒 Final Exam Review unlocks after all 8 units are cleared"); showUnits(); return } mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
+function startFinalReview(){ if(Object.keys(store.t.done||{}).length<8){ showToast(" Final Exam Review unlocks after all 8 units are cleared"); showUnits(); return } mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
 function beginQuiz(){ qi=0;score=0;window._qt=[]; ["home","lessons","units","report","result"].forEach(id=>$(id).classList.add("hidden")); $("quiz").classList.remove("hidden");
- clearInterval(timerInt); if(mode!=="exam")$("timer").textContent="⏱️ untimed"; showQ(); }
+ clearInterval(timerInt); if(mode!=="exam")$("timer").textContent=" untimed"; showQ(); }
 
 
 /* ============ v3: SHORT-RESPONSE QUESTIONS (Very Hard / Master) ============ */
@@ -523,9 +523,9 @@ function answerShort(){ if(answered)return; const ta=$("shortAns"); const text=(
  else if(g.verdict==="partial"){score+=0.5;store.xp+=8}
  const key=current.topic+current.text.slice(0,40);
  if(!full){ store.missed[key]={sec:0,topic:current.topic,text:current.text,choices:["(short response) "+current.model],answer:0,explain:current.model,rule:current.rule,type:"short",groups:current.groups,num:current.num,model:current.model} }
- $("explain").innerHTML=`<b>${full?"✅ Full credit.":g.verdict==="partial"?"🟡 Partial credit — the shape is there, a piece is missing.":"❌ Not yet — this is exactly the gap the teacher hunts."}</b>
- <br>✔ You covered: ${g.hits.length?g.hits.join(" • "):"—"}<br>✘ Missing: ${g.missed.length?g.missed.join(" • "):"nothing"}
- <br><br>📖 <b>Model answer:</b> ${current.model}<br>🧷 <b>Rule:</b> ${current.rule}`;
+ $("explain").innerHTML=`<b>${full?" Full credit.":g.verdict==="partial"?"🟡 Partial credit — the shape is there, a piece is missing.":" Not yet — this is exactly the gap the teacher hunts."}</b>
+ <br> You covered: ${g.hits.length?g.hits.join(" • "):"—"}<br> Missing: ${g.missed.length?g.missed.join(" • "):"nothing"}
+ <br><br> <b>Model answer:</b> ${current.model}<br> <b>Rule:</b> ${current.rule}`;
  $("explain").classList.remove("hidden"); $("nextBtn").classList.remove("hidden"); save();
  registerGap(current,full);
  speak((full?"Full credit. ":g.verdict==="partial"?"Partial credit. ":"Not yet. ")+"The model answer is: "+current.model);
@@ -534,8 +534,8 @@ function answerShort(){ if(answered)return; const ta=$("shortAns"); const text=(
 /* ============ v2: TEACHER REPORT ============ */
 function showReport(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("result").classList.add("hidden");
  const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
- $("report").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0">🧑‍🏫 Teacher Report</h3>
- <p class="mut">Ability rating (Elo-style, from difficulty + results): <b>${store.t.theta}</b> • Overall: <b>${totA?Math.round(totC/totA*100):0}%</b> across ${totA} answers • Badges: ${store.t.badges.length?store.t.badges.join(" • "):"none yet — clear a unit or run a Perfect Run"}</p><button class="ghost" onclick="speakReport()">🔊 Hear my report</button>
+ $("report").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> Teacher Report</h3>
+ <p class="mut">Ability rating (Elo-style, from difficulty + results): <b>${store.t.theta}</b> • Overall: <b>${totA?Math.round(totC/totA*100):0}%</b> across ${totA} answers • Badges: ${store.t.badges.length?store.t.badges.join(" • "):"none yet — clear a unit or run a Perfect Run"}</p><button class="ghost" onclick="speakReport()"> Hear my report</button>
  <p class="mut">How your teacher reads you: repeated slow misses = a concept you truly don't own (lesson assigned). Fast misses = trap-guessing (slow down). Slow corrects = knowledge without speed (timed drills). The model updates after every single answer.</p></div>`
  + UNITS.map((un,i)=>{const u=i+1,s=unitStats(u);const pr=prescribe(u);
   return `<div class="card" style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><b>Unit ${u} — ${un.n}</b><span class="pill">Mastery ${Math.round(s.bkt*100)}%</span></div>
@@ -555,7 +555,7 @@ function registerGap(q,correct){
    if(unitStats(q.unit).bkt<0.55||store.t.topicMiss[q.topic]>=2){ store.t.openGaps[q.topic]={unit:q.unit,topic:q.topic}; save(); } }
 }
 function trackMissStreak(right){ if(!right){ if(window._ms&&window._ms.u===current.unit)window._ms.c++; else window._ms={u:current.unit,c:1} } else window._ms=null }
-function gapBtn(){ const ks=Object.keys(store.t.openGaps||{}); return ks.length?`<button class="pink" onclick="closeFirstGap()">🎯 Close a gap now (${ks.length} open)</button>`:"" }
+function gapBtn(){ const ks=Object.keys(store.t.openGaps||{}); return ks.length?`<button class="pink" onclick="closeFirstGap()"> Close a gap now (${ks.length} open)</button>`:"" }
 function closeFirstGap(){ const ks=Object.keys(store.t.openGaps||{}); if(ks.length) startGapClose(ks[0]) }
 function startGapClose(topic){
  const info=(store.t.openGaps||{})[topic]; const u=info?info.unit:(UNIT_BY_TOPIC[topic]||7);
@@ -563,11 +563,11 @@ function startGapClose(topic){
  const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
  const ex=gi.length?GEN[gi[0]]():null; const exp=ex?prepare(ex):null;
  ["home","lessons","report","result","quiz"].forEach(id=>$(id).classList.add("hidden")); $("units").classList.remove("hidden");
- $("units").innerHTML=`<div class="card lesson"><div class="tag">🩹 GAP CLOSER • ${topic}</div>
+ $("units").innerHTML=`<div class="card lesson"><div class="tag"> GAP CLOSER • ${topic}</div>
  <h3>Step 1 — Re-learn it, shorter and sharper</h3><p>${UNITS[u-1].lesson}</p>
- ${exp?`<h3>Step 2 — Worked example (watch the trap spring)</h3><p><b>${exp.text}</b></p><p>✔ Correct: <b>${exp.choices[exp.answer]}</b></p><div class="explain">${exp.explain}<br>🧷 ${exp.rule}</div>`:""}
+ ${exp?`<h3>Step 2 — Worked example (watch the trap spring)</h3><p><b>${exp.text}</b></p><p> Correct: <b>${exp.choices[exp.answer]}</b></p><div class="explain">${exp.explain}<br> ${exp.rule}</div>`:""}
  <h3>Step 3 — Prove it's closed</h3><p class="mut">Three fresh questions on this exact concept, numbers re-rolled. Get at least 2 of 3 and the gap closes. Miss, and we loop — that's the point.</p>
- <div class="row"><button class="ghost" onclick="playUnitAudio(${u})">🔊 Listen to the lesson</button><button class="pink" onclick="beginGapDrill()">Start the re-drill →</button><button class="ghost" onclick="showUnits()">Later</button></div></div>`;
+ <div class="row"><button class="ghost" onclick="playUnitAudio(${u})"> Listen to the lesson</button><button class="pink" onclick="beginGapDrill()">Start the re-drill →</button><button class="ghost" onclick="showUnits()">Later</button></div></div>`;
  speak("Gap closer. "+topic+". First, the lesson again, shorter and sharper. Then a worked example. Then you prove it is closed.");
 }
 function beginGapDrill(){ const topic=window._gapTopic; const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
@@ -575,15 +575,15 @@ function beginGapDrill(){ const topic=window._gapTopic; const gi=GEN.map((g,i)=>
  while(qs.length<3) qs.push(GEN[R(0,GEN.length-1)]());
  quiz=qs.map(prepare); beginQuiz(); }
 function coachText(){ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"") }
+ return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[]/g,"") }
 function smartContinue(){ const gaps=Object.keys(store.t.openGaps||{});
  if(gaps.length) return startGapClose(gaps[0]);
  for(let u=1;u<=8;u++) if(!store.t.done[u]) return showUnitLesson(u);
  startFinalReview(); }
 function speakReport(){ const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
  const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).replace(/[✅🧠⚡🐢🔧⚪]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
+ speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).replace(/[]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
 
 AudioMan.preload(); renderHome();
-fetch("/api/health").then(r=>r.json()).then(d=>{if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=`🎙️ GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`}).catch(()=>{});
+fetch("/api/health").then(r=>r.json()).then(d=>{if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=` GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`}).catch(()=>{});
 </script></body></html>
