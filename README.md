@@ -4,6 +4,14 @@
 Built for an experienced trader: no intro fluff. Only trap areas, numbers,
 timelines, exceptions, and the *why* behind each rule.
 
+## v3 — UI/Architecture pass, Short Responses, Gap-Closing Loop (Nov 16, 2026)
+- **Architecture:** five clean layers documented in `ARCHITECTURE.md` (UI views / AudioManager / quiz engine / ML teacher / on-device storage). No build step.
+- **AudioManager:** saved lesson clips are **preloaded**; dynamic speech (questions, explanations, feedback, the Teacher Report) goes through a **single-voice queue** — GPU Kokoro via `/api/tts` with disk cache, browser voice as fallback — so nothing ever talks over itself. Every screen's core text is speakable, including a "Hear my report" button.
+- **Short-response questions (Very Hard / Master):** 12 prompts where you must *produce* the rule. Rubric grading checks required concept groups, numeric answers with tolerance, and **bound pairs** (e.g. 50% must bind to the Federal Reserve and 25% to FINRA *in the same sentence* — swapping the regulators scores zero, exactly the trap being tested). 17/17 grading tests pass, including the swapped-regulator trap and a bare-number answer scoring zero concepts.
+- **Gap-closing loop:** a miss on a weak concept opens a tracked gap → **Gap Closer** session: micro-lesson → worked example with the trap sprung → 3 fresh questions on that exact concept (numbers re-rolled), 2-of-3 closes it. Open gaps boost that concept's weight in future quizzes (spaced recheck). In-quiz: two misses in a row on one unit triggers a coach intervention — an easier confidence rep, then back up.
+- **Engagement UX:** coach card on Home with a smart **Continue where I left off** button (routes to your open gap, next unit, or Final Review), daily-goal ring (10 answers/day), visual 8-node path map, badge toasts, animated cards.
+- Verified: full script boots clean in a DOM harness, coach card renders, 35 MC generators × 200 runs = 7,000 questions 0 defects (v2 suite), short-answer grading 17/17, teacher diagnosis simulation all paths correct.
+
 ## v2 — ML Teacher, 8-Unit Curriculum, 4 Levels (Nov 16, 2026)
 - **ML Teacher (in-app, no server needed):** every answer is timed and scored per concept.
   - *Bayesian Knowledge Tracing* per unit estimates the probability you actually know the concept (guess 25% / slip 10% model).
