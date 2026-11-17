@@ -1,0 +1,19 @@
+name: compile-check
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Compile Python
+        run: python -m py_compile server.py tts_engine.py tools/verify.py
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Syntax-check the app JavaScript
+        run: |
+          python3 -c "import re,pathlib; pathlib.Path('/tmp/app.js').write_text(re.search(r'<script>(.*)</script>', pathlib.Path('static/index.html').read_text(), re.S).group(1))"
+          node --check /tmp/app.js
+      - name: Verify build integrity
+        run: python tools/verify.py
