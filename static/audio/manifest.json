@@ -4,15 +4,50 @@
   "format": "wav",
   "engine": "kokoro-82m",
   "clips": [
-    { "file": "welcome.wav", "title": "Welcome — SIE Mastery intro", "bytes": 991244 },
-    { "file": "lesson-1-sipc.wav", "title": "Unit 7 lesson — SIPC: Capacity, Not Person", "bytes": 1090844 },
-    { "file": "lesson-2-cmo.wav", "title": "Unit 3 lesson — CMO Tranches: Who Absorbs the Shock", "bytes": 975644 },
-    { "file": "lesson-3-freeriding.wav", "title": "Unit 6 lesson — Cash Account Discipline: Freeriding & Good Faith", "bytes": 1071644 },
-    { "file": "lesson-4-numbers.wav", "title": "Reference — The Numbers Vault", "bytes": 1494044 },
-    { "file": "lesson-5-prohibited.wav", "title": "Unit 8 lesson — Prohibited Activities: The Pattern Language", "bytes": 1119644 },
-    { "file": "lesson-6-master-frame.wav", "title": "Unit 1 lesson — Why Regulation Exists: The Master Frame", "bytes": 1598444 },
-    { "file": "lesson-7-equity.wav", "title": "Unit 2 lesson — Equity Securities", "bytes": 2118044 },
-    { "file": "lesson-8-options.wav", "title": "Unit 4 lesson — Pooled Funds, Options & Packaged Products", "bytes": 2058044 },
-    { "file": "lesson-9-risk.wav", "title": "Unit 5 lesson — Risk: Know What Can Hurt You", "bytes": 1960844 }
+    {
+      "file": "lesson-1-regulators.wav",
+      "title": "Regulators & Capital Markets",
+      "bytes": 6708044
+    },
+    {
+      "file": "lesson-2-equity.wav",
+      "title": "Equity Securities",
+      "bytes": 3840044
+    },
+    {
+      "file": "lesson-3-debt.wav",
+      "title": "Debt Instruments",
+      "bytes": 4014044
+    },
+    {
+      "file": "lesson-4-options.wav",
+      "title": "Options & Packaged Products",
+      "bytes": 4914044
+    },
+    {
+      "file": "lesson-5-otherproducts.wav",
+      "title": "Other Products & Investment Risks",
+      "bytes": 5191244
+    },
+    {
+      "file": "lesson-6-trading.wav",
+      "title": "Trading, Settlement & Corporate Actions",
+      "bytes": 4886444
+    },
+    {
+      "file": "lesson-7-accounts.wav",
+      "title": "Customer Accounts & Compliance",
+      "bytes": 6548444
+    },
+    {
+      "file": "lesson-8-regframework.wav",
+      "title": "Prohibited Activities & Regulatory Framework",
+      "bytes": 7956044
+    },
+    {
+      "file": "welcome.wav",
+      "title": "Welcome \u2014 SIE Mastery intro",
+      "bytes": 991244
+    }
   ]
 }
