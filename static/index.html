@@ -22,6 +22,17 @@
   --ink:var(--text-primary); --mut:var(--text-muted);
   --teal:var(--accent-gradient-a); --lime:var(--status-pass);
   --pink:var(--status-danger); --amber:var(--status-warn); --red:var(--status-danger);
+  --mask-white:#ffffff;
+  /* depth shadows */
+  --shadow-1:0 4px 12px var(--shadow-color);
+  --shadow-2:0 8px 24px var(--shadow-color);
+  --shadow-3:0 16px 40px var(--shadow-color);
+  --shadow-inner:inset 0 1px 2px rgba(0,0,0,0.3);
+  /* depth colors */
+  --accent-deep:#b58a2f; --accent-soft:#c2a0534d; --accent-glow:#e7c06e33;
+  --status-pass-deep:#8cc02e; --status-warn-deep:#c8870c; --status-danger-deep:#c0392b;
+  /* glass */
+  --glass-bg:rgba(255,255,255,0.06); --glass-border:rgba(255,255,255,0.12);
 }
 :root[data-theme="dark"]{
   --bg-canvas:#0b0f17; --bg-surface:#141b33; --bg-elevated:#1a2342; --bg-glass:#0b1020aa;
@@ -38,6 +49,14 @@
   --node-border:#ffffff33; --node-bg:#ffffff10;
   --input-bg:#0b1020; --input-border:#ffffff2d;
   --shadow-color:#0006; --bg-glow-1:#1e3a5f; --bg-glow-2:#3b1454;
+  --mask-white:#ffffff;
+  --shadow-1:0 4px 12px rgba(0,0,0,0.5);
+  --shadow-2:0 8px 24px rgba(0,0,0,0.6);
+  --shadow-3:0 16px 40px rgba(0,0,0,0.7);
+  --shadow-inner:inset 0 1px 2px rgba(0,0,0,0.4);
+  --accent-deep:#b58a2f; --accent-soft:#c2a0534d; --accent-glow:#e7c06e33;
+  --status-pass-deep:#8cc02e; --status-warn-deep:#c8870c; --status-danger-deep:#c0392b;
+  --glass-bg:rgba(255,255,255,0.06); --glass-border:rgba(255,255,255,0.12);
 }
 :root[data-theme="light"]{
   --bg-canvas:#f5f4f0; --bg-surface:#ffffff; --bg-elevated:#f2f1ec; --bg-glass:#ffffffcc;
@@ -54,44 +73,85 @@
   --node-border:#0f172a26; --node-bg:#0f172a0a;
   --input-bg:#ffffff; --input-border:#d5d2c8;
   --shadow-color:#0f172a14; --bg-glow-1:#e7e2d6; --bg-glow-2:#e3ddcf;
+  --mask-white:#ffffff;
+  --shadow-1:0 4px 12px rgba(15,23,42,0.08);
+  --shadow-2:0 8px 24px rgba(15,23,42,0.12);
+  --shadow-3:0 16px 40px rgba(15,23,42,0.16);
+  --shadow-inner:inset 0 1px 2px rgba(0,0,0,0.05);
+  --accent-deep:#7a540a; --accent-soft:#8a681426; --accent-glow:#e7c06e26;
+  --status-pass-deep:#355310; --status-warn-deep:#7a340c; --status-danger-deep:#9a201c;
+  --glass-bg:rgba(255,255,255,0.7); --glass-border:rgba(15,23,42,0.12);
 }
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:radial-gradient(900px 500px at 15% -10%,var(--bg-glow-1),transparent),radial-gradient(800px 500px at 90% 0,var(--bg-glow-2),transparent),var(--bg-canvas);color:var(--text-primary)}
-header{padding:22px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:26px;font-weight:900;letter-spacing:.5px}.logo span{background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));-webkit-background-clip:text;color:transparent}
-.sub{color:var(--text-muted);font-size:13px}.wrap{max-width:1080px;margin:0 auto;padding:0 18px 40px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:radial-gradient(1200px 600px at 15% -10%,var(--bg-glow-1),transparent),radial-gradient(1000px 600px at 90% 0,var(--bg-glow-2),transparent),var(--bg-canvas);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+header{padding:22px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:relative}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-subtle),transparent)}
+.logo{font-size:26px;font-weight:900;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
+.logo span{background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));-webkit-background-clip:text;color:transparent}
+.logo-badge{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-1)}
+.sub{color:var(--text-muted);font-size:13px}.wrap{max-width:1080px;margin:0 auto;padding:0 18px 56px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-.card{background:linear-gradient(160deg,var(--bg-surface),var(--bg-elevated));border:1px solid var(--border-subtle);border-radius:var(--r);padding:18px;box-shadow:0 10px 30px var(--shadow-color)}
-button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:800;background:linear-gradient(90deg,var(--button-gradient-a),var(--button-gradient-b));color:var(--text-on-accent)}
-button.ghost{background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle)}button.pink{background:linear-gradient(90deg,var(--status-danger),var(--status-warn));color:var(--text-on-accent)}
-button:disabled{opacity:.45;cursor:not-allowed}
-.mode h3{margin:4px 0;font-size:19px}.mode p{color:var(--text-muted);font-size:13px;min-height:38px}
-.bar{height:10px;background:var(--ring-track);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b))}
-.q{font-size:19px;line-height:1.5;font-weight:650}.opt{display:block;width:100%;text-align:left;margin:9px 0;background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle)}
+.card{background:linear-gradient(160deg,var(--bg-surface),var(--bg-elevated));border:1px solid var(--border-subtle);border-radius:var(--r);padding:18px;box-shadow:var(--shadow-1);transition:all .2s ease;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;border-radius:var(--r);padding:1px;background:linear-gradient(135deg,var(--accent-soft),transparent);-webkit-mask:linear-gradient(var(--mask-white) 0 0) content-box,linear-gradient(var(--mask-white) 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;opacity:0;transition:opacity .2s ease}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-2);border-color:var(--accent-border)}
+.card:hover::before{opacity:1}
+.card.depth-2{box-shadow:var(--shadow-2)}
+.card.depth-3{box-shadow:var(--shadow-3)}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:800;background:linear-gradient(90deg,var(--button-gradient-a),var(--button-gradient-b));color:var(--text-on-accent);transition:all .15s ease;box-shadow:0 2px 6px var(--shadow-color)}
+button:active{transform:translateY(1px);filter:brightness(.9)}
+button:hover{transform:translateY(-2px);filter:brightness(1.15);box-shadow:var(--shadow-1)}
+button.ghost{background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle);box-shadow:none}
+button.ghost:hover{background:var(--fill-subtle);box-shadow:var(--shadow-1)}
+button.pink{background:linear-gradient(90deg,var(--status-danger),var(--status-warn));color:var(--text-on-accent)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;filter:none!important}
+.mode{position:relative;overflow:hidden}
+.mode::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));opacity:0;transition:opacity .2s ease}
+.mode:hover::after{opacity:1}
+.mode h3{margin:4px 0;font-size:19px;transition:color .2s ease}
+.mode:hover h3{color:var(--accent-primary)}
+.mode p{color:var(--text-muted);font-size:13px;min-height:38px}
+.bar{height:10px;background:var(--ring-track);border-radius:99px;overflow:hidden;border:1px solid var(--border-subtle)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));transition:width .6s cubic-bezier(.23,1,.32,1)}
+.q{font-size:19px;line-height:1.5;font-weight:650}.opt{display:block;width:100%;text-align:left;margin:9px 0;background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle);border-radius:10px;transition:all .15s ease;position:relative;overflow:hidden}
+.opt::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--accent-soft),transparent);opacity:0;transition:opacity .15s ease}
+.opt:hover{border-color:var(--accent-border);transform:translateX(4px);box-shadow:var(--shadow-1);background:var(--fill-subtle)}
+.opt:hover::before{opacity:1}
 .opt.sel{background:var(--accent-subtle);border-color:var(--accent-primary)}.opt.right{background:var(--status-pass-bg);border-color:var(--status-pass)}.opt.wrong{background:var(--status-danger-bg);border-color:var(--status-danger)}
-.explain{background:var(--bg-glass);border-left:4px solid var(--status-warn);padding:12px 14px;border-radius:10px;line-height:1.55}
-.tag{display:inline-block;padding:3px 9px;border-radius:99px;background:var(--fill-subtle);font-size:11px;font-weight:800;letter-spacing:.4px}
-.pill{display:inline-flex;gap:6px;align-items:center;background:var(--fill-subtle);border:1px solid var(--border-subtle);padding:6px 10px;border-radius:99px;font-size:12px}
-select,input{background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:10px;padding:9px}
+.explain{background:var(--bg-glass);border-left:4px solid var(--status-warn);padding:12px 14px;border-radius:10px;line-height:1.55;box-shadow:var(--shadow-inner)}
+.tag{display:inline-block;padding:3px 9px;border-radius:99px;background:var(--fill-subtle);font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--accent-primary)}
+.pill{display:inline-flex;gap:6px;align-items:center;background:var(--fill-subtle);border:1px solid var(--border-subtle);padding:6px 10px;border-radius:99px;font-size:12px;transition:all .15s ease}
+.pill:hover{border-color:var(--accent-border);box-shadow:var(--shadow-1)}
+select,input{background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:10px;padding:9px;transition:all .15s ease}
+select:focus,input:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px var(--border-subtle);outline:none}
 .hidden{display:none!important}.big{font-size:34px;font-weight:900}.mut{color:var(--text-muted)} .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.confetti{position:fixed;inset:0;pointer-events:none;font-size:24px;display:flex;justify-content:center;align-items:flex-start;padding-top:12vh}
-.lesson{line-height:1.65}.lesson b{color:var(--accent-primary)}
-.card{animation:fadeUp .35s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-button{transition:transform .12s,filter .12s}button:hover{transform:translateY(-1px);filter:brightness(1.1)}
-textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:12px;padding:12px;font-size:16px;line-height:1.5}
-#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);font-weight:900;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:all .3s;z-index:50;box-shadow:0 12px 32px var(--shadow-color)}
+.confetti{position:fixed;inset:0;pointer-events:none;display:flex;justify-content:center;align-items:flex-start;padding-top:10vh;z-index:100}
+.confetti-piece{position:absolute;width:10px;height:16px;background:var(--accent-primary);opacity:0;border-radius:2px;animation:confettiFall 2s ease-out infinite}
+@keyframes confettiFall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.lesson{line-height:1.75}.lesson b{color:var(--accent-primary)}.lesson p{margin:10px 0}
+.card{animation:fadeUp .4s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+button{transition:all .15s ease}button:hover{transform:translateY(-2px);filter:brightness(1.15)}button:active{transform:translateY(0);filter:brightness(.9)}
+textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border);border-radius:12px;padding:12px;font-size:16px;line-height:1.6;transition:all .15s ease}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);font-weight:900;padding:14px 24px;border-radius:99px;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.23,1,.32,1);z-index:50;box-shadow:var(--shadow-2);border:1px solid var(--glass-border)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.pathmap{display:flex;align-items:center;gap:0;margin:14px 0;flex-wrap:wrap}
-.node{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid var(--node-border);background:var(--node-bg);flex:none}
-.node.done{background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);border-color:transparent}
-.node.now{border-color:var(--status-warn);box-shadow:0 0 0 4px var(--status-warn-bg)}
-.link{height:3px;width:22px;background:var(--link-bg);flex:none}
-.ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:conic-gradient(var(--accent-gradient-a) var(--p,0%),var(--ring-track) 0)}
+.pathmap{display:flex;align-items:center;gap:0;margin:16px 0;flex-wrap:wrap}
+.node{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid var(--node-border);background:var(--node-bg);flex:none;transition:all .3s ease;position:relative}
+.node::after{content:"";position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(var(--accent-gradient-a),var(--accent-gradient-b));opacity:0;transition:opacity .3s ease;z-index:-1}
+.node.done{background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent);border-color:transparent;box-shadow:var(--shadow-1)}
+.node.done::after{opacity:1}
+.node.now{border-color:var(--status-warn);box-shadow:0 0 0 4px var(--status-warn-bg),var(--shadow-1);background:linear-gradient(135deg,var(--accent-gradient-a),var(--accent-gradient-b));color:var(--text-on-accent)}
+.node.now::after{opacity:1}
+.link{height:3px;width:24px;background:var(--link-bg);flex:none;transition:background .3s ease}
+.link.active{background:var(--accent-border)}
+.ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:conic-gradient(var(--accent-gradient-a) var(--p,0%),var(--ring-track) 0);box-shadow:var(--shadow-inner);border:3px solid var(--glass-bg)}
+.ring span{position:relative;z-index:2}
+.skeleton{background:linear-gradient(90deg,var(--fill-subtle) 25%,var(--border-subtle) 50%,var(--fill-subtle) 75%);background-size:200% 100%;animation:skeleton 1.5s infinite;border-radius:8px;height:16px}
+@keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.depth-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--accent-primary);background:var(--accent-glow);border:1px solid var(--accent-border);padding:4px 10px;border-radius:99px;margin-bottom:8px}
 :focus-visible{outline:2px solid var(--border-focus);outline-offset:2px}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.confetti-piece{display:none}}
 </style></head>
 <body>
 <header>
- <div><div class="logo">SIE <span>MASTERY</span> </div><div class="sub">Pass the exam. Master the regulation. Trap-only drilling for an experienced trader.</div></div>
+ <div><div class="logo"><svg width="26" height="26" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="12" fill="var(--bg-surface)"/><circle cx="50" cy="50" r="20" fill="var(--accent-primary)"/><path d="M35 50 L48 63 L65 40" stroke="white" stroke-width="5" stroke-linecap="round"/></svg><span>MASTERY</span></div><div class="sub">Pass the exam. Master the regulation. Trap-only drilling for an experienced trader.</div></div>
  <div class="row">
   <span class="pill"> Streak <b id="streak">0</b></span><span class="pill"> XP <b id="xp">0</b></span>
   <span class="pill" id="gpuPill"> Voice: checking GPU…</span>
@@ -99,7 +159,7 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
  </div>
 </header>
 <div class="wrap">
- <div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between">
+ <div class="card depth-3" style="margin-bottom:14px"><div class="row" style="justify-content:space-between">
   <div><b> Voice Tutor</b> <span class="mut">— GPU Kokoro on localhost, browser voice as fallback. Clips are cached/saved server-side.</span></div>
   <div class="row"><label class="mut">Voice <select id="voiceSel">
     <option value="af_heart">Heart (F, US)</option><option value="am_michael">Michael (M, US)</option>
@@ -111,16 +171,16 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
  <div id="home" data-view="home">
   <div id="coachHome" data-component="coach"></div>
   <div class="grid" data-component="mode-grid">
-   <div class="card mode"><div class="tag">YOUR WEAK SPOTS FIRST</div><h3> Trap Drill</h3><p>One question at a time. No reveal until you answer. SIPC, CMO tranches, freeriding — weighted to your misses.</p><button onclick="startQuiz('trap',10)">Start drill</button></div>
-   <div class="card mode"><div class="tag">DYNAMIC • RANDOMIZED</div><h3> Sprint Quiz</h3><p>10 fresh questions. Numbers, names and timelines are re-rolled every run — memorized answers won't save you.</p><button onclick="startQuiz('sprint',10)">Start sprint</button></div>
-   <div class="card mode"><div class="tag">REAL EXAM SIM</div><h3> Practice Exam</h3><p>75 questions • 105 minutes • 70% to pass • weighted 16 / 44 / 31 / 9 like the real SIE.</p><button class="pink" onclick="startQuiz('exam',75)">Start exam</button></div>
-   <div class="card mode"><div class="tag">LESSON PLAN • 8 UNITS</div><h3> Curriculum</h3><p>Detailed lesson, then a mini quiz, unit by unit through all 8 topics. Finish all 8 to unlock the Final Exam Review.</p><button onclick="showUnits()">Start lesson plan</button></div>
-   <div class="card mode"><div class="tag">ML TEACHER</div><h3> Teacher Report</h3><p>Your mastery, speed and accuracy by concept — and whether a miss was a slip, a guess, or a concept you truly don't own yet.</p><button onclick="showReport()">See my report</button></div>
-   <div class="card mode"><div class="tag">BEYOND THE EXAM</div><h3> Mastery Path</h3><p>Learn the rule logic: why the rule exists, who it protects, and the case pattern FINRA tests.</p><button onclick="showLessons()">Open lessons</button></div>
+   <div class="card mode depth-2"><div class="tag">YOUR WEAK SPOTS FIRST</div><h3> Trap Drill</h3><p>One question at a time. No reveal until you answer. SIPC, CMO tranches, freeriding — weighted to your misses.</p><button onclick="startQuiz('trap',10)">Start drill</button></div>
+   <div class="card mode depth-2"><div class="tag">DYNAMIC • RANDOMIZED</div><h3> Sprint Quiz</h3><p>10 fresh questions. Numbers, names and timelines are re-rolled every run — memorized answers won't save you.</p><button onclick="startQuiz('sprint',10)">Start sprint</button></div>
+   <div class="card mode depth-2"><div class="tag">REAL EXAM SIM</div><h3> Practice Exam</h3><p>75 questions • 105 minutes • 70% to pass • weighted 16 / 44 / 31 / 9 like the real SIE.</p><button class="pink" onclick="startQuiz('exam',75)">Start exam</button></div>
+   <div class="card mode depth-2"><div class="tag">LESSON PLAN • 8 UNITS</div><h3> Curriculum</h3><p>Detailed lesson, then a mini quiz, unit by unit through all 8 topics. Finish all 8 to unlock the Final Exam Review.</p><button onclick="showUnits()">Start lesson plan</button></div>
+   <div class="card mode depth-2"><div class="tag">ML TEACHER</div><h3> Teacher Report</h3><p>Your mastery, speed and accuracy by concept — and whether a miss was a slip, a guess, or a concept you truly don't own yet.</p><button onclick="showReport()">See my report</button></div>
+   <div class="card mode depth-2"><div class="tag">BEYOND THE EXAM</div><h3> Mastery Path</h3><p>Learn the rule logic: why the rule exists, who it protects, and the case pattern FINRA tests.</p><button onclick="showLessons()">Open lessons</button></div>
   </div>
   <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Section mastery</h3><div id="mastery" data-component="mastery"></div>
-   <div class="row" style="margin-top:12px"><button class="ghost" onclick="startQuiz('missed',10)">↻ Review Missed Bank (<span id="missedCount">0</span>)</button>
-   <label class="mut">Difficulty <select id="levelSel" onchange="save()"><option value="easy">🟢 Easy</option><option value="hard" selected>🟠 Hard</option><option value="veryhard"> Very Hard</option><option value="master"> Master</option></select></label>
+   <div class="row" style="margin-top:12px"><button class="ghost" onclick="startQuiz('missed',10)"> Review Missed Bank (<span id="missedCount">0</span>)</button>
+   <label class="mut">Difficulty <select id="levelSel" onchange="save()"><option value="easy"> Easy</option><option value="hard" selected> Hard</option><option value="veryhard"> Very Hard</option><option value="master"> Master</option></select></label>
    <span class="mut">Rank: <b id="level">Analyst</b> — Analyst → Associate → Compliance Pro → Regulation Master</span></div></div>
  </div>
 
@@ -255,7 +315,7 @@ GEN.push(
 );
 const UNIT_BY_TOPIC={"SIPC separate capacity":7,"CMO tranches":3,"Freeriding":6,"Wash sale":6,"Reg T margin":7,"Pattern day trader":7,"Reg SHO":6,"Options — covered call":4,"Bond risk":3,"Communications":7,"Trusted contact / seniors":7,"Discretionary accounts":7,"Prohibited activities":8,"Mutual fund pricing":4,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":8,"Systematic risk":5,"Account opening / AML":7,"Fed tools":1,"MSRB":1,"Preferred vs common":2,"Stock splits":2,"Dividend dates":2,"Yield ordering":3,"Callable bonds / yield to worst":3,"Long call breakeven":4,"ETFs vs mutual funds":4,"Reinvestment risk":5,"ADR / currency risk":5,"Settlement T+1":6,"Stop orders":6,"Insider trading":8,"Selling away":8};
 const DIFF_BY_TOPIC={"SIPC separate capacity":3,"CMO tranches":3,"Freeriding":2,"Wash sale":2,"Reg T margin":1,"Pattern day trader":1,"Reg SHO":2,"Options — covered call":2,"Bond risk":2,"Communications":3,"Trusted contact / seniors":2,"Discretionary accounts":2,"Prohibited activities":1,"Mutual fund pricing":2,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":3,"Systematic risk":1,"Account opening / AML":2,"Fed tools":1,"MSRB":2,"Preferred vs common":1,"Stock splits":1,"Dividend dates":3,"Yield ordering":2,"Callable bonds / yield to worst":2,"Long call breakeven":1,"ETFs vs mutual funds":1,"Reinvestment risk":2,"ADR / currency risk":1,"Settlement T+1":1,"Stop orders":2,"Insider trading":2,"Selling away":2};
-const LEVELS={easy:{label:"🟢 Easy",mult:1,rating:800,maxDiff:1},hard:{label:"🟠 Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:" Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:" Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
+const LEVELS={easy:{label:" Easy",mult:1,rating:800,maxDiff:1},hard:{label:" Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:" Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:" Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
 function curLevel(){return ($("levelSel")&&$("levelSel").value)||"hard"}
 
 /* ============ LESSONS: mastery, not memorization ============ */
@@ -362,12 +422,13 @@ function nextQ(){ if(window._ms&&window._ms.c>=2&&qi<quiz.length-1){ const pool=
  qi++;qi<quiz.length?showQ():finish()}
 function quitQuiz(){clearInterval(timerInt);clearInterval(perQInt);$("quiz").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
 function finish(){clearInterval(timerInt);clearInterval(perQInt);awardBadges();$("quiz").classList.add("hidden");const pct=Math.round(score/quiz.length*100);
- const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
+ const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");confettiBurst();setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
  $("result").innerHTML=`<div class="card" style="text-align:center"><div class="big">${score} / ${quiz.length} — ${pct}%</div>
  <p>${coachLine(pct)}</p><p class="mut">${mode==="exam"?(pass?" PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>
  <div class="row" style="justify-content:center">${gapBtn()}<button onclick="startQuiz('${mode}',${mode==='exam'?75:10})">Run it again</button><button class="ghost" onclick="backHome()">Home</button></div></div>`;
  $("result").classList.remove("hidden");save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast(" New badge: "+window._newBadges.join(", ")),600);
  speak(`You scored ${score} out of ${quiz.length}. ${pct} percent. ${mode==="exam"?(pass?"That is a pass.":"That is below the seventy percent pass line."):""}`)}
+function confettiBurst(){ const c=$("confetti"); const colors=["var(--accent-primary)","var(--accent-deep)","var(--status-pass)","var(--status-warn)"]; for(let i=0;i<40;i++){ const el=document.createElement("div"); el.className="confetti-piece"; el.style.left=Math.random()*100+"vw"; el.style.top=Math.random()*20-10+"vh"; el.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)]; el.style.animationDuration=(Math.random()*1.5+1)+"s"; el.style.animationDelay=(Math.random()*0.5)+"s"; el.style.transform=`rotate(${Math.random()*360}deg)`; c.appendChild(el); } setTimeout(()=>{ c.querySelectorAll(".confetti-piece").forEach(el=>el.remove()); },3000);}
 function backHome(){$("result").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
 function showLessons(){$("home").classList.add("hidden");$("result").classList.add("hidden");
  $("lessons").innerHTML=LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})"> Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
