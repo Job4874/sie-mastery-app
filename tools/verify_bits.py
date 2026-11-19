@@ -34,6 +34,9 @@ def main():
     # ---- 1. source files ----
     src = ["server.py", "security.py", "tts_engine.py", "requirements.txt",
            "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
+           "AGENTS.md", ".agents/skills/sie-verify/SKILL.md",
+           ".agents/skills/sie-verify/scripts/run_all.ps1",
+           ".agents/skills/sie-curriculum-author/SKILL.md",
            "static/index.html", "static/audio/manifest.json",
            "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",
            "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",

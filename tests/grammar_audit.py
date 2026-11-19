@@ -41,7 +41,9 @@ def main():
     exe = shutil.which("codespell")
     if exe:
         files = ["static/index.html", "README.md", "ARCHITECTURE.md",
-                 "PUSH_AUDIO.md", "RESEARCH_ADHD.md"]
+                 "PUSH_AUDIO.md", "RESEARCH_ADHD.md", "AGENTS.md",
+                 ".agents/skills/sie-verify/SKILL.md",
+                 ".agents/skills/sie-curriculum-author/SKILL.md"]
         r = subprocess.run(
             [exe, "--ignore-words-list=sie,trough,posin",
              "--skip=static/audio,tools/bit_manifest.json,*.pyc"] + files,
