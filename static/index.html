@@ -676,7 +676,7 @@ function showQ(){answered=false;current=quiz[qi];window._qStart=Date.now();start
  else $("opts").innerHTML=current.choices.map((c,i)=>`<button class="opt" aria-pressed="false" data-state="idle" onclick="answer(${i},this)">${"ABCD"[i]}. ${esc(c)}</button>`).join("");
  if($("voiceOn").checked)speak(current.text);
 }
-function answer(i,btn){if(answered)return;if(!current||current.type==="short"){timeoutShort();return}answered=true;clearInterval(perQInt);const right=i===current.answer;const ms=Date.now()-(window._qStart||Date.now());recordPerf(current,right,ms);
+function answer(i,btn){if(answered)return;const ev=typeof window!=="undefined"&&window.event;if(ev&&ev.detail>1&&i>=0)return;if(!current||current.type==="short"){timeoutShort();return}answered=true;clearInterval(perQInt);const right=i===current.answer;const ms=Date.now()-(window._qStart||Date.now());recordPerf(current,right,ms);
  document.querySelectorAll(".opt").forEach(b=>{b.setAttribute("aria-pressed","false");b.dataset.state="locked"}); if(btn){btn.setAttribute("aria-pressed","true");btn.dataset.state=right?"right":"wrong";}
  document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===current.answer)b.classList.add("right");if(j===i&&!right)b.classList.add("wrong")});
  store.seen++;store.sec[current.sec]=store.sec[current.sec]||{a:0,c:0};store.sec[current.sec].a++;

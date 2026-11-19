@@ -259,6 +259,10 @@ function ok(cond, name) {
     answered = true;
     nextQ();
     const qiAfter = qi;
+    window.event = { detail: 2 };
+    answer(0, null);
+    window.event = undefined;
+    const dblBlockedAnswered = answered;
 
     current = prepareShort(SHORT[4]);
     answered = false;
@@ -280,7 +284,7 @@ function ok(cond, name) {
     });
 
     const selfCheck = runSelfCheck();
-    return { adhd0, adhd1, adhd2, chunkHtml, plainHtml, qiBefore, qiBlocked, qiAfter,
+    return { adhd0, adhd1, adhd2, chunkHtml, plainHtml, qiBefore, qiBlocked, qiAfter, dblBlockedAnswered,
              ssnBlockedAnswered, shortTimeoutState, cleanedKeys: Object.keys(cleaned), selfCheck };
   })()`, stSb);
   await new Promise(r => setTimeout(r, 15));
@@ -289,6 +293,7 @@ function ok(cond, name) {
   ok(stRes.chunkHtml.includes('class="chunk-list"') && stRes.chunkHtml.includes('class="chunk-item"') &&
      stRes.plainHtml.startsWith("<p>"), "renderLessonBody switches between <p> and .chunk-list micro-chunks");
   ok(stRes.qiBefore === 0 && stRes.qiBlocked === 0 && stRes.qiAfter === 1, "nextQ blocks advance while !answered");
+  ok(stRes.dblBlockedAnswered === false, "answer ignores accidental multi-click bleed-through (event.detail > 1)");
   ok(stRes.ssnBlockedAnswered === false, "answerShort blocks and redacts SSN-only submission");
   ok(stRes.shortTimeoutState.answered && stRes.shortTimeoutState.disabled && stRes.shortTimeoutState.missedType === "short",
      "timeoutShort marks answered, disables shortAns, and records short miss");

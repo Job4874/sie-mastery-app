@@ -1,23 +1,23 @@
 {
   ".agents/skills/sie-curriculum-author/SKILL.md": {
-    "bytes": 2526,
-    "sha256": "8abff280ce73fdbfde11c0d41cbf356c34a7dceccf5ffa0ed014049a321bade8"
+    "bytes": 2576,
+    "sha256": "4ed4869752ef12f9c5b1389224dc9c6e6e85fb1834b8fdd8d4b04d89f43e4cd5"
   },
   ".agents/skills/sie-verify/SKILL.md": {
-    "bytes": 1595,
-    "sha256": "fe3d4bbb4d1f1708ac4afb08294209949a8f0de442b0354fa83488611278c248"
+    "bytes": 1793,
+    "sha256": "651b3447c69ed9802e4654628cf64f405d3574b2e95934a069cb2dc0427294d8"
   },
   ".agents/skills/sie-verify/scripts/run_all.ps1": {
-    "bytes": 3293,
-    "sha256": "ea1dfea7c3b91069a9b55866cb7c3e78e379dc737233b4e9779cb194e670ab17"
+    "bytes": 4222,
+    "sha256": "0b452bb42171857397ba5079907bf985083c1c1f63c120cd0c42812e906ecf89"
   },
   ".github/workflows/compile.yml": {
-    "bytes": 1305,
-    "sha256": "78ab7af1b6458056051e99e464111c82c529d8a8f7f8edaba809cdf7c69c33ae"
+    "bytes": 1394,
+    "sha256": "09eb90a3b121aeeb1b7c8773dedcc652e871ccf2c9c6bb5c18ac3188e8270f99"
   },
   "AGENTS.md": {
-    "bytes": 3950,
-    "sha256": "dff45cebc151ab7de4822e1a960950b9274a1ba14b3ab0fc780e332bf8cd54be"
+    "bytes": 4852,
+    "sha256": "60e2913fb97d38f321c25d2545531946f7c61115e169411cf4e2ac8e29b4c97e"
   },
   "ARCHITECTURE.md": {
     "bytes": 4708,
@@ -28,28 +28,32 @@
     "sha256": "345520f1b895a6f6052622ad1d2e0b7e40025eda631b87d130530fad9cc772bc"
   },
   "README.md": {
-    "bytes": 11746,
-    "sha256": "42a5c6ef8558c3e8eb6c83b9dd77cd2ad09c49884453935167b67c14c55787fa"
+    "bytes": 13785,
+    "sha256": "7656649b732955b5d3c98e220ed3c1ea6efbde45c25eac1cab6501ff3cea1f7b"
   },
   "RESEARCH_ADHD.md": {
     "bytes": 11052,
     "sha256": "ab527f73c9850c2239ca9c284fd88404c5bdc68bbdf742688e133cb5b5553760"
+  },
+  "SECURITY.md": {
+    "bytes": 3036,
+    "sha256": "b628bf7b8181ded64d800b96782588bbe1d1dd418cb44435a7d135344cd611a5"
   },
   "requirements.txt": {
     "bytes": 458,
     "sha256": "eec4c3ce24649a4355c600310395f7ab362753e8c5e939f74d7452e1200210ef"
   },
   "security.py": {
-    "bytes": 2587,
-    "sha256": "b206b54aae7d90f651c262d1e961838c808b92b01551358c182bbed9812cb624"
+    "bytes": 2900,
+    "sha256": "5e70248b7a88a857c6d1c56b98e65ebe5d2983db364258eec49cee5356ce12ac"
   },
   "server.py": {
-    "bytes": 10815,
-    "sha256": "15587169fc0d940e6ccddda1defba5a98f212ffb33803ac43b163fd664f46d27"
+    "bytes": 13256,
+    "sha256": "00dd381f5cc071b3c73a2c91f753be18aff1c983f588ff4046edbe5d90e8be8c"
   },
   "static/audio/lesson-1-regulators.wav": {
-    "bytes": 6912620,
-    "sha256": "99ff3d8d60a1720ed482dec20b4302c66391fb48f3631e77a866f555e3b99a43"
+    "bytes": 7461484,
+    "sha256": "78ecabc46c69924216c97935e66f15419b293fb6bbb2cfb11afe345566bcfad5"
   },
   "static/audio/lesson-1-sipc.wav": {
     "bytes": 1070124,
@@ -60,28 +64,28 @@
     "sha256": "6766f46f8b3ab7aa54b5b87951c7fec7ceaa2fee0d54245b1ea0145355f93f87"
   },
   "static/audio/lesson-2-equity.wav": {
-    "bytes": 3962508,
-    "sha256": "dce8c947d8ae68b9cf8d296d5a8af150ea7dfd918bf10d1006537e874c2ba823"
+    "bytes": 4197292,
+    "sha256": "11ae79c93cdd5c0b6ecf07b1382200d65e4dc07a5aa22acbaaae06fd9a4df704"
   },
   "static/audio/lesson-3-debt.wav": {
-    "bytes": 4601196,
-    "sha256": "fa8efd0c95271d279e0ccb6235c704d7db02a686ce50f1aa7efed33c86f9ebda"
+    "bytes": 5084428,
+    "sha256": "1ccac82fde6e0bce42fc0fad1a1835055ddf8f6109521eb7f3061868ae49b719"
   },
   "static/audio/lesson-3-freeriding.wav": {
-    "bytes": 1293996,
-    "sha256": "b6248ebe184f44a4723dd5323af16d1a8d80926d2fdc63e30349d8527faec1fd"
+    "bytes": 1362604,
+    "sha256": "8296f5f2378723e9cff433f672af3a975fa40f246451f15d78b80b896239fa94"
   },
   "static/audio/lesson-4-numbers.wav": {
-    "bytes": 1602316,
-    "sha256": "e1c661791db072d51fba545999896777ae29ac8ee821debaf902181c556d2a00"
+    "bytes": 1925900,
+    "sha256": "9ae63ea13064aeed2c2199d855e38c618304aafe3d27d979ddadc0a5f161bc82"
   },
   "static/audio/lesson-4-options.wav": {
     "bytes": 5086124,
     "sha256": "7dd56511643acd7adf0e01b9a3534bebb88494b8227f6ca1cef211c817590bf3"
   },
   "static/audio/lesson-5-otherproducts.wav": {
-    "bytes": 5039660,
-    "sha256": "620b37cbdf6b81a0eb154a06aa747130dddf4a5b451ebbd370e45a2896ffb104"
+    "bytes": 6017292,
+    "sha256": "45bd08eb54b524b989307296034acd8223331818a62634f47edb6635fa707065"
   },
   "static/audio/lesson-5-prohibited.wav": {
     "bytes": 1068076,
@@ -92,44 +96,44 @@
     "sha256": "02d73a82c906cc34b0e48322af5c4ba793e12c096a65d0d048d3eaa7414fe5e1"
   },
   "static/audio/lesson-6-trading.wav": {
-    "bytes": 4791852,
-    "sha256": "2195f7ba63f8efbd6fbe90ee8c36174e38f7a9fb5adab2c85bd1dc72e8cb38b0"
+    "bytes": 6388620,
+    "sha256": "242ec7527cf2aab3f9ab9ec13fff8767b09ba6e2481bc5820a74af0c33e997fb"
   },
   "static/audio/lesson-7-accounts.wav": {
-    "bytes": 6577004,
-    "sha256": "beaa97159f48a585d3d86cc8237ff4c03e26e1340a098b9620157f52cfaa1dce"
+    "bytes": 8477964,
+    "sha256": "b9c13d57c4e44baa2a1c207c6310b9ecca1cf8e75f1eaf2c3dcb99bb2aa86b80"
   },
   "static/audio/lesson-8-regframework.wav": {
-    "bytes": 8332460,
-    "sha256": "b6dc98db3210f5428f3fca0a8ad85bc64ff09d870668c56473daeb4d56ae49a4"
+    "bytes": 9668492,
+    "sha256": "f143b9ec7786a5884d8e6c97db652d005fa3da4e2d3cee00a8a07312bcca6a43"
   },
   "static/audio/manifest.json": {
-    "bytes": 2559,
-    "sha256": "1fd1bdedf1521277063b316fc5114004249c29abec04e79f612671f5a0adc821"
+    "bytes": 2561,
+    "sha256": "f5f6bad765e9ec1b749a8e6f50adf2b3e85c86934689d67dbf6d323a5cdc5dc3"
   },
   "static/audio/welcome.wav": {
     "bytes": 992300,
     "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
   },
   "static/index.html": {
-    "bytes": 136066,
-    "sha256": "26cdf97af0dc9084b1a88c49a5bfaeef997836220d2bc19b71daf2e30ebbb95c"
+    "bytes": 161136,
+    "sha256": "cf13c635fa26d0a5cd26be742ff950bf89a7b7a1d35b8903030308f534ebc92c"
   },
   "tests/app.test.js": {
-    "bytes": 8961,
-    "sha256": "ace48804f53659a04984b6f6d7a9b56ca0f5e95526d011ff2f606b58c43e33a4"
+    "bytes": 18106,
+    "sha256": "354d18d97fc456d98f88976d30244d6bde6697a2da6cff38f552e1f285250dca"
   },
   "tests/grammar_audit.py": {
-    "bytes": 2329,
-    "sha256": "1e59263f44c5ef4eed32265eee8e099e34ee6693bfcb3fd37c51b29735777f8d"
+    "bytes": 2344,
+    "sha256": "7ad5cd3a28c89b5aa1212045951013c93f7b03d0bd49f1f2d2b8fa271da3355c"
   },
   "tests/ml_verify.js": {
     "bytes": 6998,
     "sha256": "6e1a135980cfa15ae6db7f26486ea6dce3dbd9fb08a93f58bb6f2900f62d3c22"
   },
   "tests/test_security.py": {
-    "bytes": 10269,
-    "sha256": "4fe126f24bbffb1ac752cd9de62724e34307f296a292d3737f5945f86dfdaa4a"
+    "bytes": 13002,
+    "sha256": "301e7582f9ca39aba71a5a19af7859f9c9919c4ebf97992f3183caf877f38c4d"
   },
   "tests/tests9.js": {
     "bytes": 8268,
@@ -148,12 +152,16 @@
     "sha256": "cd9f3d08f3446e2615e6de40d9b4f2a09733e5e6719e9d6a731551137e379b3c"
   },
   "tools/verify_dom.py": {
-    "bytes": 9091,
-    "sha256": "3c112626667adf8922f48bdb5cb24355b0b57d33e27718313cb9cda70eb8b15c"
+    "bytes": 9129,
+    "sha256": "94b6e753d9bdfa0a29eae03b901d74822c045158457b6e979576887b475a9e6d"
   },
   "tools/verify_exhaustive.py": {
-    "bytes": 7582,
-    "sha256": "1e3e87c1af7c56454c49df1e8fe54b05f2cd1fa66e3bf86a679773a288da07fd"
+    "bytes": 7610,
+    "sha256": "54602e5a86ef7e928c2ebb35589c45d14142e04178927f4e0296fcce649ca8ce"
+  },
+  "tools/verify_hell.py": {
+    "bytes": 36605,
+    "sha256": "17d0fecf8a5f46b654dccc8adb259ed1d93ee79f68e0450b77e47caa52bfaf77"
   },
   "tools/visual_capture.py": {
     "bytes": 1505,
