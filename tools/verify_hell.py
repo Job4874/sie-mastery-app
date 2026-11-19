@@ -180,7 +180,9 @@ def test_master_timeouts_ssn_and_missed(ctx, vp_name):
     try:
         page.clock.install()
         page.goto(BASE + "/#/learn", wait_until="networkidle")
-        page.evaluate("localStorage.clear(); prefs.voiceOn=false; prefs.level='master'; savePrefs()")
+        page.evaluate("localStorage.clear()")
+        page.reload(wait_until="networkidle")
+        page.evaluate("prefs.voiceOn=false; prefs.level='master'; savePrefs()")
         page.goto(BASE + "/#/practice", wait_until="networkidle")
 
         # Force deterministic [short, mc] Master quiz

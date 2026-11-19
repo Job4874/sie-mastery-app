@@ -1,0 +1,2049 @@
+{
+  "voice": "af_heart (Kokoro ONNX)",
+  "generated": "2026-11-19",
+  "format": "mp3",
+  "engine": "kokoro-82m-onnx (kokoro-v1.0.onnx)",
+  "sample_rate": 24000,
+  "clips": [
+    {
+      "file": "u0-l1-s1.mp3",
+      "title": "Unit 0 - From order to settled trade - An account and an order ticket",
+      "bytes": 169824,
+      "duration_s": 20.8
+    },
+    {
+      "file": "u0-l1-s2.mp3",
+      "title": "Unit 0 - From order to settled trade - Settlement is T+1",
+      "bytes": 191496,
+      "duration_s": 23.4
+    },
+    {
+      "file": "u0-l1-s3.mp3",
+      "title": "Unit 0 - From order to settled trade - The four order types",
+      "bytes": 170760,
+      "duration_s": 20.6
+    },
+    {
+      "file": "u0-l1-s4.mp3",
+      "title": "Unit 0 - From order to settled trade - Bid, ask, and the spread",
+      "bytes": 183840,
+      "duration_s": 22.2
+    },
+    {
+      "file": "u0-l1-s5-q.mp3",
+      "title": "Unit 0 - From order to settled trade - Stop orders (question)",
+      "bytes": 108840,
+      "duration_s": 13.3
+    },
+    {
+      "file": "u0-l1-s5-x.mp3",
+      "title": "Unit 0 - From order to settled trade - Stop orders (explanation)",
+      "bytes": 102144,
+      "duration_s": 12.3
+    },
+    {
+      "file": "u0-l1-s6.mp3",
+      "title": "Unit 0 - From order to settled trade - Lock it in",
+      "bytes": 176280,
+      "duration_s": 21.8
+    },
+    {
+      "file": "u0-l2-s1.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - Cash account vs. margin account",
+      "bytes": 197760,
+      "duration_s": 24.2
+    },
+    {
+      "file": "u0-l2-s2.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - Freeriding vs. good-faith violations",
+      "bytes": 189576,
+      "duration_s": 23.7
+    },
+    {
+      "file": "u0-l2-s3-q.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - Who sets what (question)",
+      "bytes": 219240,
+      "duration_s": 26.9
+    },
+    {
+      "file": "u0-l2-s3-x.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - Who sets what (explanation)",
+      "bytes": 99408,
+      "duration_s": 11.9
+    },
+    {
+      "file": "u0-l2-s4.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - What can go wrong",
+      "bytes": 167232,
+      "duration_s": 20.4
+    },
+    {
+      "file": "u0-l2-s5.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - The map of the exam",
+      "bytes": 209664,
+      "duration_s": 25.5
+    },
+    {
+      "file": "u0-l2-s6.mp3",
+      "title": "Unit 0 - Cash, margin, and what can go wrong - Lock it in",
+      "bytes": 187488,
+      "duration_s": 23.0
+    },
+    {
+      "file": "u1-l1-s1.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - The referees: the SEC and FINRA",
+      "bytes": 272664,
+      "duration_s": 33.5
+    },
+    {
+      "file": "u1-l1-s2.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - The MSRB writes rules but does not enforce them",
+      "bytes": 252072,
+      "duration_s": 30.6
+    },
+    {
+      "file": "u1-l1-s3-q.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - The MSRB (question)",
+      "bytes": 176064,
+      "duration_s": 21.7
+    },
+    {
+      "file": "u1-l1-s3-x.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - The MSRB (explanation)",
+      "bytes": 147048,
+      "duration_s": 17.6
+    },
+    {
+      "file": "u1-l1-s4.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - The rest of the cast",
+      "bytes": 332592,
+      "duration_s": 40.4
+    },
+    {
+      "file": "u1-l1-s5.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - SIPC vs. FDIC",
+      "bytes": 362016,
+      "duration_s": 44.6
+    },
+    {
+      "file": "u1-l1-s6-q.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - SIPC limits (question)",
+      "bytes": 169488,
+      "duration_s": 21.4
+    },
+    {
+      "file": "u1-l1-s6-x.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - SIPC limits (explanation)",
+      "bytes": 170040,
+      "duration_s": 20.9
+    },
+    {
+      "file": "u1-l1-s7.mp3",
+      "title": "Unit 1 - Who makes and enforces the rules - Lock it in",
+      "bytes": 282624,
+      "duration_s": 34.9
+    },
+    {
+      "file": "u1-l2-s1.mp3",
+      "title": "Unit 1 - Where securities trade - Primary vs. secondary market",
+      "bytes": 347808,
+      "duration_s": 43.2
+    },
+    {
+      "file": "u1-l2-s2.mp3",
+      "title": "Unit 1 - Where securities trade - Four market labels",
+      "bytes": 246600,
+      "duration_s": 30.0
+    },
+    {
+      "file": "u1-l2-s3-q.mp3",
+      "title": "Unit 1 - Where securities trade - Third or fourth? (question)",
+      "bytes": 131472,
+      "duration_s": 16.4
+    },
+    {
+      "file": "u1-l2-s3-x.mp3",
+      "title": "Unit 1 - Where securities trade - Third or fourth? (explanation)",
+      "bytes": 113256,
+      "duration_s": 14.1
+    },
+    {
+      "file": "u1-l2-s4.mp3",
+      "title": "Unit 1 - Where securities trade - The two founding laws: 1933 and 1934",
+      "bytes": 374592,
+      "duration_s": 46.2
+    },
+    {
+      "file": "u1-l2-s5-q.mp3",
+      "title": "Unit 1 - Where securities trade - New shares from a public company (question)",
+      "bytes": 206832,
+      "duration_s": 25.5
+    },
+    {
+      "file": "u1-l2-s5-x.mp3",
+      "title": "Unit 1 - Where securities trade - New shares from a public company (explanation)",
+      "bytes": 150312,
+      "duration_s": 18.3
+    },
+    {
+      "file": "u1-l2-s6.mp3",
+      "title": "Unit 1 - Where securities trade - Lock it in",
+      "bytes": 221424,
+      "duration_s": 27.0
+    },
+    {
+      "file": "u1-l3-s1.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Investment bankers and the two kinds of deal",
+      "bytes": 270432,
+      "duration_s": 32.6
+    },
+    {
+      "file": "u1-l3-s2-q.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Best efforts (question)",
+      "bytes": 162888,
+      "duration_s": 19.9
+    },
+    {
+      "file": "u1-l3-s2-x.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Best efforts (explanation)",
+      "bytes": 119184,
+      "duration_s": 14.4
+    },
+    {
+      "file": "u1-l3-s3.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - The registration timeline",
+      "bytes": 354072,
+      "duration_s": 43.3
+    },
+    {
+      "file": "u1-l3-s4.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Shelf registration and the official statement",
+      "bytes": 313320,
+      "duration_s": 38.6
+    },
+    {
+      "file": "u1-l3-s5.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Public vs. private: exemptions and blue-sky laws",
+      "bytes": 419424,
+      "duration_s": 51.5
+    },
+    {
+      "file": "u1-l3-s6-q.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Prospectus delivery (question)",
+      "bytes": 140616,
+      "duration_s": 17.2
+    },
+    {
+      "file": "u1-l3-s6-x.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Prospectus delivery (explanation)",
+      "bytes": 143952,
+      "duration_s": 17.5
+    },
+    {
+      "file": "u1-l3-s7.mp3",
+      "title": "Unit 1 - Bringing a new issue to market - Lock it in",
+      "bytes": 257592,
+      "duration_s": 31.2
+    },
+    {
+      "file": "u1-l4-s1.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - Monetary vs. fiscal policy",
+      "bytes": 247800,
+      "duration_s": 30.3
+    },
+    {
+      "file": "u1-l4-s2.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - The Fed's toolbox",
+      "bytes": 261984,
+      "duration_s": 32.6
+    },
+    {
+      "file": "u1-l4-s3-q.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - The Fed's main tool (question)",
+      "bytes": 165624,
+      "duration_s": 20.9
+    },
+    {
+      "file": "u1-l4-s3-x.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - The Fed's main tool (explanation)",
+      "bytes": 144552,
+      "duration_s": 17.9
+    },
+    {
+      "file": "u1-l4-s4.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - Treasury securities: bills, notes, and bonds",
+      "bytes": 316296,
+      "duration_s": 38.7
+    },
+    {
+      "file": "u1-l4-s5.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - The dollar and the world",
+      "bytes": 230352,
+      "duration_s": 28.1
+    },
+    {
+      "file": "u1-l4-s6-q.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - Name that Treasury (question)",
+      "bytes": 206712,
+      "duration_s": 25.5
+    },
+    {
+      "file": "u1-l4-s6-x.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - Name that Treasury (explanation)",
+      "bytes": 127584,
+      "duration_s": 15.5
+    },
+    {
+      "file": "u1-l4-s7.mp3",
+      "title": "Unit 1 - The Fed, the government, and money - Lock it in",
+      "bytes": 251424,
+      "duration_s": 30.8
+    },
+    {
+      "file": "u1-l5-s1.mp3",
+      "title": "Unit 1 - Reading the economy - The business cycle",
+      "bytes": 235200,
+      "duration_s": 29.1
+    },
+    {
+      "file": "u1-l5-s2.mp3",
+      "title": "Unit 1 - Reading the economy - Leading, coincident, and lagging indicators",
+      "bytes": 244560,
+      "duration_s": 30.1
+    },
+    {
+      "file": "u1-l5-s3-q.mp3",
+      "title": "Unit 1 - Reading the economy - Spot the leader (question)",
+      "bytes": 101352,
+      "duration_s": 12.5
+    },
+    {
+      "file": "u1-l5-s3-x.mp3",
+      "title": "Unit 1 - Reading the economy - Spot the leader (explanation)",
+      "bytes": 112416,
+      "duration_s": 13.7
+    },
+    {
+      "file": "u1-l5-s4.mp3",
+      "title": "Unit 1 - Reading the economy - Stocks and the cycle",
+      "bytes": 214392,
+      "duration_s": 26.4
+    },
+    {
+      "file": "u1-l5-s5.mp3",
+      "title": "Unit 1 - Reading the economy - Reading a company: two statements",
+      "bytes": 229008,
+      "duration_s": 28.0
+    },
+    {
+      "file": "u1-l5-s6-q.mp3",
+      "title": "Unit 1 - Reading the economy - Riding out a downturn (question)",
+      "bytes": 111768,
+      "duration_s": 13.9
+    },
+    {
+      "file": "u1-l5-s6-x.mp3",
+      "title": "Unit 1 - Reading the economy - Riding out a downturn (explanation)",
+      "bytes": 92520,
+      "duration_s": 11.1
+    },
+    {
+      "file": "u1-l5-s7.mp3",
+      "title": "Unit 1 - Reading the economy - Lock it in",
+      "bytes": 225936,
+      "duration_s": 27.6
+    },
+    {
+      "file": "u2-l1-s1.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Common stock: you own a slice",
+      "bytes": 215952,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u2-l1-s2.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Preferred stock: the hybrid",
+      "bytes": 189816,
+      "duration_s": 23.5
+    },
+    {
+      "file": "u2-l1-s3-q.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Preferred vs. common (question)",
+      "bytes": 165528,
+      "duration_s": 20.6
+    },
+    {
+      "file": "u2-l1-s3-x.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Preferred vs. common (explanation)",
+      "bytes": 117312,
+      "duration_s": 14.4
+    },
+    {
+      "file": "u2-l1-s4.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Who gets paid first in a liquidation",
+      "bytes": 248880,
+      "duration_s": 30.5
+    },
+    {
+      "file": "u2-l1-s5-q.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Next to last in line (question)",
+      "bytes": 117288,
+      "duration_s": 14.5
+    },
+    {
+      "file": "u2-l1-s5-x.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Next to last in line (explanation)",
+      "bytes": 117984,
+      "duration_s": 14.1
+    },
+    {
+      "file": "u2-l1-s6.mp3",
+      "title": "Unit 2 - Common vs. preferred stock - Lock it in",
+      "bytes": 135696,
+      "duration_s": 16.4
+    },
+    {
+      "file": "u2-l2-s1.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Cumulative vs. non-cumulative",
+      "bytes": 189984,
+      "duration_s": 23.5
+    },
+    {
+      "file": "u2-l2-s2.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Arrears math",
+      "bytes": 221400,
+      "duration_s": 27.6
+    },
+    {
+      "file": "u2-l2-s3-q.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Dividends in arrears (question)",
+      "bytes": 163704,
+      "duration_s": 20.2
+    },
+    {
+      "file": "u2-l2-s3-x.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Dividends in arrears (explanation)",
+      "bytes": 119808,
+      "duration_s": 14.7
+    },
+    {
+      "file": "u2-l2-s4.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Convertible preferred",
+      "bytes": 252528,
+      "duration_s": 30.9
+    },
+    {
+      "file": "u2-l2-s5.mp3",
+      "title": "Unit 2 - Cumulative and convertible preferred - Lock it in",
+      "bytes": 145608,
+      "duration_s": 17.5
+    },
+    {
+      "file": "u2-l3-s1.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - Rights: protection from dilution",
+      "bytes": 220080,
+      "duration_s": 27.1
+    },
+    {
+      "file": "u2-l3-s2.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - Warrants: the long-term version",
+      "bytes": 195696,
+      "duration_s": 24.0
+    },
+    {
+      "file": "u2-l3-s3-q.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - Right or warrant? (question)",
+      "bytes": 152640,
+      "duration_s": 18.8
+    },
+    {
+      "file": "u2-l3-s3-x.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - Right or warrant? (explanation)",
+      "bytes": 106656,
+      "duration_s": 13.1
+    },
+    {
+      "file": "u2-l3-s4.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - ADRs: foreign stock in U.S. dollars",
+      "bytes": 213744,
+      "duration_s": 26.2
+    },
+    {
+      "file": "u2-l3-s5-q.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - ADRs and the yen (question)",
+      "bytes": 207888,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u2-l3-s5-x.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - ADRs and the yen (explanation)",
+      "bytes": 102864,
+      "duration_s": 12.3
+    },
+    {
+      "file": "u2-l3-s6.mp3",
+      "title": "Unit 2 - Rights, warrants, and ADRs - Lock it in",
+      "bytes": 165624,
+      "duration_s": 20.3
+    },
+    {
+      "file": "u2-l4-s1.mp3",
+      "title": "Unit 2 - Dividends and stock splits - The dividend timeline",
+      "bytes": 209736,
+      "duration_s": 25.7
+    },
+    {
+      "file": "u2-l4-s2.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Who gets the dividend?",
+      "bytes": 207216,
+      "duration_s": 25.4
+    },
+    {
+      "file": "u2-l4-s3-q.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Buying on the ex-date (question)",
+      "bytes": 149280,
+      "duration_s": 18.4
+    },
+    {
+      "file": "u2-l4-s3-x.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Buying on the ex-date (explanation)",
+      "bytes": 164760,
+      "duration_s": 19.9
+    },
+    {
+      "file": "u2-l4-s4.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Stock splits: more slices, same pizza",
+      "bytes": 268680,
+      "duration_s": 33.4
+    },
+    {
+      "file": "u2-l4-s5.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Reverse splits",
+      "bytes": 215592,
+      "duration_s": 26.7
+    },
+    {
+      "file": "u2-l4-s6-q.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Do the split (question)",
+      "bytes": 166704,
+      "duration_s": 20.9
+    },
+    {
+      "file": "u2-l4-s6-x.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Do the split (explanation)",
+      "bytes": 156360,
+      "duration_s": 19.2
+    },
+    {
+      "file": "u2-l4-s7.mp3",
+      "title": "Unit 2 - Dividends and stock splits - Lock it in",
+      "bytes": 183912,
+      "duration_s": 22.8
+    },
+    {
+      "file": "u2-l5-s1.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - Restricted vs. control stock",
+      "bytes": 262680,
+      "duration_s": 32.5
+    },
+    {
+      "file": "u2-l5-s2.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - The holding period",
+      "bytes": 198504,
+      "duration_s": 24.5
+    },
+    {
+      "file": "u2-l5-s3.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - The volume limit, worked out",
+      "bytes": 231120,
+      "duration_s": 28.5
+    },
+    {
+      "file": "u2-l5-s4.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - Filing Form 144",
+      "bytes": 151992,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u2-l5-s5-q.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - Apply the volume limit (question)",
+      "bytes": 210816,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u2-l5-s5-x.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - Apply the volume limit (explanation)",
+      "bytes": 162888,
+      "duration_s": 19.8
+    },
+    {
+      "file": "u2-l5-s6.mp3",
+      "title": "Unit 2 - Rule 144: selling restricted and control stock - Lock it in",
+      "bytes": 213048,
+      "duration_s": 26.0
+    },
+    {
+      "file": "u3-l1-s1.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - A bond is a loan",
+      "bytes": 287400,
+      "duration_s": 35.2
+    },
+    {
+      "file": "u3-l1-s2.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - The seesaw: price and yield",
+      "bytes": 255600,
+      "duration_s": 31.8
+    },
+    {
+      "file": "u3-l1-s3.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - Duration: who swings the most",
+      "bytes": 233112,
+      "duration_s": 28.7
+    },
+    {
+      "file": "u3-l1-s4-q.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - Most rate-sensitive (question)",
+      "bytes": 144168,
+      "duration_s": 17.9
+    },
+    {
+      "file": "u3-l1-s4-x.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - Most rate-sensitive (explanation)",
+      "bytes": 148656,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u3-l1-s5.mp3",
+      "title": "Unit 3 - Bond basics: price, yield, and duration - Lock it in",
+      "bytes": 182976,
+      "duration_s": 22.3
+    },
+    {
+      "file": "u3-l2-s1.mp3",
+      "title": "Unit 3 - The yield ladder - Three ways to measure yield",
+      "bytes": 220176,
+      "duration_s": 27.0
+    },
+    {
+      "file": "u3-l2-s2.mp3",
+      "title": "Unit 3 - The yield ladder - Worked example: a discount bond",
+      "bytes": 247320,
+      "duration_s": 30.7
+    },
+    {
+      "file": "u3-l2-s3.mp3",
+      "title": "Unit 3 - The yield ladder - Premium bonds flip the ladder",
+      "bytes": 282216,
+      "duration_s": 35.0
+    },
+    {
+      "file": "u3-l2-s4-q.mp3",
+      "title": "Unit 3 - The yield ladder - Rank the yields (question)",
+      "bytes": 145440,
+      "duration_s": 18.1
+    },
+    {
+      "file": "u3-l2-s4-x.mp3",
+      "title": "Unit 3 - The yield ladder - Rank the yields (explanation)",
+      "bytes": 140712,
+      "duration_s": 17.3
+    },
+    {
+      "file": "u3-l2-s5.mp3",
+      "title": "Unit 3 - The yield ladder - Lock it in",
+      "bytes": 157008,
+      "duration_s": 19.6
+    },
+    {
+      "file": "u3-l3-s1.mp3",
+      "title": "Unit 3 - Calls and convertibles - Callable bonds",
+      "bytes": 246216,
+      "duration_s": 30.2
+    },
+    {
+      "file": "u3-l3-s2.mp3",
+      "title": "Unit 3 - Calls and convertibles - Yield to call and yield to worst",
+      "bytes": 261096,
+      "duration_s": 31.8
+    },
+    {
+      "file": "u3-l3-s3-q.mp3",
+      "title": "Unit 3 - Calls and convertibles - Premium and callable (question)",
+      "bytes": 137016,
+      "duration_s": 16.6
+    },
+    {
+      "file": "u3-l3-s3-x.mp3",
+      "title": "Unit 3 - Calls and convertibles - Premium and callable (explanation)",
+      "bytes": 135432,
+      "duration_s": 16.3
+    },
+    {
+      "file": "u3-l3-s4.mp3",
+      "title": "Unit 3 - Calls and convertibles - Convertible bonds",
+      "bytes": 300624,
+      "duration_s": 36.9
+    },
+    {
+      "file": "u3-l3-s5-q.mp3",
+      "title": "Unit 3 - Calls and convertibles - When a convertible acts like stock (question)",
+      "bytes": 136152,
+      "duration_s": 16.5
+    },
+    {
+      "file": "u3-l3-s5-x.mp3",
+      "title": "Unit 3 - Calls and convertibles - When a convertible acts like stock (explanation)",
+      "bytes": 161112,
+      "duration_s": 19.3
+    },
+    {
+      "file": "u3-l3-s6.mp3",
+      "title": "Unit 3 - Calls and convertibles - Lock it in",
+      "bytes": 177240,
+      "duration_s": 21.7
+    },
+    {
+      "file": "u3-l4-s1.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Treasury bills, notes, and bonds",
+      "bytes": 268896,
+      "duration_s": 32.5
+    },
+    {
+      "file": "u3-l4-s2.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Agency pass-throughs",
+      "bytes": 249480,
+      "duration_s": 30.5
+    },
+    {
+      "file": "u3-l4-s3.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - CMOs: slicing the pool into tranches",
+      "bytes": 230376,
+      "duration_s": 28.8
+    },
+    {
+      "file": "u3-l4-s4.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Contraction vs. extension",
+      "bytes": 228912,
+      "duration_s": 28.0
+    },
+    {
+      "file": "u3-l4-s5-q.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Who takes the shock (question)",
+      "bytes": 196272,
+      "duration_s": 24.4
+    },
+    {
+      "file": "u3-l4-s5-x.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Who takes the shock (explanation)",
+      "bytes": 152880,
+      "duration_s": 18.7
+    },
+    {
+      "file": "u3-l4-s6.mp3",
+      "title": "Unit 3 - Treasuries, agencies, and CMOs - Lock it in",
+      "bytes": 203664,
+      "duration_s": 24.8
+    },
+    {
+      "file": "u3-l5-s1.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Corporate bonds and credit ratings",
+      "bytes": 280584,
+      "duration_s": 34.3
+    },
+    {
+      "file": "u3-l5-s2-q.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - The investment-grade line (question)",
+      "bytes": 148752,
+      "duration_s": 18.2
+    },
+    {
+      "file": "u3-l5-s2-x.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - The investment-grade line (explanation)",
+      "bytes": 101016,
+      "duration_s": 12.5
+    },
+    {
+      "file": "u3-l5-s3.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Municipal bonds: GO vs. revenue",
+      "bytes": 299160,
+      "duration_s": 37.2
+    },
+    {
+      "file": "u3-l5-s4-q.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - What backs a GO bond (question)",
+      "bytes": 148032,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u3-l5-s4-x.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - What backs a GO bond (explanation)",
+      "bytes": 111576,
+      "duration_s": 13.7
+    },
+    {
+      "file": "u3-l5-s5.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Money market instruments",
+      "bytes": 233808,
+      "duration_s": 28.6
+    },
+    {
+      "file": "u3-l5-s6-q.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Spot the money market instrument (question)",
+      "bytes": 79608,
+      "duration_s": 9.9
+    },
+    {
+      "file": "u3-l5-s6-x.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Spot the money market instrument (explanation)",
+      "bytes": 138144,
+      "duration_s": 16.7
+    },
+    {
+      "file": "u3-l5-s7.mp3",
+      "title": "Unit 3 - Ratings, munis, and money markets - Lock it in",
+      "bytes": 212976,
+      "duration_s": 26.0
+    },
+    {
+      "file": "u4-l1-s1.mp3",
+      "title": "Unit 4 - Options vocabulary - What an option is",
+      "bytes": 235152,
+      "duration_s": 28.7
+    },
+    {
+      "file": "u4-l1-s2.mp3",
+      "title": "Unit 4 - Options vocabulary - Buyers and writers",
+      "bytes": 262224,
+      "duration_s": 31.9
+    },
+    {
+      "file": "u4-l1-s3.mp3",
+      "title": "Unit 4 - Options vocabulary - In, at, or out of the money",
+      "bytes": 275400,
+      "duration_s": 33.4
+    },
+    {
+      "file": "u4-l1-s4.mp3",
+      "title": "Unit 4 - Options vocabulary - Styles, paperwork, and the clearinghouse",
+      "bytes": 310488,
+      "duration_s": 37.5
+    },
+    {
+      "file": "u4-l1-s5-q.mp3",
+      "title": "Unit 4 - Options vocabulary - Is this put in the money? (question)",
+      "bytes": 181824,
+      "duration_s": 22.9
+    },
+    {
+      "file": "u4-l1-s5-x.mp3",
+      "title": "Unit 4 - Options vocabulary - Is this put in the money? (explanation)",
+      "bytes": 129240,
+      "duration_s": 15.8
+    },
+    {
+      "file": "u4-l1-s6.mp3",
+      "title": "Unit 4 - Options vocabulary - Lock it in",
+      "bytes": 213456,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u4-l2-s1.mp3",
+      "title": "Unit 4 - Long calls and long puts - The breakeven idea",
+      "bytes": 206040,
+      "duration_s": 25.6
+    },
+    {
+      "file": "u4-l2-s2.mp3",
+      "title": "Unit 4 - Long calls and long puts - Worked example: a long call",
+      "bytes": 248688,
+      "duration_s": 30.5
+    },
+    {
+      "file": "u4-l2-s3-q.mp3",
+      "title": "Unit 4 - Long calls and long puts - Long call numbers (question)",
+      "bytes": 185472,
+      "duration_s": 23.2
+    },
+    {
+      "file": "u4-l2-s3-x.mp3",
+      "title": "Unit 4 - Long calls and long puts - Long call numbers (explanation)",
+      "bytes": 159576,
+      "duration_s": 19.4
+    },
+    {
+      "file": "u4-l2-s4.mp3",
+      "title": "Unit 4 - Long calls and long puts - Worked example: a long put",
+      "bytes": 267360,
+      "duration_s": 33.5
+    },
+    {
+      "file": "u4-l2-s5-q.mp3",
+      "title": "Unit 4 - Long calls and long puts - Long put numbers (question)",
+      "bytes": 183816,
+      "duration_s": 23.3
+    },
+    {
+      "file": "u4-l2-s5-x.mp3",
+      "title": "Unit 4 - Long calls and long puts - Long put numbers (explanation)",
+      "bytes": 181680,
+      "duration_s": 22.6
+    },
+    {
+      "file": "u4-l2-s6.mp3",
+      "title": "Unit 4 - Long calls and long puts - Lock it in",
+      "bytes": 161808,
+      "duration_s": 19.5
+    },
+    {
+      "file": "u4-l3-s1.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Why write a covered call",
+      "bytes": 218664,
+      "duration_s": 26.6
+    },
+    {
+      "file": "u4-l3-s2.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Worked example: buy at $40, sell the $40 call",
+      "bytes": 313296,
+      "duration_s": 39.4
+    },
+    {
+      "file": "u4-l3-s3-q.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Covered call max gain (question)",
+      "bytes": 134472,
+      "duration_s": 16.7
+    },
+    {
+      "file": "u4-l3-s3-x.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Covered call max gain (explanation)",
+      "bytes": 164472,
+      "duration_s": 20.2
+    },
+    {
+      "file": "u4-l3-s4.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Covered vs. naked",
+      "bytes": 309264,
+      "duration_s": 38.4
+    },
+    {
+      "file": "u4-l3-s5-q.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Unlimited risk (question)",
+      "bytes": 83304,
+      "duration_s": 10.3
+    },
+    {
+      "file": "u4-l3-s5-x.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Unlimited risk (explanation)",
+      "bytes": 123168,
+      "duration_s": 14.8
+    },
+    {
+      "file": "u4-l3-s6.mp3",
+      "title": "Unit 4 - Covered calls and naked risk - Lock it in",
+      "bytes": 159768,
+      "duration_s": 19.3
+    },
+    {
+      "file": "u4-l4-s1.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Open-end mutual funds and NAV",
+      "bytes": 269136,
+      "duration_s": 32.4
+    },
+    {
+      "file": "u4-l4-s2.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Forward pricing",
+      "bytes": 211800,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u4-l4-s3-q.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - After the close (question)",
+      "bytes": 175392,
+      "duration_s": 22.0
+    },
+    {
+      "file": "u4-l4-s3-x.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - After the close (explanation)",
+      "bytes": 153864,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u4-l4-s4.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Closed-end funds and ETFs",
+      "bytes": 308040,
+      "duration_s": 37.5
+    },
+    {
+      "file": "u4-l4-s5.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Unit investment trusts and the big picture",
+      "bytes": 276744,
+      "duration_s": 33.6
+    },
+    {
+      "file": "u4-l4-s6-q.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Closed-end funds (question)",
+      "bytes": 208200,
+      "duration_s": 25.6
+    },
+    {
+      "file": "u4-l4-s6-x.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Closed-end funds (explanation)",
+      "bytes": 179496,
+      "duration_s": 21.7
+    },
+    {
+      "file": "u4-l4-s7.mp3",
+      "title": "Unit 4 - Mutual funds, closed-end funds, ETFs, and UITs - Lock it in",
+      "bytes": 208176,
+      "duration_s": 25.2
+    },
+    {
+      "file": "u4-l5-s1.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Share classes: when you pay the sales charge",
+      "bytes": 276312,
+      "duration_s": 34.3
+    },
+    {
+      "file": "u4-l5-s2.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Breakpoints, rights of accumulation, letters of intent",
+      "bytes": 340248,
+      "duration_s": 42.5
+    },
+    {
+      "file": "u4-l5-s3-q.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Class A shares (question)",
+      "bytes": 148176,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u4-l5-s3-x.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Class A shares (explanation)",
+      "bytes": 136968,
+      "duration_s": 16.7
+    },
+    {
+      "file": "u4-l5-s4-q.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Reaching the breakpoint (question)",
+      "bytes": 167064,
+      "duration_s": 20.9
+    },
+    {
+      "file": "u4-l5-s4-x.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Reaching the breakpoint (explanation)",
+      "bytes": 168120,
+      "duration_s": 20.7
+    },
+    {
+      "file": "u4-l5-s5.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Variable annuities",
+      "bytes": 258696,
+      "duration_s": 31.4
+    },
+    {
+      "file": "u4-l5-s6-q.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Variable vs. fixed (question)",
+      "bytes": 161856,
+      "duration_s": 20.0
+    },
+    {
+      "file": "u4-l5-s6-x.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Variable vs. fixed (explanation)",
+      "bytes": 112200,
+      "duration_s": 13.6
+    },
+    {
+      "file": "u4-l5-s7.mp3",
+      "title": "Unit 4 - Share classes, breakpoints, and variable annuities - Lock it in",
+      "bytes": 234000,
+      "duration_s": 28.9
+    },
+    {
+      "file": "u5-l1-s1.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - Accounts built for one goal",
+      "bytes": 235944,
+      "duration_s": 28.4
+    },
+    {
+      "file": "u5-l1-s2.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - 529 plans: education savings",
+      "bytes": 293376,
+      "duration_s": 36.1
+    },
+    {
+      "file": "u5-l1-s3.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - ABLE accounts: disability expenses",
+      "bytes": 260832,
+      "duration_s": 32.2
+    },
+    {
+      "file": "u5-l1-s4.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - LGIPs: cash pools for governments",
+      "bytes": 179616,
+      "duration_s": 22.5
+    },
+    {
+      "file": "u5-l1-s5-q.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - ABLE eligibility (question)",
+      "bytes": 214368,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u5-l1-s5-x.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - ABLE eligibility (explanation)",
+      "bytes": 176928,
+      "duration_s": 21.5
+    },
+    {
+      "file": "u5-l1-s6.mp3",
+      "title": "Unit 5 - 529, ABLE, and other municipal fund securities - Lock it in",
+      "bytes": 211752,
+      "duration_s": 25.6
+    },
+    {
+      "file": "u5-l2-s1.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - Direct participation programs",
+      "bytes": 259776,
+      "duration_s": 31.9
+    },
+    {
+      "file": "u5-l2-s2.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - REITs: real estate in a share",
+      "bytes": 270360,
+      "duration_s": 32.7
+    },
+    {
+      "file": "u5-l2-s3.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - The DPP vs. REIT trap",
+      "bytes": 207624,
+      "duration_s": 25.8
+    },
+    {
+      "file": "u5-l2-s4.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - Hedge funds",
+      "bytes": 211632,
+      "duration_s": 25.6
+    },
+    {
+      "file": "u5-l2-s5-q.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - Pick the product (question)",
+      "bytes": 160704,
+      "duration_s": 19.9
+    },
+    {
+      "file": "u5-l2-s5-x.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - Pick the product (explanation)",
+      "bytes": 155712,
+      "duration_s": 19.4
+    },
+    {
+      "file": "u5-l2-s6.mp3",
+      "title": "Unit 5 - DPPs, REITs, and hedge funds - Lock it in",
+      "bytes": 240432,
+      "duration_s": 29.4
+    },
+    {
+      "file": "u5-l3-s1.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Two buckets of risk",
+      "bytes": 231576,
+      "duration_s": 28.3
+    },
+    {
+      "file": "u5-l3-s2.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Sorting the risks",
+      "bytes": 234936,
+      "duration_s": 28.2
+    },
+    {
+      "file": "u5-l3-s3-q.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - What diversification cannot fix (question)",
+      "bytes": 147024,
+      "duration_s": 18.1
+    },
+    {
+      "file": "u5-l3-s3-x.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - What diversification cannot fix (explanation)",
+      "bytes": 148344,
+      "duration_s": 17.7
+    },
+    {
+      "file": "u5-l3-s4.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Three tools to manage risk",
+      "bytes": 196296,
+      "duration_s": 23.9
+    },
+    {
+      "file": "u5-l3-s5.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Rebalancing with real numbers",
+      "bytes": 308328,
+      "duration_s": 37.8
+    },
+    {
+      "file": "u5-l3-s6-q.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Rebalancing (question)",
+      "bytes": 214584,
+      "duration_s": 26.7
+    },
+    {
+      "file": "u5-l3-s6-x.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Rebalancing (explanation)",
+      "bytes": 113832,
+      "duration_s": 14.0
+    },
+    {
+      "file": "u5-l3-s7.mp3",
+      "title": "Unit 5 - Systematic vs. unsystematic risk - Lock it in",
+      "bytes": 195624,
+      "duration_s": 23.9
+    },
+    {
+      "file": "u5-l4-s1.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Why rates drive so many risks",
+      "bytes": 192384,
+      "duration_s": 23.3
+    },
+    {
+      "file": "u5-l4-s2.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Interest-rate risk: rates rise",
+      "bytes": 168312,
+      "duration_s": 20.6
+    },
+    {
+      "file": "u5-l4-s3.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Reinvestment risk: rates fall",
+      "bytes": 219816,
+      "duration_s": 26.8
+    },
+    {
+      "file": "u5-l4-s4.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Prepayment risk: homeowners refinance",
+      "bytes": 209496,
+      "duration_s": 25.4
+    },
+    {
+      "file": "u5-l4-s5-q.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Reinvestment risk (question)",
+      "bytes": 154224,
+      "duration_s": 19.6
+    },
+    {
+      "file": "u5-l4-s5-x.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Reinvestment risk (explanation)",
+      "bytes": 146856,
+      "duration_s": 17.6
+    },
+    {
+      "file": "u5-l4-s6-q.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Prepayment risk (question)",
+      "bytes": 140304,
+      "duration_s": 17.5
+    },
+    {
+      "file": "u5-l4-s6-x.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Prepayment risk (explanation)",
+      "bytes": 128640,
+      "duration_s": 15.2
+    },
+    {
+      "file": "u5-l4-s7.mp3",
+      "title": "Unit 5 - Interest rates: price, reinvestment, and prepayment risk - Lock it in",
+      "bytes": 175152,
+      "duration_s": 21.1
+    },
+    {
+      "file": "u5-l5-s1.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - Risks beyond rates",
+      "bytes": 198240,
+      "duration_s": 24.0
+    },
+    {
+      "file": "u5-l5-s2.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ETFs vs. ETNs: credit risk in disguise",
+      "bytes": 213288,
+      "duration_s": 26.3
+    },
+    {
+      "file": "u5-l5-s3-q.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ETN surprise (question)",
+      "bytes": 179544,
+      "duration_s": 22.3
+    },
+    {
+      "file": "u5-l5-s3-x.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ETN surprise (explanation)",
+      "bytes": 129912,
+      "duration_s": 15.8
+    },
+    {
+      "file": "u5-l5-s4.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ADRs: stock risk plus currency risk",
+      "bytes": 302736,
+      "duration_s": 37.5
+    },
+    {
+      "file": "u5-l5-s5-q.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ADR and a stronger currency (question)",
+      "bytes": 203976,
+      "duration_s": 24.9
+    },
+    {
+      "file": "u5-l5-s5-x.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - ADR and a stronger currency (explanation)",
+      "bytes": 152880,
+      "duration_s": 18.9
+    },
+    {
+      "file": "u5-l5-s6.mp3",
+      "title": "Unit 5 - Credit, liquidity, currency, and political risk - Lock it in",
+      "bytes": 195312,
+      "duration_s": 23.7
+    },
+    {
+      "file": "u6-l1-s1.mp3",
+      "title": "Unit 6 - Order types and where they sit - Market vs. limit: speed or price",
+      "bytes": 217104,
+      "duration_s": 27.0
+    },
+    {
+      "file": "u6-l1-s2.mp3",
+      "title": "Unit 6 - Order types and where they sit - Stop orders and stop-limits",
+      "bytes": 186024,
+      "duration_s": 22.7
+    },
+    {
+      "file": "u6-l1-s3.mp3",
+      "title": "Unit 6 - Order types and where they sit - When the stock gaps",
+      "bytes": 201864,
+      "duration_s": 24.8
+    },
+    {
+      "file": "u6-l1-s4.mp3",
+      "title": "Unit 6 - Order types and where they sit - How long an order lasts",
+      "bytes": 192480,
+      "duration_s": 23.0
+    },
+    {
+      "file": "u6-l1-s5-q.mp3",
+      "title": "Unit 6 - Order types and where they sit - Protecting a short (question)",
+      "bytes": 153576,
+      "duration_s": 19.2
+    },
+    {
+      "file": "u6-l1-s5-x.mp3",
+      "title": "Unit 6 - Order types and where they sit - Protecting a short (explanation)",
+      "bytes": 162288,
+      "duration_s": 20.0
+    },
+    {
+      "file": "u6-l1-s6.mp3",
+      "title": "Unit 6 - Order types and where they sit - Lock it in",
+      "bytes": 204888,
+      "duration_s": 24.9
+    },
+    {
+      "file": "u6-l2-s1.mp3",
+      "title": "Unit 6 - Who is on the other side - Principal vs. agency",
+      "bytes": 195192,
+      "duration_s": 24.0
+    },
+    {
+      "file": "u6-l2-s2.mp3",
+      "title": "Unit 6 - Who is on the other side - Long vs. short",
+      "bytes": 215040,
+      "duration_s": 26.4
+    },
+    {
+      "file": "u6-l2-s3.mp3",
+      "title": "Unit 6 - Who is on the other side - Reg SHO: locate first",
+      "bytes": 244344,
+      "duration_s": 30.0
+    },
+    {
+      "file": "u6-l2-s4-q.mp3",
+      "title": "Unit 6 - Who is on the other side - The locate (question)",
+      "bytes": 180240,
+      "duration_s": 22.5
+    },
+    {
+      "file": "u6-l2-s4-x.mp3",
+      "title": "Unit 6 - Who is on the other side - The locate (explanation)",
+      "bytes": 134040,
+      "duration_s": 16.6
+    },
+    {
+      "file": "u6-l2-s5.mp3",
+      "title": "Unit 6 - Who is on the other side - Backing away and marking the close",
+      "bytes": 228360,
+      "duration_s": 28.1
+    },
+    {
+      "file": "u6-l2-s6-q.mp3",
+      "title": "Unit 6 - Who is on the other side - Name the violation (question)",
+      "bytes": 159312,
+      "duration_s": 20.0
+    },
+    {
+      "file": "u6-l2-s6-x.mp3",
+      "title": "Unit 6 - Who is on the other side - Name the violation (explanation)",
+      "bytes": 135048,
+      "duration_s": 16.0
+    },
+    {
+      "file": "u6-l2-s7.mp3",
+      "title": "Unit 6 - Who is on the other side - Lock it in",
+      "bytes": 264192,
+      "duration_s": 33.0
+    },
+    {
+      "file": "u6-l3-s1.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - T+1 settlement",
+      "bytes": 222288,
+      "duration_s": 27.1
+    },
+    {
+      "file": "u6-l3-s2.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Freeriding vs. good-faith violations",
+      "bytes": 253416,
+      "duration_s": 31.4
+    },
+    {
+      "file": "u6-l3-s3-q.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Spot the violation (question)",
+      "bytes": 193512,
+      "duration_s": 24.3
+    },
+    {
+      "file": "u6-l3-s3-x.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Spot the violation (explanation)",
+      "bytes": 140784,
+      "duration_s": 17.2
+    },
+    {
+      "file": "u6-l3-s4.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - The wash sale rule",
+      "bytes": 205656,
+      "duration_s": 25.5
+    },
+    {
+      "file": "u6-l3-s5.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Wash sale with numbers",
+      "bytes": 307632,
+      "duration_s": 37.5
+    },
+    {
+      "file": "u6-l3-s6-q.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Wash sale (question)",
+      "bytes": 173160,
+      "duration_s": 21.5
+    },
+    {
+      "file": "u6-l3-s6-x.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Wash sale (explanation)",
+      "bytes": 114696,
+      "duration_s": 13.8
+    },
+    {
+      "file": "u6-l3-s7.mp3",
+      "title": "Unit 6 - Settlement and cash-account traps - Lock it in",
+      "bytes": 210072,
+      "duration_s": 25.9
+    },
+    {
+      "file": "u6-l4-s1.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Dividend dates under T+1",
+      "bytes": 233376,
+      "duration_s": 28.3
+    },
+    {
+      "file": "u6-l4-s2-q.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Last day to buy (question)",
+      "bytes": 147984,
+      "duration_s": 18.2
+    },
+    {
+      "file": "u6-l4-s2-x.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Last day to buy (explanation)",
+      "bytes": 131976,
+      "duration_s": 15.8
+    },
+    {
+      "file": "u6-l4-s3.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Nominal yield vs. current yield",
+      "bytes": 292752,
+      "duration_s": 36.2
+    },
+    {
+      "file": "u6-l4-s4.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Yield order and yield to worst",
+      "bytes": 243768,
+      "duration_s": 29.6
+    },
+    {
+      "file": "u6-l4-s5.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Basis points and cost basis",
+      "bytes": 304104,
+      "duration_s": 37.1
+    },
+    {
+      "file": "u6-l4-s6-q.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Count the basis points (question)",
+      "bytes": 150240,
+      "duration_s": 19.1
+    },
+    {
+      "file": "u6-l4-s6-x.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Count the basis points (explanation)",
+      "bytes": 140040,
+      "duration_s": 17.5
+    },
+    {
+      "file": "u6-l4-s7.mp3",
+      "title": "Unit 6 - Dividends, yields, and basis points - Lock it in",
+      "bytes": 207096,
+      "duration_s": 25.6
+    },
+    {
+      "file": "u6-l5-s1.mp3",
+      "title": "Unit 6 - Corporate actions - Stock splits and reverse splits",
+      "bytes": 277824,
+      "duration_s": 35.2
+    },
+    {
+      "file": "u6-l5-s2.mp3",
+      "title": "Unit 6 - Corporate actions - Buybacks and tender offers",
+      "bytes": 231672,
+      "duration_s": 28.2
+    },
+    {
+      "file": "u6-l5-s3.mp3",
+      "title": "Unit 6 - Corporate actions - Rights offerings, proxies, and mergers",
+      "bytes": 248112,
+      "duration_s": 30.4
+    },
+    {
+      "file": "u6-l5-s4-q.mp3",
+      "title": "Unit 6 - Corporate actions - Split math (question)",
+      "bytes": 166392,
+      "duration_s": 21.0
+    },
+    {
+      "file": "u6-l5-s4-x.mp3",
+      "title": "Unit 6 - Corporate actions - Split math (explanation)",
+      "bytes": 149520,
+      "duration_s": 18.6
+    },
+    {
+      "file": "u6-l5-s5-q.mp3",
+      "title": "Unit 6 - Corporate actions - Name the action (question)",
+      "bytes": 157584,
+      "duration_s": 19.5
+    },
+    {
+      "file": "u6-l5-s5-x.mp3",
+      "title": "Unit 6 - Corporate actions - Name the action (explanation)",
+      "bytes": 139944,
+      "duration_s": 16.9
+    },
+    {
+      "file": "u6-l5-s6.mp3",
+      "title": "Unit 6 - Corporate actions - Lock it in",
+      "bytes": 213840,
+      "duration_s": 26.8
+    },
+    {
+      "file": "u7-l1-s1.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - Who is this person?",
+      "bytes": 229704,
+      "duration_s": 28.3
+    },
+    {
+      "file": "u7-l1-s2.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - KYC, suitability, and Reg BI",
+      "bytes": 340728,
+      "duration_s": 41.3
+    },
+    {
+      "file": "u7-l1-s3-q.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - CIP or KYC? (question)",
+      "bytes": 134184,
+      "duration_s": 16.6
+    },
+    {
+      "file": "u7-l1-s3-x.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - CIP or KYC? (explanation)",
+      "bytes": 152520,
+      "duration_s": 18.3
+    },
+    {
+      "file": "u7-l1-s4.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - The account type is a recommendation too",
+      "bytes": 322032,
+      "duration_s": 39.5
+    },
+    {
+      "file": "u7-l1-s5.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - Seniors and trusted contacts",
+      "bytes": 363120,
+      "duration_s": 44.3
+    },
+    {
+      "file": "u7-l1-s6-q.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - Who is a specified adult? (question)",
+      "bytes": 216936,
+      "duration_s": 26.9
+    },
+    {
+      "file": "u7-l1-s6-x.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - Who is a specified adult? (explanation)",
+      "bytes": 157032,
+      "duration_s": 18.6
+    },
+    {
+      "file": "u7-l1-s7.mp3",
+      "title": "Unit 7 - Opening the account: know your customer - Lock it in",
+      "bytes": 263064,
+      "duration_s": 31.9
+    },
+    {
+      "file": "u7-l2-s1.mp3",
+      "title": "Unit 7 - Registrations and SIPC - Whose account is it?",
+      "bytes": 281784,
+      "duration_s": 35.2
+    },
+    {
+      "file": "u7-l2-s2.mp3",
+      "title": "Unit 7 - Registrations and SIPC - UTMA and UGMA accounts",
+      "bytes": 244560,
+      "duration_s": 30.0
+    },
+    {
+      "file": "u7-l2-s3-q.mp3",
+      "title": "Unit 7 - Registrations and SIPC - Custodial accounts (question)",
+      "bytes": 204432,
+      "duration_s": 25.1
+    },
+    {
+      "file": "u7-l2-s3-x.mp3",
+      "title": "Unit 7 - Registrations and SIPC - Custodial accounts (explanation)",
+      "bytes": 96000,
+      "duration_s": 11.6
+    },
+    {
+      "file": "u7-l2-s4.mp3",
+      "title": "Unit 7 - Registrations and SIPC - SIPC protects capacities, not people",
+      "bytes": 261360,
+      "duration_s": 32.3
+    },
+    {
+      "file": "u7-l2-s5.mp3",
+      "title": "Unit 7 - Registrations and SIPC - SIPC worked example",
+      "bytes": 337656,
+      "duration_s": 41.7
+    },
+    {
+      "file": "u7-l2-s6-q.mp3",
+      "title": "Unit 7 - Registrations and SIPC - SIPC capacities (question)",
+      "bytes": 198720,
+      "duration_s": 24.7
+    },
+    {
+      "file": "u7-l2-s6-x.mp3",
+      "title": "Unit 7 - Registrations and SIPC - SIPC capacities (explanation)",
+      "bytes": 201600,
+      "duration_s": 25.2
+    },
+    {
+      "file": "u7-l2-s7.mp3",
+      "title": "Unit 7 - Registrations and SIPC - Lock it in",
+      "bytes": 211296,
+      "duration_s": 26.2
+    },
+    {
+      "file": "u7-l3-s1.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Discretion needs two writings",
+      "bytes": 289104,
+      "duration_s": 35.4
+    },
+    {
+      "file": "u7-l3-s2-q.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Is this discretion? (question)",
+      "bytes": 228072,
+      "duration_s": 27.6
+    },
+    {
+      "file": "u7-l3-s2-x.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Is this discretion? (explanation)",
+      "bytes": 142512,
+      "duration_s": 17.1
+    },
+    {
+      "file": "u7-l3-s3.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Cash vs. margin accounts",
+      "bytes": 301728,
+      "duration_s": 37.1
+    },
+    {
+      "file": "u7-l3-s4.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Margin by the numbers",
+      "bytes": 385728,
+      "duration_s": 47.9
+    },
+    {
+      "file": "u7-l3-s5.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Pattern day traders",
+      "bytes": 333360,
+      "duration_s": 40.8
+    },
+    {
+      "file": "u7-l3-s6-q.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Margin numbers (question)",
+      "bytes": 137256,
+      "duration_s": 17.3
+    },
+    {
+      "file": "u7-l3-s6-x.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Margin numbers (explanation)",
+      "bytes": 177240,
+      "duration_s": 21.7
+    },
+    {
+      "file": "u7-l3-s7.mp3",
+      "title": "Unit 7 - Discretion, margin, and day trading - Lock it in",
+      "bytes": 219528,
+      "duration_s": 26.9
+    },
+    {
+      "file": "u7-l4-s1.mp3",
+      "title": "Unit 7 - Retirement accounts - IRAs need earned income",
+      "bytes": 309816,
+      "duration_s": 38.4
+    },
+    {
+      "file": "u7-l4-s2.mp3",
+      "title": "Unit 7 - Retirement accounts - Traditional vs. Roth",
+      "bytes": 301368,
+      "duration_s": 37.0
+    },
+    {
+      "file": "u7-l4-s3.mp3",
+      "title": "Unit 7 - Retirement accounts - The Roth five-year clock",
+      "bytes": 349440,
+      "duration_s": 42.7
+    },
+    {
+      "file": "u7-l4-s4-q.mp3",
+      "title": "Unit 7 - Retirement accounts - The Roth trap (question)",
+      "bytes": 212112,
+      "duration_s": 26.0
+    },
+    {
+      "file": "u7-l4-s4-x.mp3",
+      "title": "Unit 7 - Retirement accounts - The Roth trap (explanation)",
+      "bytes": 146352,
+      "duration_s": 17.9
+    },
+    {
+      "file": "u7-l4-s5.mp3",
+      "title": "Unit 7 - Retirement accounts - RMDs and ERISA",
+      "bytes": 274920,
+      "duration_s": 34.2
+    },
+    {
+      "file": "u7-l4-s6-q.mp3",
+      "title": "Unit 7 - Retirement accounts - Who does ERISA cover? (question)",
+      "bytes": 151152,
+      "duration_s": 18.9
+    },
+    {
+      "file": "u7-l4-s6-x.mp3",
+      "title": "Unit 7 - Retirement accounts - Who does ERISA cover? (explanation)",
+      "bytes": 150504,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u7-l4-s7.mp3",
+      "title": "Unit 7 - Retirement accounts - Lock it in",
+      "bytes": 260328,
+      "duration_s": 31.9
+    },
+    {
+      "file": "u7-l5-s1.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - How money laundering works",
+      "bytes": 322128,
+      "duration_s": 40.4
+    },
+    {
+      "file": "u7-l5-s2.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - SAR vs. CTR, FinCEN and OFAC",
+      "bytes": 364656,
+      "duration_s": 45.0
+    },
+    {
+      "file": "u7-l5-s3-q.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - CTR or SAR? (question)",
+      "bytes": 251736,
+      "duration_s": 31.8
+    },
+    {
+      "file": "u7-l5-s3-x.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - CTR or SAR? (explanation)",
+      "bytes": 173040,
+      "duration_s": 21.5
+    },
+    {
+      "file": "u7-l5-s4.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - Regulation S-P: customer privacy",
+      "bytes": 228432,
+      "duration_s": 27.7
+    },
+    {
+      "file": "u7-l5-s5.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - Communications and cold calls",
+      "bytes": 367320,
+      "duration_s": 44.8
+    },
+    {
+      "file": "u7-l5-s6-q.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - Retail or correspondence? (question)",
+      "bytes": 204024,
+      "duration_s": 25.5
+    },
+    {
+      "file": "u7-l5-s6-x.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - Retail or correspondence? (explanation)",
+      "bytes": 154344,
+      "duration_s": 18.5
+    },
+    {
+      "file": "u7-l5-s7.mp3",
+      "title": "Unit 7 - AML, privacy, and reaching out - Lock it in",
+      "bytes": 318888,
+      "duration_s": 39.1
+    },
+    {
+      "file": "u8-l1-s1.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Match the motive to the label",
+      "bytes": 253512,
+      "duration_s": 30.8
+    },
+    {
+      "file": "u8-l1-s2.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Churning and backing away",
+      "bytes": 247944,
+      "duration_s": 30.4
+    },
+    {
+      "file": "u8-l1-s3.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Spotting the pattern",
+      "bytes": 197688,
+      "duration_s": 24.3
+    },
+    {
+      "file": "u8-l1-s4-q.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Three elements of churning (question)",
+      "bytes": 157248,
+      "duration_s": 19.6
+    },
+    {
+      "file": "u8-l1-s4-x.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Three elements of churning (explanation)",
+      "bytes": 111600,
+      "duration_s": 13.7
+    },
+    {
+      "file": "u8-l1-s5-q.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Backing away (question)",
+      "bytes": 140136,
+      "duration_s": 17.7
+    },
+    {
+      "file": "u8-l1-s5-x.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Backing away (explanation)",
+      "bytes": 126336,
+      "duration_s": 15.7
+    },
+    {
+      "file": "u8-l1-s6.mp3",
+      "title": "Unit 8 - Market manipulation and trading abuses - Lock it in",
+      "bytes": 167616,
+      "duration_s": 20.2
+    },
+    {
+      "file": "u8-l2-s1.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Insider trading under Rule 10b-5",
+      "bytes": 219168,
+      "duration_s": 26.7
+    },
+    {
+      "file": "u8-l2-s2.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Never allowed with customers",
+      "bytes": 299232,
+      "duration_s": 36.3
+    },
+    {
+      "file": "u8-l2-s3.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - IPO restrictions and senior protection",
+      "bytes": 350664,
+      "duration_s": 43.3
+    },
+    {
+      "file": "u8-l2-s4-q.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Signatures of convenience (question)",
+      "bytes": 198816,
+      "duration_s": 24.4
+    },
+    {
+      "file": "u8-l2-s4-x.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Signatures of convenience (explanation)",
+      "bytes": 101232,
+      "duration_s": 11.8
+    },
+    {
+      "file": "u8-l2-s5-q.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Tipper and tippee liability (question)",
+      "bytes": 217536,
+      "duration_s": 26.5
+    },
+    {
+      "file": "u8-l2-s5-x.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Tipper and tippee liability (explanation)",
+      "bytes": 111768,
+      "duration_s": 13.6
+    },
+    {
+      "file": "u8-l2-s6.mp3",
+      "title": "Unit 8 - Insider trading, customer boundaries, and seniors - Lock it in",
+      "bytes": 292536,
+      "duration_s": 35.7
+    },
+    {
+      "file": "u8-l3-s1.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Registered vs. non-registered roles",
+      "bytes": 286776,
+      "duration_s": 35.2
+    },
+    {
+      "file": "u8-l3-s2.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Background checks and statutory disqualification",
+      "bytes": 272640,
+      "duration_s": 33.4
+    },
+    {
+      "file": "u8-l3-s3.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Continuing education (CE)",
+      "bytes": 230664,
+      "duration_s": 28.4
+    },
+    {
+      "file": "u8-l3-s4-q.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Form U4 vs. Form U5 (question)",
+      "bytes": 119160,
+      "duration_s": 14.9
+    },
+    {
+      "file": "u8-l3-s4-x.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Form U4 vs. Form U5 (explanation)",
+      "bytes": 149160,
+      "duration_s": 18.0
+    },
+    {
+      "file": "u8-l3-s5-q.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Continuing education frequency (question)",
+      "bytes": 156720,
+      "duration_s": 19.5
+    },
+    {
+      "file": "u8-l3-s5-x.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Continuing education frequency (explanation)",
+      "bytes": 117216,
+      "duration_s": 14.3
+    },
+    {
+      "file": "u8-l3-s6.mp3",
+      "title": "Unit 8 - Registration, Form U4/U5, and continuing education - Lock it in",
+      "bytes": 224688,
+      "duration_s": 27.4
+    },
+    {
+      "file": "u8-l4-s1.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - OBA vs. selling away",
+      "bytes": 303840,
+      "duration_s": 37.4
+    },
+    {
+      "file": "u8-l4-s2.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Gifts, business entertainment, and pay-to-play",
+      "bytes": 370680,
+      "duration_s": 45.7
+    },
+    {
+      "file": "u8-l4-s3.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Customer complaints and reportable events",
+      "bytes": 319200,
+      "duration_s": 39.0
+    },
+    {
+      "file": "u8-l4-s4-q.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Gifts vs. business entertainment (question)",
+      "bytes": 264120,
+      "duration_s": 32.7
+    },
+    {
+      "file": "u8-l4-s4-x.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Gifts vs. business entertainment (explanation)",
+      "bytes": 178080,
+      "duration_s": 22.1
+    },
+    {
+      "file": "u8-l4-s5-q.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Reportable complaints on Form U4 (question)",
+      "bytes": 202896,
+      "duration_s": 25.0
+    },
+    {
+      "file": "u8-l4-s5-x.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Reportable complaints on Form U4 (explanation)",
+      "bytes": 122568,
+      "duration_s": 14.7
+    },
+    {
+      "file": "u8-l4-s6.mp3",
+      "title": "Unit 8 - Employee conduct, OBA, gifts, and reportable events - Lock it in",
+      "bytes": 430152,
+      "duration_s": 53.3
+    },
+    {
+      "file": "u8-l5-s1.mp3",
+      "title": "Unit 8 - The four foundational securities acts - Why regulation exists",
+      "bytes": 243696,
+      "duration_s": 29.6
+    },
+    {
+      "file": "u8-l5-s2.mp3",
+      "title": "Unit 8 - The four foundational securities acts - The four acts side by side",
+      "bytes": 377664,
+      "duration_s": 46.1
+    },
+    {
+      "file": "u8-l5-s3.mp3",
+      "title": "Unit 8 - The four foundational securities acts - Using the four-act frame on an unfamiliar question",
+      "bytes": 240912,
+      "duration_s": 30.1
+    },
+    {
+      "file": "u8-l5-s4-q.mp3",
+      "title": "Unit 8 - The four foundational securities acts - Matching the act to the job (question)",
+      "bytes": 185520,
+      "duration_s": 22.9
+    },
+    {
+      "file": "u8-l5-s4-x.mp3",
+      "title": "Unit 8 - The four foundational securities acts - Matching the act to the job (explanation)",
+      "bytes": 148872,
+      "duration_s": 18.3
+    },
+    {
+      "file": "u8-l5-s5.mp3",
+      "title": "Unit 8 - The four foundational securities acts - Lock it in",
+      "bytes": 250056,
+      "duration_s": 30.4
+    }
+  ]
+}
