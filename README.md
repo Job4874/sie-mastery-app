@@ -6,6 +6,51 @@ The app now starts at zero: a five-card **Zero → First Trade** primer, a 10-qu
 placement check, then an adaptive 8-unit curriculum that ends in Final Review and
 Master mode. Experienced users can skip the primer and go straight to trap drilling.
 
+## Quick start — pick your OS
+
+**Zero install needed to study.** Open `static/index.html` in any modern browser
+(double-click it). Everything works offline except live voice synthesis, which
+falls back to your browser's built-in speech. Progress saves in your browser.
+
+**Recommended (adds local GPU/CPU voice + hardened server):** Python 3.10+ only,
+no Node/build step.
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/Job4874/sie-mastery-app.git
+cd sie-mastery-app
+py -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python server.py
+# open http://127.0.0.1:8765
+```
+
+**macOS (Terminal):**
+```bash
+git clone https://github.com/Job4874/sie-mastery-app.git
+cd sie-mastery-app
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python3 server.py
+# open http://127.0.0.1:8765
+```
+
+**Linux (bash):**
+```bash
+git clone https://github.com/Job4874/sie-mastery-app.git
+cd sie-mastery-app
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python3 server.py
+# open http://127.0.0.1:8765
+```
+
+If `pip install` fails on the voice packages, the app still runs — skip that step
+and use the browser fallback voice. The server binds to localhost only.
+
+**Research:** see `RESEARCH_ADHD.md` for the ML/learning-science basis of the
+teacher model, retrieval design, and audio choices.
+
 ## v4 — Security, correctness and zero-to-master onboarding (Nov 19, 2026)
 
 - **Start from zero:** primer covers accounts, order types, T+1 settlement, cash vs.
@@ -76,7 +121,7 @@ Master mode. Experienced users can skip the primer and go straight to trap drill
 - **Missed Bank** — misses are saved locally and resurface least-cleared first.
 - **Curriculum** — 8 units with lessons, mini quizzes, and a Final Review.
 
-## Voice / TTS (GPU or small ONNX model)
+## Voice / TTS (GPU or small ONNX model — Windows, macOS, Linux)
 
 Two layers, so it works everywhere:
 
@@ -92,13 +137,9 @@ Two layers, so it works everywhere:
 
 ### Run it
 
-```powershell
-cd sie-mastery-app
-python -m venv .venv; .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python server.py
-# open http://localhost:8765
-```
+See **Quick start — pick your OS** above for Windows, macOS, and Linux commands.
+The server is identical on all three platforms (stdlib-only HTTP layer; loopback
+bind; Origin/Host checks). PORT is configurable with the `PORT` environment variable.
 
 No pip install? Open `static/index.html` directly — everything except local
 TTS works, and voice falls back to the browser.
