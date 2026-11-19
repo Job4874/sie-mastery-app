@@ -1,92 +1,107 @@
-# SIE Mastery — Localhost App
+# SIE Mastery
 
-**Goal:** Not just pass the FINRA SIE — master financial regulation.
-Built for an experienced trader: no intro fluff. Only trap areas, numbers,
-timelines, exceptions, and the *why* behind each rule.
+A single-file, offline-first study app for FINRA's **Securities Industry Essentials (SIE)** exam. It pairs a dynamic question bank with a teacher-style diagnosis loop, saved voice lessons, and a quiet institutional interface.
 
-## v3 — UI/Architecture pass, Short Responses, Gap-Closing Loop (Nov 16, 2026)
-- **Architecture:** five clean layers documented in `ARCHITECTURE.md` (UI views / AudioManager / quiz engine / ML teacher / on-device storage). No build step.
-- **AudioManager:** saved lesson clips are **preloaded**; dynamic speech (questions, explanations, feedback, the Teacher Report) goes through a **single-voice queue** — GPU Kokoro via `/api/tts` with disk cache, browser voice as fallback — so nothing ever talks over itself. Every screen's core text is speakable, including a "Hear my report" button.
-- **Short-response questions (Very Hard / Master):** 12 prompts where you must *produce* the rule. Rubric grading checks required concept groups, numeric answers with tolerance, and **bound pairs** (e.g. 50% must bind to the Federal Reserve and 25% to FINRA *in the same sentence* — swapping the regulators scores zero, exactly the trap being tested). 17/17 grading tests pass, including the swapped-regulator trap and a bare-number answer scoring zero concepts.
-- **Gap-closing loop:** a miss on a weak concept opens a tracked gap → **Gap Closer** session: micro-lesson → worked example with the trap sprung → 3 fresh questions on that exact concept (numbers re-rolled), 2-of-3 closes it. Open gaps boost that concept's weight in future quizzes (spaced recheck). In-quiz: two misses in a row on one unit triggers a coach intervention — an easier confidence rep, then back up.
-- **Engagement UX:** coach card on Home with a smart **Continue where I left off** button (routes to your open gap, next unit, or Final Review), daily-goal ring (10 answers/day), visual 8-node path map, badge toasts, animated cards.
-- Verified: full script boots clean in a DOM harness, coach card renders, 35 MC generators × 200 runs = 7,000 questions 0 defects (v2 suite), short-answer grading 17/17, teacher diagnosis simulation all paths correct.
+**Not affiliated with FINRA.** This is an educational study aid, not an official exam product. Always check the current FINRA content outline before you build a study plan.
 
-**Production QA pass (Nov 16, 2026):** full end-to-end harness drives the real app — 36/36 checks green across 3 consecutive runs (every view, all 8 unit lessons/quizzes, Trap/Sprint/Missed Bank, 75-question exam with exact 12/33/23/7 FINRA domain mix, Final Review gating, gap open→close, all 4 levels, short-response injection, audio queue on GPU path + browser fallback + voice toggle). 17,500 generated questions swept with 0 defects; short-answer self-grading 12/12 model answers full credit, 12/12 empty answers zero. Static integrity: 22/22 button handlers defined, 27/27 element IDs present, zero external dependencies. QA caught and fixed 4 real defects: Final Review gate bypass, Trap Drill trap-seeding loss, "undefined" unit names in coach/report speech (wrong property key), and short-response questions being truncated out of Master trap drills.
+## Run it
 
-## v2 — ML Teacher, 8-Unit Curriculum, 4 Levels (Nov 16, 2026)
-- **ML Teacher (in-app, no server needed):** every answer is timed and scored per concept.
-  - *Bayesian Knowledge Tracing* per unit estimates the probability you actually know the concept (guess 25% / slip 10% model).
-  - *Elo-style ability rating* updates from question difficulty vs your result.
-  - *Diagnosis engine* reads accuracy + speed together: repeated slow misses = **TRUE GAP** (lesson assigned, Easy→Hard ladder); fast misses = **trap-prone guessing**; slow corrects = **knowledge without speed** (timed drills); high mastery = maintenance only.
-  - *Adaptive selection:* quizzes are weighted toward your weakest units and the difficulty where your predicted success is ~70%.
-  - Teacher Report screen shows mastery %, accuracy, avg seconds, fast-wrong and slow-right counts, diagnosis, and a one-click prescription per unit.
-- **Curriculum:** 8 units — (1) Regulators & Capital Markets, (2) Equity Securities, (3) Debt & Bond Traps, (4) Pooled Funds, Options & Packaged Products, (5) Risk, (6) Trading, Settlement & Corporate Actions, (7) Customer Accounts & Compliance, (8) Prohibited Activities & Regulatory Framework. Each unit: detailed lesson (with saved voice clip) → 5-question mini quiz, 80% to clear. Clear all 8 → **Final Exam Review** (25 adaptive questions) unlocks.
-- **4 levels:** 🟢 Easy (×1 XP) · 🟠 Hard (×1.5) · 🔴 Very Hard (×2) · 👑 Master (×3 XP, trap questions only, 60-second per-question clock). Badges: Perfect Run, Speed Demon, Trap Slayer, Unit Cleared.
-- Question bank grew to **35 dynamic generators** (7,000-question smoke test, 0 defects; teacher-engine simulation verified all diagnosis paths).
+### Fast path: open the file
 
-## Modes
-- **Trap Drill** — 1 question at a time, no reveal until you answer (your preferred drill style). Targets your known weak spots first: SIPC separate capacity, CMO contraction/extension, freeriding.
-- **Sprint Quiz** — 10 dynamic questions, randomized numbers/names every run. Same concept, never the same question twice.
-- **Practice Exam** — Full SIE simulation: 75 questions, 105 minutes, 70% to pass, weighted like the real exam:
-  - Sec 1 Capital Markets 16% · Sec 2 Products & Risks 44% · Sec 3 Trading / Accounts / Prohibited Activities 31% · Sec 4 Regulatory Framework 9%
-- **Learn (Mastery Path)** — Short lessons on the rule logic, not memorization: why SIPC is per-capacity, why PAC/support tranches behave opposite, Reg T / Reg SHO / wash sale timelines as a numbers vault.
-- **Missed Bank** — Every miss is saved (localStorage) and resurfaces via spaced repetition until you get it right twice in a row.
+Clone or download the repository, then open:
 
-## Voice / GPU TTS (your RTX)
-Two layers, so it works everywhere:
+```
+static/index.html
+```
 
-1. **Instant (no install):** Browser voice (`speechSynthesis`) reads questions, explanations, and lessons.
-2. **GPU overlay (localhost only):** `server.py` exposes `POST /api/tts`.
-   - Default engine: **Kokoro-82M** — tiny (~0.3 GB VRAM), fast on any GeForce RTX, natural voices, Apache-2.0. Best light choice.
-   - Optional engine: **XTTS v2** — voice cloning from a 6-second sample, heavier (~4-6 GB VRAM). Set `TTS_ENGINE=xtts` and put a sample at `voices/reference.wav`.
-   - **Every generated clip is saved** to `tts_cache/<sha256(text+voice+engine)>.wav` inside this codebase. Same text+voice is never generated twice — it plays from cache instantly.
+in Edge, Chrome, or Safari. The lessons, quizzes, practice exam, and saved audio clips work directly from disk. Dynamic "speak" buttons fall back to the browser's speech voice when the local server is not running.
 
-### Run it (on your RTX PC)
+### Full path: local server and GPU voice
+
+The server uses only the Python standard library for the app itself. GPU speech is optional.
+
 ```powershell
 cd sie-mastery-app
-python -m venv .venv; .\.venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python server.py
-# open http://localhost:8765
 ```
-No GPU / no pip install? Just open `static/index.html` directly — everything except GPU TTS works, voice falls back to the browser voice.
 
-Check GPU status in the app header, or: `GET http://localhost:8765/api/health`
+Then open `http://localhost:8765`.
 
-## Pre-generated voice clips (already in this codebase)
-Generated with Muse's own voice on Nov 16, 2026 and saved in `static/audio/` — the app's
-**Listen** buttons play these files first, before any live TTS:
-`welcome.mp3` + lesson clips for all 8 curriculum units plus the Numbers Vault reference
-(SIPC, CMO, freeriding, equity, options/pooled, risk, master frame, prohibited activities)
-— 10 clips, ~2.85 MB, listed with exact byte sizes in `static/audio/manifest.json`.
-Note: the MP3 binaries are pushed to GitHub by ordinary git from a local clone (see
-`PUSH_AUDIO.md`); the connector snapshot carries all code + the manifest.
+Kokoro-82M runs on CUDA when PyTorch and the Kokoro package are installed, and falls back to CPU synthesis when they are not. Without any of those dependencies, the server still serves the app and the voice falls back to the browser. The app header shows whether the voice path is GPU or browser.
 
-## Compile / verification (all passing, Nov 16, 2026)
-- `python -m py_compile server.py tts_engine.py tools/verify.py` — OK
-- App JavaScript extracted and `node --check` — OK (compile caught and fixed 3 real bugs:
-  a stray brace, a missing brace, and a 3-choice CMO question; SIPC duplicate-answer and
-  2-choice Treasury questions were also fixed)
-- Smoke test: 20 question generators × 200 runs = **4,000 generated questions, 0 defects**
-  (every question has exactly 4 unique choices and a valid answer)
-- Server test: `/`, all audio clips, manifest, and `/api/health` return 200
-- GitHub Actions (`.github/workflows/compile.yml`) re-runs all of this on every push
+## What is in it
+
+- **Curriculum mapped to the four FINRA SIE sections**
+  - Section 1: Knowledge of Capital Markets, 16% (12 items)
+  - Section 2: Understanding Products and Their Risks, 44% (33 items)
+  - Section 3: Understanding Trading, Customer Accounts and Prohibited Activities, 31% (23 items)
+  - Section 4: Overview of the Regulatory Framework, 9% (7 items)
+- **8 units**, each with a detailed lesson, a saved voice clip, and a 5-question mini quiz. An 80% mini-quiz score clears the unit.
+- **89 dynamic multiple-choice generators.** Numbers, prices, names, and scenarios are re-rolled per run, so the bank is not a fixed answer key.
+- **12 short-response prompts** for Very Hard and Master levels, graded by a rubric that checks required concept groups, bound number/regulator pairs, and numeric tolerances.
+- **Practice exam:** 75 questions, 105 minutes, 70% to pass, with the scored-item mix of 12 / 33 / 23 / 7. The live exam also contains 5 unscored pretest items; this simulation uses only the 75 scored-style items.
+- **Teacher loop:** Bayesian knowledge tracing per unit, an Elo-style ability estimate, accuracy-plus-speed diagnosis, adaptive question selection, a Gap Closer re-drill, a Missed Bank, daily goal, and badges.
+- **Dual theme:** dark and light, persisted in `localStorage` under `tibin_sie_theme`, with the `T` key as a shortcut.
+- **15 saved WAV clips** (about 50 MB): 8 unit lessons, 6 Mastery Path lessons, and a welcome clip, generated with Kokoro-82M voice `af_heart`. Every clip is listed with its byte size in `static/audio/manifest.json`.
+
+## Audio
+
+Two paths, one voice at a time:
+
+1. **Saved clips** play from `static/audio/` for the welcome, unit lessons, and Mastery Path. These work with no server and no network.
+2. **Dynamic text** (questions, explanations, reports) goes to `POST /api/tts` when `server.py` is running. Kokoro synthesizes the line once and caches it in `tts_cache/<sha256>.wav`; repeated lines play from disk. If the server or GPU is unavailable, the app uses a female English browser voice and says so in the header.
+
+The audio is intentionally saved as WAV so it plays everywhere without an external decoder. The tradeoff is repository size: the 15 clips total about 50 MB.
+
+## Verification
+
+Run these from the repository root:
+
+```powershell
+python tools/verify.py
+node tests/tests9.js
+node tests/bank.js
+```
+
+What each check covers:
+
+- **`tests/tests9.js`** — 109 static checks of the single-file contract: token blocks, WCAG contrast in both themes, no raw color leaks, semantic regions, ARIA state, unique IDs, theme persistence, and the one-script-block rule.
+- **`tests/bank.js`** — 60 checks against the real question bank: every generator is rolled 150 times and checked for four unique choices, a valid answer, no `NaN`/`undefined`, a valid section, and a unit/difficulty mapping; it also checks section pool sizes, unit pool sizes, `buildExam(75)` length and unique topics, the exact 12/33/23/7 exam mix over repeated runs, the 8 unit lessons, the 6 Mastery Path lessons, audio references, and the short-response rubric (including the swapped Reg T trap).
+- **`tools/verify.py`** — build integrity: required files, exactly one `<script>` block, no emoji, no stale MP3 references, every referenced clip exists in the manifest with a matching byte size, and no orphan audio files.
+
+The repository also includes `tools/audit_audio.py`, `tools/audit_markup.py`, and `tools/inspect_app.py` for focused audits. GitHub Actions is configured in `.github/workflows/compile.yml` to run the Python compile, JavaScript syntax check, verifier, and both Node test suites on push.
+
+Last local verification before this documentation pass: `tests9` 109 passed, `bank` 60 passed, `verify` OK. The app was also checked in a real Chromium browser against `localhost:8765`: all six views (Home, Mastery Path, Units, Report, Quiz, Result), all 8 unit lessons and mini quizzes, Trap/Sprint/Exam sessions, the Missed Bank, the Gap Closer, both themes, and saved WAV playback.
+
+## Known limitations
+
+- The practice exam is a simulation. It does not include the live exam's 5 unscored pretest items, and it is not a source of real exam questions.
+- Progress is stored in `localStorage` for one browser profile. There is no account, cloud sync, or telemetry.
+- The local server adds security headers (CSP, frame denial, COOP/COEP/CORP, rate limiting, Host/Origin checks). Opening `static/index.html` directly gives you the same app but not those HTTP headers.
+- GPU speech needs Python 3, PyTorch, Kokoro, and a working CUDA setup. The saved clips and browser voice remain available without them.
+- Browser voice quality depends on the operating system and installed voices.
+- The content is written for exam preparation and should be checked against the current FINRA outline: <https://www.finra.org/sites/default/files/2025-10/SIE_Content_Outline.pdf>.
 
 ## Layout
-```
-server.py          # stdlib web server + /api/tts (no heavy web framework)
-tts_engine.py      # Kokoro (default) / XTTS (optional) on CUDA, file cache
-requirements.txt
-static/index.html  # the entire app: quiz engine, exam, lessons, voice UI
-tts_cache/         # saved TTS .wav files live here (grows as you study)
-voices/            # optional XTTS reference voice sample
-data/              # notes / future question packs
-```
 
-## Your weak-spot seeding
-First Trap Drill sessions are weighted to: SIPC separate capacity, CMO PAC/support + contraction vs extension, freeriding in cash accounts. As you clear them twice, weighting normalizes.
+```
+server.py                 # stdlib HTTP server, /api/health, /api/tts, security headers
+tts_engine.py             # Kokoro-82M synthesis + content-hash disk cache
+requirements.txt          # optional GPU TTS dependencies
+static/index.html         # the entire app: markup, CSS, router, quiz engine, teacher, audio
+static/audio/             # 15 saved WAV clips + manifest
+tts_cache/                # generated TTS clips (git-ignored)
+tests/tests9.js           # static DOM/CSS/theme audit
+tests/bank.js             # question bank, curriculum, exam, and audio audit
+tools/verify.py           # build integrity gate
+tools/audit_audio.py      # manifest/reference/orphan audit
+tools/audit_markup.py     # emoji, CSS class, ID, and handler audit
+tools/inspect_app.py      # script extraction and structural counts
+```
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Abdulwahab Tibin.
+MIT. See [LICENSE](LICENSE). Copyright (c) 2026 Abdulwahab Tibin.

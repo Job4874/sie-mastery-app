@@ -47,7 +47,11 @@ def _rate_limited(ip: str) -> bool:
     return False
 
 # --- voice allowlist (prevent arbitrary voice injection) ---
-_ALLOWED_VOICES = {"af_heart", "af_bella", "am_michael", "bf_emma"}
+_ALLOWED_VOICES = {"af_heart", "af_bella", "am_michael", "bf_emma", "am_fenrir"}
+
+# --- request guards: only this loopback origin may use the API ---
+_ALLOWED_HOSTS = {f"localhost:{PORT}", f"127.0.0.1:{PORT}"}
+_ALLOWED_ORIGINS = {f"http://localhost:{PORT}", f"http://127.0.0.1:{PORT}"}
 
 # --- text sanitization: strip dangerous chars, limit length ---
 _MAX_TEXT_LEN = 1200
@@ -68,9 +72,10 @@ class H(SimpleHTTPRequestHandler):
             "camera=(), microphone=(), geolocation=(), "
             "payment=(), usb=(), magnetometer=(), gyroscope=(), "
             "accelerometer=(), ambient-light-sensor=(), "
-            "autoplay=(), encrypted-media=(), fullscreen=(self)")
+            "encrypted-media=(), fullscreen=(self)")
         self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
         self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header("Cross-Origin-Resource-Policy", "same-origin")
         self.send_header("Content-Security-Policy",
             "default-src 'self'; "
             "script-src 'self' 'unsafe-inline'; "
@@ -89,7 +94,19 @@ class H(SimpleHTTPRequestHandler):
     def _client_ip(self):
         return self.client_address[0] if self.client_address else "unknown"
 
+    def _host_ok(self):
+        return (self.headers.get("Host") or "").lower() in _ALLOWED_HOSTS
+
+    def _origin_ok(self):
+        origin = self.headers.get("Origin")
+        return True if not origin else origin in _ALLOWED_ORIGINS
+
+    def version_string(self):
+        return "SIE-Mastery"
+
     def do_GET(self):
+        if not self._host_ok():
+            return self.send_error(421, "Misdirected Request")
         if self.path == "/api/health":
             try:
                 import tts_engine
@@ -125,8 +142,14 @@ class H(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
+        if not self._host_ok():
+            return self.send_error(421, "Misdirected Request")
         if self.path != "/api/tts":
             return self.send_error(404)
+        if not self._origin_ok():
+            return self.send_error(403, "Cross-origin API access denied")
+        if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
+            return self._json({"error": "content-type must be application/json"}, 415)
         # --- rate limiting ---
         ip = self._client_ip()
         if _rate_limited(ip):
@@ -169,6 +192,7 @@ class H(SimpleHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(data)))
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(data)
 

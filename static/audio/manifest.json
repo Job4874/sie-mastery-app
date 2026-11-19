@@ -46,8 +46,38 @@
     },
     {
       "file": "welcome.wav",
-      "title": "Welcome \u2014 SIE Mastery intro",
+      "title": "Welcome — SIE Mastery intro",
       "bytes": 991244
+    },
+    {
+      "file": "mastery-1-sipc.wav",
+      "title": "SIPC — Capacity, Not Person",
+      "bytes": 1092044
+    },
+    {
+      "file": "mastery-2-cmo.wav",
+      "title": "CMO Tranches — Who Absorbs the Shock",
+      "bytes": 1059644
+    },
+    {
+      "file": "mastery-3-freeriding.wav",
+      "title": "Cash Account Discipline — Freeriding & Good Faith",
+      "bytes": 1099244
+    },
+    {
+      "file": "mastery-4-numbers.wav",
+      "title": "The Numbers Vault",
+      "bytes": 1494044
+    },
+    {
+      "file": "mastery-5-prohibited.wav",
+      "title": "Prohibited Activities — The Pattern Language",
+      "bytes": 1116044
+    },
+    {
+      "file": "mastery-6-master-frame.wav",
+      "title": "Why Regulation Exists — The Master Frame",
+      "bytes": 1600844
     }
   ]
 }

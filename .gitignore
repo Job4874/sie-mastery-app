@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 .venv/
 tts_cache/*.wav
+_check_app.js
+_qs.txt

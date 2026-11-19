@@ -11,8 +11,8 @@
   --status-warn:#fbbf24; --status-warn-bg:#fbbf2433;
   --status-danger:#fb7185; --status-danger-bg:#fb718533;
   --text-on-accent:#14100a;
-  --accent-gradient-a:#2dd4bf; --accent-gradient-b:#a3e635;
-  --button-gradient-a:#2dd4bf; --button-gradient-b:#38bdf8;
+  --accent-gradient-a:#d4af61; --accent-gradient-b:#a57c25;
+  --button-gradient-a:#d4af61; --button-gradient-b:#a57c25;
   --fill-subtle:#ffffff14; --ring-track:#ffffff17; --link-bg:#ffffff2a;
   --node-border:#ffffff33; --node-bg:#ffffff10;
   --input-bg:#0b1020; --input-border:#ffffff2d;
@@ -43,8 +43,8 @@
   --status-warn:#fbbf24; --status-warn-bg:#fbbf2433;
   --status-danger:#fb7185; --status-danger-bg:#fb718533;
   --text-on-accent:#14100a;
-  --accent-gradient-a:#2dd4bf; --accent-gradient-b:#a3e635;
-  --button-gradient-a:#2dd4bf; --button-gradient-b:#38bdf8;
+  --accent-gradient-a:#d4af61; --accent-gradient-b:#a57c25;
+  --button-gradient-a:#d4af61; --button-gradient-b:#a57c25;
   --fill-subtle:#ffffff14; --ring-track:#ffffff17; --link-bg:#ffffff2a;
   --node-border:#ffffff33; --node-bg:#ffffff10;
   --input-bg:#0b1020; --input-border:#ffffff2d;
@@ -101,7 +101,7 @@ button:active{transform:translateY(1px);filter:brightness(.9)}
 button:hover{transform:translateY(-2px);filter:brightness(1.15);box-shadow:var(--shadow-1)}
 button.ghost{background:var(--fill-subtle);color:var(--text-primary);border:1px solid var(--border-subtle);box-shadow:none}
 button.ghost:hover{background:var(--fill-subtle);box-shadow:var(--shadow-1)}
-button.pink{background:linear-gradient(90deg,var(--status-danger),var(--status-warn));color:var(--text-on-accent)}
+button.pink{background:linear-gradient(90deg,var(--accent-deep),var(--accent-primary));color:var(--text-on-accent)}
 button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;filter:none!important}
 .mode{position:relative;overflow:hidden}
 .mode::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-gradient-a),var(--accent-gradient-b));opacity:0;transition:opacity .2s ease}
@@ -216,7 +216,7 @@ function Q(sec,topic,text,choices,answer,explain,rule){return{sec,topic,text,cho
 /* ============ DYNAMIC QUESTION GENERATORS (numbers re-rolled every run) ============ */
 const GEN=[
 ()=>{const j=R(4,9)*100000,c=R(2,5)*100000;const joint=Math.min(j,500000),ira=Math.min(c,500000);
- return Q(4,"SIPC separate capacity",`A couple holds: a joint brokerage account with ${money(j)} in securities, and one spouse's IRA with ${money(c)} in securities. The BD fails. What is the total SIPC coverage?`,
+ return Q(1,"SIPC separate capacity",`A couple holds: a joint brokerage account with ${money(j)} in securities, and one spouse's IRA with ${money(c)} in securities. The BD fails. What is the total SIPC coverage?`,
  [money(joint+ira),money(joint+ira+250000),money(500000),money(joint+ira-250000)],0,
  `Joint = ONE separate capacity (not per person): capped at $500k → ${money(joint)}. The IRA is a DIFFERENT capacity → another $500k cap → ${money(ira)}. Total ${money(joint+ira)}. Cash inside any capacity has a $250k sub-limit.`,"SIPC: $500k per separate capacity, $250k cash sub-limit. Joint ≠ 2 capacities.")},
 ()=>{const fall=Math.random()<.5;return Q(2,"CMO tranches",`Interest rates ${fall?"FALL sharply, prepayments surge":"RISE sharply, prepayments collapse"}. A CMO support (companion) tranche backing a PAC tranche will most likely experience:`,
@@ -276,40 +276,40 @@ GEN.push(
 ()=>Q(2,"Preferred vs common",`Compared to common stock, preferred stock generally:`,
  ["Has priority for dividends and liquidation, fixed dividends, and usually no voting rights","Votes for directors and has unlimited dividend upside","Is a debt security with a maturity date","Ranks behind common stock in liquidation"],0,
  `Preferred = hybrid: equity legally, bond-like behavior. Priority over common for dividends/assets, stated dividend rate, typically non-voting. Cumulative preferred accrues missed dividends that must be paid before common gets anything.`,"Preferred: paid first, fixed rate, usually no vote."),
-()=>{const s=pick([2,3,4]),pr=R(20,60),sh=R(100,400);return Q(2,"Stock splits",`A customer owns ${sh} shares at $${pr}. The stock declares a ${s}-for-1 split. After the split the customer owns:`,
+()=>{const s=pick([2,3,4]),pr=R(20,60),sh=R(100,400);return Q(3,"Stock splits",`A customer owns ${sh} shares at $${pr}. The stock declares a ${s}-for-1 split. After the split the customer owns:`,
  [`${sh*s} shares at $${(pr/s).toFixed(2).replace(".00","")}`,`${sh*s} shares at $${pr}`,`${sh} shares at $${pr*s}`,`${sh/s} shares at $${pr*s}`],0,
  `Splits multiply shares and divide price by the same factor — total value unchanged: ${sh}×${s} = ${sh*s} shares, $${pr}÷${s}. A reverse split does the opposite. Splits are not taxable events and do not change proportional ownership.`,"Split: shares × factor, price ÷ factor, value unchanged.")},
-()=>Q(2,"Dividend dates",`Under T+1 settlement, an investor who buys a stock ON its ex-dividend date will:`,
+()=>Q(3,"Dividend dates",`Under T+1 settlement, an investor who buys a stock ON its ex-dividend date will:`,
  ["Not receive the dividend — the seller keeps it","Receive the dividend","Split the dividend with the seller","Receive the dividend only if the trade settles same day"],0,
  `Ex-date is the first day the stock trades WITHOUT the dividend. Under T+1, the ex-date is set as the record date itself. Buy before the ex-date → you get it. Buy on/after → the seller keeps it. Order of dates: declaration → ex-date/record → payable.`,"Buy on ex-date = no dividend. Ex-date = record date under T+1."),
-()=>Q(3,"Yield ordering",`A bond is trading at a DISCOUNT. Rank its yields from lowest to highest:`,
+()=>Q(2,"Yield ordering",`A bond is trading at a DISCOUNT. Rank its yields from lowest to highest:`,
  ["Nominal (coupon) yield < current yield < yield to maturity","Yield to maturity < current yield < nominal yield","Current yield < nominal yield < yield to maturity","All three are equal at a discount"],0,
  `Discount bond: coupon is fixed and lowest; current yield (coupon ÷ lower price) is higher; YTM is highest because it adds the built-in gain to par. Premium bonds reverse the order exactly. At par, all three are equal.`,"Discount: coupon < CY < YTM. Premium: reversed."),
-()=>Q(3,"Callable bonds / yield to worst",`An investor buys a callable bond at a PREMIUM. The yield figure that best represents the investor's likely return — and the one that must be quoted — is:`,
+()=>Q(2,"Callable bonds / yield to worst",`An investor buys a callable bond at a PREMIUM. The yield figure that best represents the investor's likely return — and the one that must be quoted — is:`,
  ["The lower of yield to call and yield to maturity (yield to worst)","Yield to maturity, always","Nominal yield","Current yield"],0,
  `Premium bonds are likely to be called at the first opportunity, so YTC < YTM and the lower figure governs: yield to worst. For discount bonds YTM is the lower, governing figure. Always quote/consider the worst case.`,"Premium → YTC governs. Discount → YTM governs. Quote yield to worst."),
-()=>{const k=R(40,90),pr=R(1,8);return Q(4,"Long call breakeven",`An investor buys a $${k} call for $${pr}. The breakeven point and maximum loss are:`,
+()=>{const k=R(40,90),pr=R(1,8);return Q(2,"Long call breakeven",`An investor buys a $${k} call for $${pr}. The breakeven point and maximum loss are:`,
  [`Breakeven $${k+pr}; max loss $${pr*100} per contract`,`Breakeven $${k-pr}; max loss $${pr*100} per contract`,`Breakeven $${k+pr}; max loss unlimited`,`Breakeven $${k}; max loss $${(k+pr)*100} per contract`],0,
  `Long call breakeven = strike + premium = $${k}+$${pr} = $${k+pr}. The most a buyer can ever lose is the premium paid: $${pr} × 100 shares = $${pr*100}. Buyers risk the premium; writers of uncovered calls carry the unlimited risk.`,"Long call: BE = strike + premium. Max loss = premium.")},
-()=>Q(4,"ETFs vs mutual funds",`Which feature distinguishes an ETF from an open-end mutual fund?`,
+()=>Q(2,"ETFs vs mutual funds",`Which feature distinguishes an ETF from an open-end mutual fund?`,
  ["ETFs trade intraday on an exchange at market prices; mutual funds price once daily at forward NAV","Mutual funds trade intraday; ETFs price once daily","ETFs cannot hold diversified portfolios","Mutual funds are not redeemable"],0,
  `ETF = exchange-traded, intraday, market price can sit at a premium/discount to NAV, bought through a BD with commissions/spreads. Open-end mutual funds transact with the fund itself once a day at the next-calculated NAV (forward pricing).`,"ETF: intraday market price. Mutual fund: once-daily forward NAV."),
-()=>Q(5,"Reinvestment risk",`A retiree living on coupon income from long-term bonds faces the GREATEST reinvestment risk when interest rates:`,
+()=>Q(2,"Reinvestment risk",`A retiree living on coupon income from long-term bonds faces the GREATEST reinvestment risk when interest rates:`,
  ["Fall — coupons and called principal must be reinvested at lower rates","Rise — bond prices fall","Stay flat for a decade","Fall — bond prices fall"],0,
  `Reinvestment risk is the falling-rate risk: income streams get reinvested cheaper, and issuers call bonds away exactly then. It is the mirror image of interest-rate (price) risk, which is the rising-rate risk. Zero-coupon bonds have NO reinvestment risk — and the most price risk.`,"Reinvestment risk lives in falling rates. Price risk lives in rising rates."),
-()=>Q(5,"ADR / currency risk",`A U.S. investor buys an ADR of a foreign company. The foreign stock is flat in its home market, but the foreign currency weakens against the dollar. The ADR will most likely:`,
+()=>Q(2,"ADR / currency risk",`A U.S. investor buys an ADR of a foreign company. The foreign stock is flat in its home market, but the foreign currency weakens against the dollar. The ADR will most likely:`,
  ["Fall in dollar terms, due to currency risk","Rise in dollar terms","Be unchanged — ADRs are priced only on the underlying stock","Be converted automatically to the foreign shares"],0,
  `An ADR's dollar price reflects BOTH the underlying shares and the exchange rate. A weaker foreign currency means each unit of foreign earnings/price converts into fewer dollars. Currency risk is a core, separately-testable ADR risk.`,"ADR = stock risk + currency risk."),
-()=>Q(6,"Settlement T+1",`Under current rules, regular-way settlement for a corporate stock trade executed on Monday (a business day) is:`,
+()=>Q(3,"Settlement T+1",`Under current rules, regular-way settlement for a corporate stock trade executed on Monday (a business day) is:`,
  ["Tuesday — T+1","Wednesday — T+2","Monday — same day for all trades","Friday — T+4"],0,
  `Equities and corporate/muni bonds settle T+1 (since May 2024). U.S. government securities and options settle next business day as well; cash settlement is same-day. The old T+2 answer is now a trap.`,"Regular way equities: T+1."),
-()=>Q(6,"Stop orders",`A customer places a buy stop order above the current market to limit a short position's loss. Once the stop price is triggered, the order:`,
+()=>Q(3,"Stop orders",`A customer places a buy stop order above the current market to limit a short position's loss. Once the stop price is triggered, the order:`,
  ["Becomes a market order — execution is certain, price is not","Becomes a limit order at the stop price","Is cancelled automatically","Guarantees execution at or better than the stop price"],0,
  `A stop order is an ELECTED order: trigger → market order. It guarantees execution, never price (gaps can blow through it). A stop-LIMIT adds a price floor/ceiling but risks no execution at all. Stops do not protect against gaps.`,"Stop → market order when triggered. Execution yes, price no."),
-()=>Q(8,"Insider trading",`A corporate officer tells a friend material nonpublic information, and the friend trades on it and profits. Under SEC Rule 10b-5:`,
+()=>Q(3,"Insider trading",`A corporate officer tells a friend material nonpublic information, and the friend trades on it and profits. Under SEC Rule 10b-5:`,
  ["Both can be liable — the officer as tipper (for a personal benefit) and the friend as tippee who knew or should have known the information was improperly disclosed","Only the friend is liable, as the trader","Neither is liable if the officer did not personally trade","Liability requires the friend to be an employee of the company"],0,
  `Tipper/tippee liability: a tipper who discloses MNPI in breach of duty for a personal benefit (which includes gifting information to a trading relative or friend) is liable, and a tippee who knows/should know of the breach inherits the duty. The misappropriation theory covers outsiders who steal information.`,"10b-5: tipper + knowing tippee are both liable."),
-()=>Q(8,"Selling away",`A registered rep privately sells promissory notes issued by a company the rep owns, without notifying or involving the employing BD. This is:`,
+()=>Q(3,"Selling away",`A registered rep privately sells promissory notes issued by a company the rep owns, without notifying or involving the employing BD. This is:`,
  ["Selling away — prohibited unless the firm gives prior written approval and records the transactions","Acceptable, because the notes are not securities","Churning","Permitted if customers are told it is separate from the firm"],0,
  `Private securities transactions away from the firm = selling away (FINRA Rule 3280). The rep must give prior written notice; the firm must approve in writing and supervise/record it if it allows it at all. Promissory notes are usually securities — 'not a security' is the classic wrong answer.`,"Selling away: private deals off the books without prior written approval."),
 
@@ -322,13 +322,13 @@ GEN.push(
 ()=>Q(1,"Business cycle","The business cycle phase in which output, employment, and income are RISING is called:",
  ["Expansion","Contraction","Trough","Peak"],0,
  `Expansion = rising output/employment. Peak = the top (turning point). Contraction = falling. Trough = the bottom.`,"Expansion = rising phase of the business cycle."),
-()=>Q(4,"IPO vs follow-on","A company already listed on an exchange issues NEW shares to the public. This is a:",
+()=>Q(1,"IPO vs follow-on","A company already listed on an exchange issues NEW shares to the public. This is a:",
  ["Follow-on offering (secondary offering)","Initial public offering (IPO)","Private placement","Shelf takedown"],0,
  `IPO = first time a company lists. Follow-on = additional shares from an already-public company. Both are public offerings; an IPO is the debut.`,"Follow-on = more shares from an already-public issuer."),
-()=>Q(4,"Best efforts vs firm commitment","In a BEST EFFORTS underwriting, the underwriter:",
+()=>Q(1,"Best efforts vs firm commitment","In a BEST EFFORTS underwriting, the underwriter:",
  ["Sells as much as it can but is not obligated to buy unsold shares","Buys the entire issue and resells it","Guarantees the issuer receives a fixed amount","May only sell to institutional investors"],0,
  `Best efforts = underwriter acts as agent, sells what it can, no firm purchase commitment. Firm commitment = underwriter buys the whole issue and bears the resale risk.`,"Best efforts = agent role, no guaranteed purchase."),
-()=>Q(4,"Shelf registration","A shelf registration (Rule 415) lets an issuer:",
+()=>Q(1,"Shelf registration","A shelf registration (Rule 415) lets an issuer:",
  ["Register securities once and sell them over time (up to 3 years)","Sell securities without any SEC registration","Sell only to accredited investors","Avoid delivering a prospectus"],0,
  `Shelf registration = file one registration statement, then "takedown" and sell pieces later as needed, usually up to 3 years. Still requires prospectus delivery at sale.`,"Shelf = register once, sell over time."),
 ()=>Q(1,"Blue-sky laws","State-level securities registration and anti-fraud rules are known as:",
@@ -431,7 +431,7 @@ GEN.push(
 ()=>Q(3,"IPO purchase restrictions","Flipping an IPO (buying at the offering and selling immediately) may:",
  ["Violate the underwriter's agreements and result in future IPO allocations being denied","Be required by the SEC","Guarantee a profit","Be legal only for accredited investors"],0,
  `Flipping = quick resale of IPO shares. Underwriters discourage it; customers who flip may be denied future hot-IPO allocations. Not illegal per se, but a conduct issue.`,"Flipping can cost you future IPO access."),
-()=>Q(3,"Senior exploitation","FINANCIAL EXPLOITATION OF SENIORS includes:",
+()=>Q(4,"Senior exploitation","FINANCIAL EXPLOITATION OF SENIORS includes:",
  ["Using a senior's assets for the advisor's benefit","Recommending suitable low-risk products","Disclosing account info to the senior's spouse","Filing a SAR when required"],0,
  `Senior exploitation = misuse of an older customer's funds/assets (unauthorized trading, borrowing, unsuitable sales). FINRA Rules 2165 (hold) and 4512 (trusted contact) address it.`,"Senior exploitation = misuse of senior's assets."),
 
@@ -461,26 +461,55 @@ GEN.push(
  ["Felony convictions, certain misdemeanors, liens, and bankruptcies","Traffic tickets","Library fines","Checking-account overdrafts"],0,
  `Reportable events (U4 disclosure) = felonies, investment-related misdemeanors, injunctions, revocations, liens, bankruptcies. Routine debts/tickets are not.`,"Felonies/liens/bankruptcy = reportable."),
 
+()=>{const k=R(40,90),pr=R(2,9);return Q(2,"Protective put",`An investor owns stock bought at $${k} and buys a $${k} put for $${pr} to protect the position. The maximum loss per share is:`,
+  [`$${pr}`,`$${k-pr}`,`$${k+pr}`,"$0"],0,
+  `A protective put is insurance: the put floors the stock at the strike, so the worst case is losing the $${pr} premium per share if the stock falls to or below $${k}. Breakeven = stock price + premium = $${k+pr}.`,"Protective put: max loss = premium. Breakeven = stock + premium.")},
+()=>{const k=R(30,80),pr=R(1,7);return Q(2,"Short put",`An investor sells a cash-secured $${k} put for $${pr}. Maximum gain and maximum loss per share are:`,
+  [`Gain $${pr}; loss $${k-pr}`,`Gain $${k-pr}; loss $${pr}`,"Gain unlimited; loss $"+pr,`Gain $${pr}; loss unlimited`],0,
+  `A short put collects the premium (max gain $${pr}) and is obligated to buy the stock at $${k} if assigned. Max loss = strike minus premium = $${k-pr}, realized if the stock falls to zero. Cash-secured means the cash to buy is set aside.`,"Short put: max gain = premium; max loss = strike - premium.")},
+()=>{const bracket=pick([24,32,35,37]),y=R(25,45)/10;const tey=y/(1-bracket/100);return Q(2,"Muni tax-equivalent yield",`A municipal bond yields ${y.toFixed(1)}% tax-free. For an investor in the ${bracket}% federal bracket, the tax-equivalent yield on a taxable bond is closest to:`,
+  [`${tey.toFixed(1)}%`,`${y.toFixed(1)}%`,`${(y*(1-bracket/100)).toFixed(1)}%`,`${(y+bracket/10).toFixed(1)}%`],0,
+  `Tax-equivalent yield = tax-free yield ÷ (1 − bracket) = ${y.toFixed(1)} ÷ (1 − ${(bracket/100).toFixed(2)}) = ${tey.toFixed(1)}%. A taxable bond must beat that to leave the investor with the same after-tax income.`,"TEY = muni yield / (1 - tax bracket).")},
+()=>Q(2,"Current yield",`A 6% coupon bond with a $1,000 par value is quoted at 90. Its current yield is closest to:`,
+  ["6.7%","6.0%","5.4%","7.5%"],0,
+  `Price = 90% of $1,000 = $900. Annual coupon = 6% × $1,000 = $60. Current yield = $60 ÷ $900 = 6.67%. At a discount, coupon (6%) < current yield (6.67%) < YTM.`,"Current yield = annual coupon / price. Discount: coupon < CY < YTM."),
+()=>Q(2,"Closed-end funds",`A closed-end fund has a NAV of $20 per share and trades on an exchange at $22. The fund is trading at:`,
+  ["A 10% premium to NAV","A 10% discount to NAV","Par value","Its NAV, because closed-end funds always price at NAV"],0,
+  `Premium/discount = (market price − NAV) ÷ NAV = ($22 − $20) ÷ $20 = +10%. Closed-end funds have a fixed share count and trade intraday, so price can sit above (premium) or below (discount) NAV. Open-end funds transact at NAV.`,"Closed-end fund: price vs NAV = premium/discount."),
+
+()=>{const k=R(40,95),pr=R(2,8);return Q(2,"Long put breakeven",`An investor buys a $${k} put for $${pr}. The maximum loss per share and the breakeven price are:`,
+  [`Loss $${pr}; breakeven $${k-pr}`,`Loss $${k-pr}; breakeven $${pr}`,`Loss $${pr}; breakeven $${k+pr}`,`Loss $${k}; breakeven $${k-pr}`],0,
+  `A long put can lose only the premium paid, $${pr}. It breaks even when the stock price equals the strike minus the premium: $${k} − $${pr} = $${k-pr}. Below that price the put is profitable.`,
+  "Long put: max loss = premium; breakeven = strike - premium.")},
+()=>Q(2,"Zero-coupon bonds",`A 10-year zero-coupon bond with a $1,000 par value is priced to yield 6%. Which statement is correct?`,
+  ["It pays no periodic interest; the return comes from buying at a discount and receiving par at maturity","It pays a 6% semiannual coupon and returns par at maturity","It pays interest in additional bonds rather than cash","Its price equals par because the coupon equals the yield"],0,
+  `A zero-coupon bond pays no periodic interest. It is issued at a discount and accretes to par, so the difference between the purchase price and par is the investor's return. The 6% is the yield used to price it, not a cash coupon.`,
+  "Zero-coupon: no periodic interest; return = discount to par."),
+
 );
-const UNIT_BY_TOPIC={"SIPC separate capacity":7,"CMO tranches":3,"Freeriding":6,"Wash sale":6,"Reg T margin":7,"Pattern day trader":7,"Reg SHO":6,"Options \u2014 covered call":4,"Bond risk":3,"Communications":7,"Trusted contact / seniors":7,"Discretionary accounts":7,"Prohibited activities":8,"Mutual fund pricing":4,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":8,"Systematic risk":5,"Account opening / AML":7,"Fed tools":1,"MSRB":1,"Preferred vs common":2,"Stock splits":2,"Dividend dates":2,"Yield ordering":3,"Callable bonds / yield to worst":3,"Long call breakeven":4,"ETFs vs mutual funds":4,"Reinvestment risk":5,"ADR / currency risk":5,"Settlement T+1":6,"Stop orders":6,"Insider trading":8,"Selling away":8,"Economic indicators":1,"Monetary vs fiscal":1,"Business cycle":1,"IPO vs follow-on":1,"Best efforts vs firm commitment":1,"Shelf registration":1,"Blue-sky laws":1,"Market participants":1,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":3,"GO vs revenue munis":3,"Money market instruments":3,"Bond ratings":3,"UITs vs mutual funds":4,"Variable annuities":4,"Share classes & breakpoints":4,"529 & ABLE":5,"DPPs & REITs":5,"ETFs vs ETNs":5,"Inflation & political risk":5,"Liquidity & prepayment risk":5,"Diversification & rebalancing":5,"Buybacks & tender offers":6,"Rights offerings & proxies":6,"Basis points & cost basis":6,"Marking close & backing away":6,"SAR vs CTR":7,"FinCEN & OFAC":7,"KYC & suitability":7,"Best interest (Reg BI)":7,"Do-not-call":7,"Reg S-P privacy":7,"UTMA accounts":7,"IRA & RMDs":7,"Signatures of convenience":8,"IPO purchase restrictions":8,"Senior exploitation":8,"Forms U4 & U5":8,"Background checks":8,"Statutory disqualification":8,"Continuing education":8,"Outside business activities":8,"Political contributions & gifts":8,"Customer complaints":8,"Felonies/liens/bankruptcy":8};
-const DIFF_BY_TOPIC={"SIPC separate capacity":3,"CMO tranches":3,"Freeriding":2,"Wash sale":2,"Reg T margin":1,"Pattern day trader":1,"Reg SHO":2,"Options \u2014 covered call":2,"Bond risk":2,"Communications":3,"Trusted contact / seniors":2,"Discretionary accounts":2,"Prohibited activities":1,"Mutual fund pricing":2,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":3,"Systematic risk":1,"Account opening / AML":2,"Fed tools":1,"MSRB":2,"Preferred vs common":1,"Stock splits":1,"Dividend dates":3,"Yield ordering":2,"Callable bonds / yield to worst":2,"Long call breakeven":1,"ETFs vs mutual funds":1,"Reinvestment risk":2,"ADR / currency risk":1,"Settlement T+1":1,"Stop orders":2,"Insider trading":2,"Selling away":2,"Economic indicators":2,"Monetary vs fiscal":2,"Business cycle":2,"IPO vs follow-on":2,"Best efforts vs firm commitment":2,"Shelf registration":2,"Blue-sky laws":1,"Market participants":1,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":2,"GO vs revenue munis":2,"Money market instruments":1,"Bond ratings":2,"UITs vs mutual funds":2,"Variable annuities":2,"Share classes & breakpoints":2,"529 & ABLE":1,"DPPs & REITs":2,"ETFs vs ETNs":2,"Inflation & political risk":2,"Liquidity & prepayment risk":2,"Diversification & rebalancing":2,"Buybacks & tender offers":2,"Rights offerings & proxies":2,"Basis points & cost basis":1,"Marking close & backing away":2,"SAR vs CTR":2,"FinCEN & OFAC":2,"KYC & suitability":2,"Best interest (Reg BI)":2,"Do-not-call":1,"Reg S-P privacy":2,"UTMA accounts":1,"IRA & RMDs":1,"Signatures of convenience":1,"IPO purchase restrictions":1,"Senior exploitation":2,"Forms U4 & U5":1,"Background checks":1,"Statutory disqualification":1,"Continuing education":1,"Outside business activities":1,"Political contributions & gifts":1,"Customer complaints":1,"Felonies/liens/bankruptcy":1};
+const UNIT_BY_TOPIC = { "SIPC separate capacity":7, "CMO tranches":3, "Freeriding":6, "Wash sale":6, "Reg T margin":7, "Pattern day trader":7, "Reg SHO":6, "Options — covered call":4, "Bond risk":3, "Communications":7, "Trusted contact / seniors":7, "Discretionary accounts":7, "Prohibited activities":8, "Mutual fund pricing":4, "Convertibles":3, "Treasury / Fed":1, "Primary vs secondary":1, "Registration timelines":8, "Systematic risk":5, "Account opening / AML":7, "Fed tools":1, "MSRB":1, "Preferred vs common":2, "Stock splits":2, "Dividend dates":2, "Yield ordering":3, "Callable bonds / yield to worst":3, "Long call breakeven":4, "ETFs vs mutual funds":4, "Reinvestment risk":5, "ADR / currency risk":5, "Settlement T+1":6, "Stop orders":6, "Insider trading":8, "Selling away":8, "Economic indicators":1, "Monetary vs fiscal":1, "Business cycle":1, "IPO vs follow-on":1, "Best efforts vs firm commitment":1, "Shelf registration":1, "Blue-sky laws":1, "Market participants":1, "Third & fourth markets":1, "Rights & warrants":2, "Rule 144":2, "Agency & MBS":3, "GO vs revenue munis":3, "Money market instruments":3, "Bond ratings":3, "UITs vs mutual funds":4, "Variable annuities":4, "Share classes & breakpoints":4, "529 & ABLE":5, "DPPs & REITs":5, "ETFs vs ETNs":5, "Inflation & political risk":5, "Liquidity & prepayment risk":5, "Diversification & rebalancing":5, "Buybacks & tender offers":6, "Rights offerings & proxies":6, "Basis points & cost basis":6, "Marking close & backing away":6, "SAR vs CTR":7, "FinCEN & OFAC":7, "KYC & suitability":7, "Best interest (Reg BI)":7, "Do-not-call":7, "Reg S-P privacy":7, "UTMA accounts":7, "IRA & RMDs":7, "Signatures of convenience":8, "IPO purchase restrictions":8, "Senior exploitation":8, "Forms U4 & U5":8, "Background checks":8, "Statutory disqualification":8, "Continuing education":8, "Outside business activities":8, "Political contributions & gifts":8, "Customer complaints":8, "Felonies/liens/bankruptcy":8, "Protective put":4, "Short put":4, "Muni tax-equivalent yield":3, "Current yield":3, "Closed-end funds":4, "Long put breakeven":4, "Zero-coupon bonds":3 };
+const DIFF_BY_TOPIC = { "SIPC separate capacity":3, "CMO tranches":3, "Freeriding":2, "Wash sale":2, "Reg T margin":1, "Pattern day trader":1, "Reg SHO":2, "Options — covered call":2, "Bond risk":2, "Communications":3, "Trusted contact / seniors":2, "Discretionary accounts":2, "Prohibited activities":1, "Mutual fund pricing":2, "Convertibles":3, "Treasury / Fed":1, "Primary vs secondary":1, "Registration timelines":3, "Systematic risk":1, "Account opening / AML":2, "Fed tools":1, "MSRB":2, "Preferred vs common":1, "Stock splits":1, "Dividend dates":3, "Yield ordering":2, "Callable bonds / yield to worst":2, "Long call breakeven":1, "ETFs vs mutual funds":1, "Reinvestment risk":2, "ADR / currency risk":1, "Settlement T+1":1, "Stop orders":2, "Insider trading":2, "Selling away":2, "Economic indicators":2, "Monetary vs fiscal":2, "Business cycle":2, "IPO vs follow-on":2, "Best efforts vs firm commitment":2, "Shelf registration":2, "Blue-sky laws":1, "Market participants":1, "Third & fourth markets":2, "Rights & warrants":2, "Rule 144":2, "Agency & MBS":2, "GO vs revenue munis":2, "Money market instruments":1, "Bond ratings":2, "UITs vs mutual funds":2, "Variable annuities":2, "Share classes & breakpoints":2, "529 & ABLE":1, "DPPs & REITs":2, "ETFs vs ETNs":2, "Inflation & political risk":2, "Liquidity & prepayment risk":2, "Diversification & rebalancing":2, "Buybacks & tender offers":2, "Rights offerings & proxies":2, "Basis points & cost basis":1, "Marking close & backing away":2, "SAR vs CTR":2, "FinCEN & OFAC":2, "KYC & suitability":2, "Best interest (Reg BI)":2, "Do-not-call":1, "Reg S-P privacy":2, "UTMA accounts":1, "IRA & RMDs":1, "Signatures of convenience":1, "IPO purchase restrictions":1, "Senior exploitation":2, "Forms U4 & U5":1, "Background checks":1, "Statutory disqualification":1, "Continuing education":1, "Outside business activities":1, "Political contributions & gifts":1, "Customer complaints":1, "Felonies/liens/bankruptcy":1, "Protective put":2, "Short put":3, "Muni tax-equivalent yield":2, "Current yield":2, "Closed-end funds":1, "Long put breakeven":2, "Zero-coupon bonds":1 };
 const LEVELS={easy:{label:" Easy",mult:1,rating:800,maxDiff:1},hard:{label:" Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:" Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:" Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
 function curLevel(){return ($("levelSel")&&$("levelSel").value)||"hard"}
 
 /* ============ LESSONS: mastery, not memorization ============ */
 const LESSONS=[
-{t:"SIPC — Capacity, Not Person",a:"audio/lesson-1-sipc.wav",s:"Sec 4 • Your #1 trap",b:`SIPC protects against a BD <b>failing</b> — never against market loss. The unit is <b>separate capacity</b>: individual, IRA, and joint are different capacities, each capped at <b>$500k</b>, with cash inside capped at <b>$250k</b>. A joint account is <b>one</b> capacity shared by both people — the single most-tested trap on the SIE.`},
-{t:"CMO Tranches — Who Absorbs the Shock",a:"audio/lesson-2-cmo.wav",s:"Sec 2 • Your #2 trap",b:`A PAC tranche has a planned schedule. The <b>support/companion</b> tranche absorbs prepayment variability to defend it. Rates <b>fall</b> → prepayments surge → support gets paid early = <b>contraction</b>. Rates <b>rise</b> → prepayments vanish → support waits = <b>extension</b>. Ask 'who takes the shock?' and the answer follows.`},
-{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/lesson-3-freeriding.wav",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell first = <b>freeriding</b> (Reg T). Liquidate something else to cover after a good-faith purchase = <b>good faith violation</b>. Three violations in 12 months → 90-day settled-funds restriction. The Fed wrote Reg T; FINRA enforces the account consequences.`},
-{t:"The Numbers Vault",a:"audio/lesson-4-numbers.wav",s:"All sections",b:`<b>50%</b> Reg T initial • <b>25%</b> FINRA long maintenance • <b>$25k</b> PDT equity • <b>$2k</b> margin minimum • <b>30 days</b> wash sale (61-day window) • <b>>25</b> retail investors in <b>30 days</b> = retail communication • <b>65+</b> specified adult • <b>20 days</b> cooling-off • <b>25/40/90 days</b> prospectus delivery • <b>$500k/$250k</b> SIPC. Numbers are where the SIE grades you.`},
-{t:"Prohibited Activities — The Pattern Language",a:"audio/lesson-5-prohibited.wav",s:"Sec 3",b:`FINRA tests labels by pattern: <b>front running</b> (trade ahead of a customer), <b>painting the tape / matched orders</b> (fake activity), <b>churning</b> (excessive trading for commissions — needs control + excessiveness + scienter), <b>selling away</b> (private deals off the firm's books), <b>guaranteeing against loss</b> (never allowed). Match the fact pattern to the motive and the label picks itself.`},
-{t:"Why Regulation Exists — The Master Frame",a:"audio/lesson-6-master-frame.wav",s:"Beyond the exam",b:`Every rule here answers a historical abuse: the <b>1933 Act</b> = disclosure at issuance (prospectus, liability for lies). The <b>1934 Act</b> = ongoing markets (SEC, exchanges, anti-fraud 10b-5). <b>FINRA</b> = conduct of BDs and reps. <b>MSRB</b> = muni dealers (no regulator of muni issuers — Tower Amendment). <b>SIPC</b> (1970) = custody failure, not losses. Know the abuse, and the rule's shape becomes predictable on questions you've never seen.`},
+{t:"SIPC — Capacity, Not Person",a:"audio/mastery-1-sipc.wav",s:"Sec 1 • Your #1 trap",b:`SIPC protects against a BD <b>failing</b> — never against market loss. The unit is <b>separate capacity</b>: individual, IRA, and joint are different capacities, each capped at <b>$500k</b>, with cash inside capped at <b>$250k</b>. A joint account is <b>one</b> capacity shared by both people — the single most-tested trap on the SIE.`},
+{t:"CMO Tranches — Who Absorbs the Shock",a:"audio/mastery-2-cmo.wav",s:"Sec 2 • Your #2 trap",b:`A PAC tranche has a planned schedule. The <b>support/companion</b> tranche absorbs prepayment variability to defend it. Rates <b>fall</b> → prepayments surge → support gets paid early = <b>contraction</b>. Rates <b>rise</b> → prepayments vanish → support waits = <b>extension</b>. Ask 'who takes the shock?' and the answer follows.`},
+{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/mastery-3-freeriding.wav",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell first = <b>freeriding</b> (Reg T). Liquidate something else to cover after a good-faith purchase = <b>good faith violation</b>. Three violations in 12 months → 90-day settled-funds restriction. The Fed wrote Reg T; FINRA enforces the account consequences.`},
+{t:"The Numbers Vault",a:"audio/mastery-4-numbers.wav",s:"All sections",b:`<b>50%</b> Reg T initial • <b>25%</b> FINRA long maintenance • <b>$25k</b> PDT equity • <b>$2k</b> margin minimum • <b>30 days</b> wash sale (61-day window) • <b>>25</b> retail investors in <b>30 days</b> = retail communication • <b>65+</b> specified adult • <b>20 days</b> cooling-off • <b>25/40/90 days</b> prospectus delivery • <b>$500k/$250k</b> SIPC. Numbers are where the SIE grades you.`},
+{t:"Prohibited Activities — The Pattern Language",a:"audio/mastery-5-prohibited.wav",s:"Sec 3",b:`FINRA tests labels by pattern: <b>front running</b> (trade ahead of a customer), <b>painting the tape / matched orders</b> (fake activity), <b>churning</b> (excessive trading for commissions — needs control + excessiveness + scienter), <b>selling away</b> (private deals off the firm's books), <b>guaranteeing against loss</b> (never allowed). Match the fact pattern to the motive and the label picks itself.`},
+{t:"Why Regulation Exists — The Master Frame",a:"audio/mastery-6-master-frame.wav",s:"Beyond the exam",b:`Every rule here answers a historical abuse: the <b>1933 Act</b> = disclosure at issuance (prospectus, liability for lies). The <b>1934 Act</b> = ongoing markets (SEC, exchanges, anti-fraud 10b-5). <b>FINRA</b> = conduct of BDs and reps. <b>MSRB</b> = muni dealers (no regulator of muni issuers — Tower Amendment). <b>SIPC</b> (1970) = custody failure, not losses. Know the abuse, and the rule's shape becomes predictable on questions you've never seen.`},
 ];
 
 /* ============ state ============ */
 let store=JSON.parse(localStorage.getItem("sie")||'{"xp":0,"streak":0,"seen":0,"sec":{},"missed":{}}');
 let quiz=[],qi=0,score=0,mode="trap",timerInt=null,timeLeft=0,current=null,answered=false;
 const $=id=>document.getElementById(id);
+/* One router for every screen. Every view change goes through here so a screen can
+   never be rendered into a hidden container (the old "Lesson first" / Continue bug). */
+const VIEW_IDS=["home","lessons","units","report","quiz","result"];
+function showView(id){ stopAudio(); VIEW_IDS.forEach(v=>{const el=$(v); if(el) el.classList.toggle("hidden",v!==id);}); window.scrollTo(0,0); }
 /* ============ THEME ENGINE ============ */
 const THEME_KEY="tibin_sie_theme";
 function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); const b=$("themeToggle"); if(b) b.setAttribute("aria-pressed",t==="light"?"true":"false"); }
@@ -492,7 +521,7 @@ function save(){localStorage.setItem("sie",JSON.stringify(store));renderHome()}
 function renderHome(){ const ch=$("coachHome"); if(ch){ try{ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
   const dn=store.day&&store.day.d===new Date().toDateString()?store.day.n:0; const gpct=Math.min(100,dn/10*100);
   ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b> Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
-  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()"> Continue where I left off</button><button class="ghost" onclick="speak(coachText())"></button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
+  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()"> Continue where I left off</button><button class="ghost" onclick="speak(coachText())" aria-label="Hear coach summary">Hear coach</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
  $("xp").textContent=store.xp;$("streak").textContent=store.streak;
  $("missedCount").textContent=Object.keys(store.missed).length;
  $("level").textContent=store.xp>1500?"Regulation Master":store.xp>700?"Compliance Pro":store.xp>250?"Associate":"Analyst";
@@ -503,38 +532,54 @@ renderHome();
 
 /* ============ voice ============ */
 let audio=new Audio();
-/* AudioManager — one voice at a time, saved clips preloaded, dynamic text queued.
-   Fixed text (lessons) plays from saved MP3s instantly; dynamic text (questions,
-   feedback, reports) goes GPU Kokoro via /api/tts (disk-cached server-side),
-   falling back to the browser voice. Nothing ever talks over itself. */
-const AudioMan={q:[],busy:false,
- stop(){ this.q=[]; try{audio.pause()}catch(e){} try{speechSynthesis.cancel()}catch(e){} this.busy=false },
- clip(path){ this.stop(); audio.src=path; audio.play().catch(()=>{}); },
+/* AudioManager — one voice at a time, saved clips played on demand, dynamic text
+   queued. Fixed text (lessons, welcome) plays from saved WAV clips instantly; dynamic
+   text goes GPU Kokoro via /api/tts (disk-cached server-side), falling back to a female
+   English browser voice. Nothing ever talks over itself, and an in-flight clip cannot
+   start after you have navigated away. */
+let _voices=[];
+function refreshVoices(){ try{ _voices=speechSynthesis.getVoices()||[] }catch(e){ _voices=[] } }
+if(typeof speechSynthesis!=="undefined"&&speechSynthesis.onvoiceschanged!==undefined){ speechSynthesis.onvoiceschanged=refreshVoices; refreshVoices(); }
+function pickBrowserVoice(){ if(!_voices.length) refreshVoices();
+ const en=_voices.filter(v=>/^en([-_]|$)/i.test(v.lang||""));
+ const fem=en.find(v=>/female|woman|samantha|victoria|karen|moira|tessa|zira|aria|jenny|michelle|emma|ava|allison|susan|serena/i.test(v.name||""));
+ return fem||en[0]||_voices[0]||null; }
+function speakNow(text){ try{ const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.pitch=1.05; const v=pickBrowserVoice(); if(v)u.voice=v; speechSynthesis.speak(u); }catch(e){} }
+function plain(s){ return String(s||"").replace(/<[^>]+>/g," ").replace(/&[a-z]+;/gi," ").replace(/\s+/g," ").trim() }
+const AudioMan={q:[],busy:false,gen:0,
+ stop(){ this.gen++; this.q=[]; try{audio.pause()}catch(e){} try{speechSynthesis.cancel()}catch(e){} this.busy=false },
+ clip(path,fallback){ this.stop(); const gen=this.gen; let fell=false;
+  const fb=()=>{ if(fell||gen!==this.gen)return; fell=true; if(fallback)speakNow(fallback); };
+  try{ audio.onended=null; audio.onerror=fb; audio.src=path; audio.play().catch(fb); }catch(e){ fb() } },
  enq(text){ if(!$("voiceOn").checked)return; this.q.push(text); this._pump() },
- async _pump(){ if(this.busy||!this.q.length)return; this.busy=true; const text=this.q.shift();
-  const done=()=>{ this.busy=false; this._pump() };
+ async _pump(){ if(this.busy||!this.q.length)return; this.busy=true; const gen=this.gen; const text=this.q.shift();
+  const done=()=>{ if(gen!==this.gen)return; this.busy=false; this._pump() };
   const voice=$("voiceSel").value;
   try{ const r=await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice})});
+   if(gen!==this.gen){ this.busy=false; return }
    if(!r.ok)throw 0; const d=await r.json(); $("gpuPill").textContent=" Voice: GPU (RTX • Kokoro)"+(d.cached?" • cached clip":" • new clip saved");
    audio.src=d.url; audio.onended=done; audio.onerror=done; await audio.play();
-  }catch(e){ $("gpuPill").textContent=" Voice: browser (start server.py for GPU)";
-   const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.onend=done; u.onerror=done; speechSynthesis.speak(u); }
+  }catch(e){ if(gen!==this.gen){ this.busy=false; return }
+   $("gpuPill").textContent=" Voice: browser (start server.py for GPU)";
+   try{ const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.pitch=1.05; const v=pickBrowserVoice(); if(v)u.voice=v; u.onend=done; u.onerror=done; speechSynthesis.speak(u); }catch(err){ done() } }
  },
- preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips; m.clips.forEach(c=>{ const a=new Audio(); a.preload="auto"; a.src="audio/"+c.file }) }).catch(()=>{}) }
+ preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips }).catch(()=>{}) }
 };
 function speak(text){ AudioMan.enq(text) }
 function stopAudio(){ AudioMan.stop() }
 function testVoice(){speak("S I P C is per separate capacity. Not per person. Five hundred thousand dollars, with a two hundred fifty thousand dollar cash sub limit.")}
-function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a); $("gpuPill").textContent=" Playing saved voice clip from codebase";} else speak(l.b.replace(/<[^>]+>/g,""))}
-function playWelcome(){AudioMan.clip("audio/welcome.wav")}
+function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a,plain(l.b)); $("gpuPill").textContent=" Playing saved voice clip from codebase";} else speak(plain(l.b))}
+function playWelcome(){AudioMan.clip("audio/welcome.wav","Welcome to SIE Mastery. The exam rewards the person who can explain the rule, not the person who memorized the answer key. Start with the trap drill. Miss a question, read the explanation, and let the teacher route you.")}
 function speakCurrent(){if(current)speak(current.text)}
 
 /* ============ quiz engine ============ */
 function buildExam(n){
- const weights={1:.16,2:.44,3:.31,4:.09},out=[];
- Object.keys(weights).forEach(s=>{const cnt=Math.round(n*weights[s]);const pool=GEN.map(g=>g()).filter(q=>q.sec==s);
-  for(let i=0;i<cnt&&pool.length;i++)out.push(pool[i%pool.length])});
- while(out.length<n)out.push(GEN[R(0,GEN.length-1)]());
+ const weights={1:.16,2:.44,3:.31,4:.09},out=[],used=new Set();
+ const take=(sec,cnt)=>{ const pool=shuffle(GEN.map(g=>g()).filter(q=>q.sec===sec&&!used.has(q.topic)));
+   for(const q of pool){ if(cnt<=0)break; out.push(q);used.add(q.topic);cnt--; } return cnt; };
+ Object.keys(weights).forEach(s=>take(Number(s),Math.round(n*weights[s])));
+ if(out.length<n){ const rest=shuffle(GEN.map(g=>g())).filter(q=>!used.has(q.topic));
+   for(const q of rest){ if(out.length>=n)break; out.push(q);used.add(q.topic); } }
  return shuffle(out).slice(0,n).map(prepare);
 }
 function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer),unit:UNIT_BY_TOPIC[q.topic]||7,diff:DIFF_BY_TOPIC[q.topic]||2}}
@@ -542,7 +587,7 @@ function startQuiz(m,n){m=m||"trap";n=n||10;mode=m;
  if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first "); quiz=shuffle(miss).slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
  else if(m==="exam"){quiz=buildExam(75)}
  else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(GEN[i]())); const rest=adaptiveSet(n, true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3) rest.push(prepare(GEN[R(0,GEN.length-1)]())); quiz=[...seeded, ...rest.slice(0,Math.max(0,n-3))] } else{ quiz=adaptiveSet(n,false) }
- qi=0;score=0;$("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
+ qi=0;score=0;showView("quiz");
  clearInterval(timerInt);
  if(m==="exam"){timeLeft=105*60;timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000);tick()} else $("timer").textContent=" untimed";
  showQ();
@@ -569,19 +614,19 @@ function answer(i,btn){if(answered)return;answered=true;clearInterval(perQInt);c
 function nextQ(){ if(window._ms&&window._ms.c>=2&&qi<quiz.length-1){ const pool=GEN.map((g,i)=>i).filter(i=>{const q=GEN[i]();return UNIT_BY_TOPIC[q.topic]===window._ms.u&&(DIFF_BY_TOPIC[q.topic]||2)===1});
    if(pool.length){ quiz[qi+1]=prepare(GEN[pick(pool)]()); showToast(" Coach: two misses in a row — here's a confidence rep, then we climb back"); } window._ms=null; }
  qi++;qi<quiz.length?showQ():finish()}
-function quitQuiz(){clearInterval(timerInt);clearInterval(perQInt);$("quiz").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
-function finish(){clearInterval(timerInt);clearInterval(perQInt);awardBadges();$("quiz").classList.add("hidden");const pct=Math.round(score/quiz.length*100);
+function quitQuiz(){clearInterval(timerInt);clearInterval(perQInt);showView("home");renderHome()}
+function finish(){clearInterval(timerInt);clearInterval(perQInt);if(!quiz.length){showView("home");return} awardBadges();showView("result");const pct=Math.round(score/quiz.length*100);
  const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");confettiBurst();setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
  $("result").innerHTML=`<div class="card" style="text-align:center"><div class="big">${score} / ${quiz.length} — ${pct}%</div>
  <p>${coachLine(pct)}</p><p class="mut">${mode==="exam"?(pass?" PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>
  <div class="row" style="justify-content:center">${gapBtn()}<button onclick="startQuiz('${mode}',${mode==='exam'?75:10})">Run it again</button><button class="ghost" onclick="backHome()">Home</button></div></div>`;
- $("result").classList.remove("hidden");save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast(" New badge: "+window._newBadges.join(", ")),600);
+ save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast(" New badge: "+window._newBadges.join(", ")),600);
  speak(`You scored ${score} out of ${quiz.length}. ${pct} percent. ${mode==="exam"?(pass?"That is a pass.":"That is below the seventy percent pass line."):""}`)}
 function confettiBurst(){ const c=$("confetti"); const colors=["var(--accent-primary)","var(--accent-deep)","var(--status-pass)","var(--status-warn)"]; for(let i=0;i<40;i++){ const el=document.createElement("div"); el.className="confetti-piece"; el.style.left=Math.random()*100+"vw"; el.style.top=Math.random()*20-10+"vh"; el.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)]; el.style.animationDuration=(Math.random()*1.5+1)+"s"; el.style.animationDelay=(Math.random()*0.5)+"s"; el.style.transform=`rotate(${Math.random()*360}deg)`; c.appendChild(el); } setTimeout(()=>{ c.querySelectorAll(".confetti-piece").forEach(el=>el.remove()); },3000);}
-function backHome(){$("result").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
-function showLessons(){$("home").classList.add("hidden");$("result").classList.add("hidden");
+function backHome(){showView("home");renderHome()}
+function showLessons(){ showView("lessons");
  $("lessons").innerHTML=LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})"> Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
- $("lessons").classList.remove("hidden")}
+ }
 
 /* ============ v2: ML TEACHER (BKT mastery + Elo ability + time/accuracy diagnosis) ============ */
 let perQInt=null;
@@ -666,8 +711,8 @@ const UNITS=[
 ];
 
 function gensForUnit(u){ return GEN.map((g,i)=>i).filter(i=>UNIT_BY_TOPIC[GEN[i]().topic]===u) }
-function showUnits(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");
- const doneCount=Object.keys(store.t.done).length;
+function showUnits(){ showView("units");
+ const doneCount=[1,2,3,4,5,6,7,8].filter(u=>store.t.done[u]).length;
  $("units").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> The Lesson Plan — 8 units</h3><p class="mut">Detailed lesson → mini quiz (5 questions, 80% to clear). Your teacher re-weights every quiz toward what the data says you don't own yet. Progress: <b>${doneCount} / 8 units cleared</b></p><div class="bar"><i style="width:${doneCount/8*100}%"></i></div>
  <div class="pathmap">${UNITS.map((_,i)=>`<span class="node ${store.t.done[i+1]?"done":(i+1===doneCount+1?"now":"")}">${store.t.done[i+1]?"":i+1}</span>${i<7?'<span class="link"></span>':""}`).join("")}</div>
  ${doneCount>=8?'<p> All 8 units cleared — the Final Exam Review is unlocked.</p><button class="pink" onclick="startFinalReview()"> Final Exam Review (25 adaptive questions)</button>':'<p class="mut">Clear all 8 units to unlock the Final Exam Review.</p>'}</div>`
@@ -675,18 +720,19 @@ function showUnits(){ $("home").classList.add("hidden");$("lessons").classList.a
   return `<div class="card" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><div class="tag">UNIT ${u} ${store.t.done[u]?"•  CLEARED":""}</div><h3 style="margin:6px 0">${un.n}</h3><div class="mut" style="font-size:13px">${diagnose(u)}</div></div><div style="min-width:130px"><div class="mut" style="font-size:12px">Mastery (model)</div><div class="big" style="font-size:24px">${Math.round(s.bkt*100)}%</div><div class="bar"><i style="width:${Math.round(s.bkt*100)}%"></i></div><div class="mut" style="font-size:12px">${s.a?s.c+"/"+s.a+" correct • avg "+(s.time/s.a/1000).toFixed(1)+"s":"no attempts yet"}</div></div></div>
   <div class="row" style="margin-top:10px"><button onclick="showUnitLesson(${u})"> Detailed lesson</button><button class="ghost" onclick="${pr[1]}">${pr[0]}</button></div></div>`}).join("")
  + `<button class="ghost" onclick="backHome()">← Back</button>`;
- $("units").classList.remove("hidden"); }
-function showUnitLesson(u){ const un=UNITS[u-1];
+ }
+function showUnitLesson(u){ showView("units"); const un=UNITS[u-1];
  $("units").innerHTML=`<div class="card lesson"><div class="tag">UNIT ${u} • DETAILED LESSON</div><h3>${un.n}</h3><p>${un.lesson}</p>
  <div class="row"><button class="ghost" onclick="playUnitAudio(${u})"> Listen (saved clip)</button><button onclick="startUnitQuiz(${u})"> Mini quiz — 5 questions</button><button class="ghost" onclick="showUnits()">All units</button></div></div>`; }
-function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a);$("gpuPill").textContent=" Playing saved voice clip"} else speak(UNITS[u-1].lesson.replace(/<[^>]+>/g,"")) }
-function startUnitQuiz(u){ window._unit=u; mode="unit"; const pool=gensForUnit(u);
- let qs=[]; while(qs.length<5) qs.push(GEN[pick(pool)]());
- quiz=shuffle(qs).map(prepare);
+function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a,plain(UNITS[u-1].lesson));$("gpuPill").textContent=" Playing saved voice clip"} else speak(plain(UNITS[u-1].lesson)) }
+function startUnitQuiz(u){ window._unit=u; mode="unit"; const pool=shuffle(gensForUnit(u));
+ if(!pool.length){ showToast("No questions are mapped to this unit yet."); return }
+ let qs=pool.slice(0,5).map(i=>GEN[i]());
+ quiz=qs.map(prepare);
  if(curLevel()==="veryhard"||curLevel()==="master"){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) quiz[quiz.length-1]=prepareShort(pick(ss)); }
  beginQuiz(); }
-function startFinalReview(){ if(Object.keys(store.t.done||{}).length<8){ showToast(" Final Exam Review unlocks after all 8 units are cleared"); showUnits(); return } mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
-function beginQuiz(){ qi=0;score=0;window._qt=[]; ["home","lessons","units","report","result"].forEach(id=>$(id).classList.add("hidden")); $("quiz").classList.remove("hidden");
+function startFinalReview(){ if([1,2,3,4,5,6,7,8].filter(u=>store.t.done[u]).length<8){ showToast(" Final Exam Review unlocks after all 8 units are cleared"); showUnits(); return } mode="final"; quiz=adaptiveSet(25,false); beginQuiz(); }
+function beginQuiz(){ qi=0;score=0;window._qt=[]; showView("quiz");
  clearInterval(timerInt); if(mode!=="exam")$("timer").textContent=" untimed"; showQ(); }
 
 
@@ -699,7 +745,7 @@ const SHORT=[
 {topic:"CMO tranches",unit:3,prompt:"Interest rates fall sharply. Explain what happens to a CMO support tranche's average life, and why.",groups:[{k:"contraction / shorter life",any:["contract","shorten","shorter","paid early","paid off early","returned early"]},{k:"prepayments rise as borrowers refinance",any:["prepay","refinanc"]}],model:"It contracts — average life shortens. Falling rates make homeowners refinance, prepayments surge, and the support tranche absorbs the excess prepayments first to protect the PAC's schedule, so its principal comes back early.",rule:"Rates down = contraction (support absorbs prepayments)."},
 {topic:"Freeriding",unit:6,prompt:"Define freeriding in a cash account and state the consequence if it becomes a pattern.",groups:[{k:"buy and sell before paying / unsettled funds",any:["before pay","unsettled","before paying","not yet paid","sell before"]},{k:"90-day settled-funds restriction",any:["90"]}],model:"Freeriding is buying a security in a cash account with unsettled funds and selling it before paying for it (a Regulation T violation). If it recurs, the account is restricted to settled funds only for 90 days.",rule:"Freeriding: sell before paying = Reg T violation, 90-day freeze."},
 {topic:"Wash sale",unit:6,prompt:"An investor sells at a loss and rebuys the same stock 10 days later. What happens to the loss, and what is the full window the rule covers?",groups:[{k:"loss disallowed/deferred now",any:["disallow","defer","not allowed","cannot claim","can't claim","postpone"]},{k:"added to cost basis of new shares",any:["basis","added to the cost","new shares"]},{k:"30 days either side / 61-day window",any:["61","30 days","thirty"]}],model:"The loss is disallowed for now (deferred, not destroyed): it is added to the cost basis of the replacement shares and the holding period tacks on. The wash sale window is 30 days before and after the sale — 61 days total.",rule:"Wash sale: 61-day window, loss goes into new basis."},
-{topic:"Reg T margin",unit:7,prompt:"Two numbers, two regulators: state the initial margin requirement and who sets it, and the long maintenance requirement and who sets that.",groups:[{k:"initial 50% — set by the Federal Reserve",bind:{a:["50"],b:["federal reserve","the fed"," fed "],notB:["finra"]}},{k:"maintenance 25% — set by FINRA",bind:{a:["25"],b:["finra"],notB:["federal reserve","the fed"]}}],model:"Regulation T initial margin is 50%, set by the Federal Reserve. FINRA's minimum maintenance for long positions is 25%. Swapping the two regulators or the two numbers is the classic trap.",rule:"Reg T 50% = Fed. Maintenance 25% = FINRA."},
+{topic:"Reg T margin",unit:7,prompt:"Two numbers, two regulators: state the initial margin requirement and who sets it, and the long maintenance requirement and who sets that.",groups:[{k:"initial 50% — set by the Federal Reserve",bind:{a:["50"],b:["federal reserve","the fed"," fed "],notB:["finra"],near:["initial","regulation t","reg t"]}},{k:"maintenance 25% — set by FINRA",bind:{a:["25"],b:["finra"],notB:["federal reserve","the fed"],near:["maintenance","maintain"]}}],model:"Regulation T initial margin is 50%, set by the Federal Reserve. FINRA's minimum maintenance for long positions is 25%. Swapping the two regulators or the two numbers is the classic trap.",rule:"Reg T 50% = Fed. Maintenance 25% = FINRA."},
 {topic:"Bond risk",unit:3,prompt:"Bond A: 30-year, zero coupon. Bond B: 30-year, 8% coupon. Bond C: 5-year, zero coupon. Which bond's price moves most when yields change, and what concept explains it?",groups:[{k:"Bond A / the 30-year zero",any:["bond a","30-year zero","thirty-year zero","the zero"]},{k:"duration",any:["duration"]},{k:"long maturity + no coupon = highest sensitivity",any:["longest","no coupon","zero coupon","highest duration","most sensitive"]}],model:"Bond A. Duration — price sensitivity to yield changes — rises with maturity and falls with coupon size. The 30-year zero-coupon bond has the highest duration, so its price moves the most for a given yield change.",rule:"Duration: up with maturity, down with coupon."},
 {topic:"Communications",unit:7,prompt:"A firm emails a sales piece to 40 retail investors this month. What is this called under FINRA rules, what approval does it need, and what are the two threshold numbers?",groups:[{k:"retail communication",any:["retail communication"]},{k:"principal approval before use",any:["principal","approval before","approved before","pre-approval","prior approval"]},{k:"more than 25 investors",any:["25"]},{k:"within 30 days",any:["30"]}],model:"It is a retail communication: written material distributed to more than 25 retail investors within any 30-calendar-day period. A principal must approve it before use. 25 or fewer would be correspondence, under a different standard.",rule:"Retail communication: >25 retail investors / 30 days, principal pre-approval."},
 {topic:"Callable bonds / yield to worst",unit:3,prompt:"You buy a callable bond at a premium. Which yield governs your expected return and why?",groups:[{k:"yield to call",any:["yield to call","ytc","to call"]},{k:"issuer will call it / lower of YTC and YTM",any:["call","lower","worst"]}],model:"Yield to call governs. At a premium, the issuer is likely to call the bond at the first call date, cutting the return short, so YTC is lower than YTM — and the lower figure (yield to worst) is the honest one to quote and expect.",rule:"Premium bond: YTC (yield to worst) governs."},
@@ -717,7 +763,7 @@ function gradeShort(q,text){
  q.groups.forEach(g=>{ let hit=false;
    if(g.bind){ const sents=t.split(/[.!?]+/); const posIn=(s,arr)=>arr.flatMap(x=>{ const out=[]; let i=s.indexOf(x); while(i>=0){out.push(i); i=s.indexOf(x,i+1)} return out });
      const dIn=(s,A,B)=>{ let m=1e9; A.forEach(a=>B.forEach(b=>{ m=Math.min(m,Math.abs(a-b)) })); return m };
-     hit=sents.some(s=>{ const A=posIn(s,g.bind.a); if(!A.length) return false; const db=dIn(s,A,posIn(s,g.bind.b)); if(db>1e8) return false; const dn=dIn(s,A,posIn(s,g.bind.notB||[])); return db<dn }); }
+     hit=sents.some(s=>{ const A=posIn(s,g.bind.a); if(!A.length) return false; if(g.bind.near && !posIn(s,g.bind.near).length) return false; const db=dIn(s,A,posIn(s,g.bind.b)); if(db>1e8) return false; const dn=dIn(s,A,posIn(s,g.bind.notB||[])); return db<dn }); }
    else hit=g.any.some(s=>t.includes(s));
    (hit?hits:missed).push(g.k) });
  let total=q.groups.length, got=hits.length;
@@ -730,11 +776,13 @@ function answerShort(){ if(answered)return; const ta=$("shortAns"); const text=(
  answered=true; clearInterval(perQInt); const ms=Date.now()-(window._qStart||Date.now());
  const g=gradeShort(current,text); const full=g.verdict==="full";
  recordPerf(current,full,ms);
- if(full){score++;store.xp+=Math.round(20*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1))}
- else if(g.verdict==="partial"){score+=0.5;store.xp+=8}
  const key=current.topic+current.text.slice(0,40);
- if(!full){ store.missed[key]={sec:0,topic:current.topic,text:current.text,choices:["(short response) "+current.model],answer:0,explain:current.model,rule:current.rule,type:"short",groups:current.groups,num:current.num,model:current.model} }
- $("explain").innerHTML=`<b>${full?" Full credit.":g.verdict==="partial"?"🟡 Partial credit — the shape is there, a piece is missing.":" Not yet — this is exactly the gap the teacher hunts."}</b>
+ if(full){score++;store.xp+=Math.round(20*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1));
+  if(store.missed[key]){store.missed[key]._cleared=(store.missed[key]._cleared||0)+1;
+   if(store.missed[key]._cleared>=2)delete store.missed[key]}}
+ else if(g.verdict==="partial"){score+=0.5;store.xp+=8}
+ if(!full){ store.missed[key]={sec:current.sec,topic:current.topic,text:current.text,choices:["(short response) "+current.model],answer:0,explain:current.model,rule:current.rule,type:"short",groups:current.groups,num:current.num,model:current.model,unit:current.unit,diff:current.diff} }
+ $("explain").innerHTML=`<b>${full?" Full credit.":g.verdict==="partial"?" Partial credit — the shape is there, a piece is missing.":" Not yet — this is exactly the gap the teacher hunts."}</b>
  <br> You covered: ${g.hits.length?g.hits.join(" • "):"—"}<br> Missing: ${g.missed.length?g.missed.join(" • "):"nothing"}
  <br><br> <b>Model answer:</b> ${current.model}<br> <b>Rule:</b> ${current.rule}`;
  $("explain").classList.remove("hidden"); $("nextBtn").classList.remove("hidden"); save();
@@ -743,7 +791,7 @@ function answerShort(){ if(answered)return; const ta=$("shortAns"); const text=(
 }
 
 /* ============ v2: TEACHER REPORT ============ */
-function showReport(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("result").classList.add("hidden");
+function showReport(){ showView("report");
  const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
  $("report").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> Teacher Report</h3>
  <p class="mut">Ability rating (Elo-style, from difficulty + results): <b>${store.t.theta}</b> • Overall: <b>${totA?Math.round(totC/totA*100):0}%</b> across ${totA} answers • Badges: ${store.t.badges.length?store.t.badges.join(" • "):"none yet — clear a unit or run a Perfect Run"}</p><button class="ghost" onclick="speakReport()"> Hear my report</button>
@@ -754,7 +802,7 @@ function showReport(){ $("home").classList.add("hidden");$("lessons").classList.
   <div class="mut" style="font-size:13px">${s.a?`Accuracy ${Math.round(s.c/s.a*100)}% • avg ${(s.time/s.a/1000).toFixed(1)}s per answer • fast-wrong ×${s.fastWrong} • slow-right ×${s.slowRight}`:"No data yet"}</div>
   <p style="margin:8px 0">${diagnose(u)}</p><button class="ghost" onclick="${pr[1]}">${pr[0]}</button></div>`}).join("")
  + `<button class="ghost" onclick="backHome()">← Back</button>`;
- $("report").classList.remove("hidden"); }
+ }
 
 
 /* ============ v3: GAP-CLOSING LOOP + UX helpers ============ */
@@ -773,7 +821,7 @@ function startGapClose(topic){
  window._gapTopic=topic; window._gapUnit=u;
  const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
  const ex=gi.length?GEN[gi[0]]():null; const exp=ex?prepare(ex):null;
- ["home","lessons","report","result","quiz"].forEach(id=>$(id).classList.add("hidden")); $("units").classList.remove("hidden");
+ showView("units");
  $("units").innerHTML=`<div class="card lesson"><div class="tag"> GAP CLOSER • ${topic}</div>
  <h3>Step 1 — Re-learn it, shorter and sharper</h3><p>${UNITS[u-1].lesson}</p>
  ${exp?`<h3>Step 2 — Worked example (watch the trap spring)</h3><p><b>${exp.text}</b></p><p> Correct: <b>${exp.choices[exp.answer]}</b></p><div class="explain">${exp.explain}<br> ${exp.rule}</div>`:""}
