@@ -91,7 +91,7 @@ header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;ba
 .sub{color:var(--text-muted);font-size:13px}.wrap{max-width:1080px;margin:0 auto;padding:0 18px 56px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .card{background:linear-gradient(160deg,var(--bg-surface),var(--bg-elevated));border:1px solid var(--border-subtle);border-radius:var(--r);padding:18px;box-shadow:var(--shadow-1);transition:all .2s ease;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;inset:0;border-radius:var(--r);padding:1px;background:linear-gradient(135deg,var(--accent-soft),transparent);-webkit-mask:linear-gradient(var(--mask-white) 0 0) content-box,linear-gradient(var(--mask-white) 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;opacity:0;transition:opacity .2s ease}
+.card::before{content:"";position:absolute;inset:0;border-radius:var(--r);padding:1px;background:linear-gradient(135deg,var(--accent-soft),transparent);-webkit-mask:linear-gradient(var(--mask-white) 0 0) content-box,linear-gradient(var(--mask-white) 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;opacity:0;transition:opacity .2s ease;pointer-events:none}
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-2);border-color:var(--accent-border)}
 .card:hover::before{opacity:1}
 .card.depth-2{box-shadow:var(--shadow-2)}
