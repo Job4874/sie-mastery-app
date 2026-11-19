@@ -1,103 +1,12 @@
-/* app.test.js - content, grader, exam and onboarding checks without a browser. */
+/* app.test.js - content, curriculum, router, grader, exam, audio and state checks without a browser. */
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { STATIC, getScriptList, readAllAppJs, createSandbox } = require("./load_app");
 
-const root = path.join(__dirname, "..");
-const html = fs.readFileSync(path.join(root, "static", "index.html"), "utf8");
-const js = html.match(/<script>([\s\S]*)<\/script>/)[1];
-
-function makeEl(id) {
-  return {
-    id, textContent: "", innerHTML: "", className: "", checked: true, value: "af_heart",
-    disabled: false, style: {}, dataset: {},
-    classList: { add() {}, remove() {}, contains() { return false; } },
-    setAttribute() {}, getAttribute() { return null; }, addEventListener() {},
-    appendChild() {}, querySelectorAll() { return []; }, remove() {}, focus() {},
-    play() { return Promise.resolve(); }, pause() {}
-  };
-}
-
-function createAppSandbox(fetchImpl, extras) {
-  const elements = new Map();
-  const document = {
-    documentElement: { setAttribute() {}, getAttribute() { return "dark"; } },
-    getElementById(id) { if (!elements.has(id)) elements.set(id, makeEl(id)); return elements.get(id); },
-    querySelectorAll() { return []; }, createElement(tag) { return makeEl(tag); },
-    addEventListener() {}, body: makeEl("body")
-  };
-  const sandbox = {
-    console, document, localStorage: { getItem() { return null; }, setItem() {} },
-    Audio: function () { return makeEl("audio"); },
-    SpeechSynthesisUtterance: function (t) { this.text = t; },
-    speechSynthesis: { cancel() {}, speak() {} },
-    fetch: fetchImpl || (() => Promise.reject(new Error("offline"))),
-    alert() {}, setInterval() { return 0; }, clearInterval() {}, setTimeout() { return 0; },
-    clearTimeout() {}, matchMedia: () => ({ matches: false }),
-    Date, Math, JSON, Number, Object, Array, String, RegExp, parseInt, parseFloat, isNaN,
-    ...extras
-  };
-  sandbox.window = sandbox;
-  sandbox.globalThis = sandbox;
-  vm.createContext(sandbox);
-  vm.runInContext(js, sandbox, { filename: "index.js" });
-  return sandbox;
-}
-
-function createStatefulSandbox(fetchImpl) {
-  const elements = new Map();
-  const storage = new Map();
-  const attrs = new Map([["data-theme", "dark"], ["data-adhd", "off"]]);
-  const makeStatefulEl = id => {
-    const classes = new Set();
-    const elAttrs = new Map();
-    const el = makeEl(id);
-    el.classList = {
-      add: (...cs) => cs.forEach(c => classes.add(c)),
-      remove: (...cs) => cs.forEach(c => classes.delete(c)),
-      contains: c => classes.has(c)
-    };
-    el.setAttribute = (k, v) => elAttrs.set(k, String(v));
-    el.getAttribute = k => (elAttrs.has(k) ? elAttrs.get(k) : null);
-    return el;
-  };
-  const document = {
-    documentElement: {
-      setAttribute: (k, v) => attrs.set(k, String(v)),
-      getAttribute: k => (attrs.has(k) ? attrs.get(k) : null)
-    },
-    getElementById(id) {
-      if (!elements.has(id)) elements.set(id, makeStatefulEl(id));
-      return elements.get(id);
-    },
-    querySelectorAll() { return []; },
-    createElement(tag) { return makeStatefulEl(tag); },
-    addEventListener() {},
-    body: makeStatefulEl("body")
-  };
-  const localStorage = {
-    getItem: k => (storage.has(k) ? storage.get(k) : null),
-    setItem: (k, v) => storage.set(k, String(v)),
-    removeItem: k => storage.delete(k)
-  };
-  const sandbox = {
-    console, document, localStorage,
-    Audio: function () { return makeStatefulEl("audio"); },
-    SpeechSynthesisUtterance: function (t) { this.text = t; },
-    speechSynthesis: { cancel() {}, speak() {} },
-    fetch: fetchImpl || (() => Promise.reject(new Error("offline"))),
-    alert() {}, setInterval() { return 0; }, clearInterval() {}, setTimeout() { return 0; },
-    clearTimeout() {}, matchMedia: () => ({ matches: false }),
-    Date, Math, JSON, Number, Object, Array, String, RegExp, parseInt, parseFloat, isNaN
-  };
-  sandbox.window = sandbox;
-  sandbox.globalThis = sandbox;
-  vm.createContext(sandbox);
-  vm.runInContext(js, sandbox, { filename: "index.js" });
-  return sandbox;
-}
-
-const sandbox = createAppSandbox();
+const html = fs.readFileSync(path.join(STATIC, "index.html"), "utf8");
+const allJs = readAllAppJs().map(s => s.code).join("\n");
+const sandbox = createSandbox();
 
 const result = vm.runInContext(`(() => {
   const bad = [];
@@ -185,10 +94,41 @@ const result = vm.runInContext(`(() => {
     "Initial margin is 50% set by the Federal Reserve and maintenance is 25% set by FINRA.");
   const negCmo = gradeShort(prepareShort(SHORT[1]), "It does not contract and prepayments do not rise.");
   const negSipc = gradeShort(prepareShort(SHORT[0]), "Not $900,000; only $500,000 per separate capacity.");
-  const commBoundary = gradeShort(prepareShort(SHORT[6]), "Retail communication approved by principal before use for 250 retail investors in 300 days.");
-  return { gen: GEN.length, bad, splitBad, marginBad, placements, exams, exam150Valid, secAligned, maps, model, empty,
-           swapped, swappedBut, shortRule, bare, role, negCmo, negSipc, commBoundary,
-           norm1000k: normNums("$1,000k"), zero: typeof startZero, placement: typeof startPlacement };
+  const commBoundary = gradeShort(prepareShort(SHORT[6]),
+    "Retail communication approved by principal before use for 250 retail investors in 300 days.");
+
+  const unitCount = [0,1,2,3,4,5,6,7,8].filter(i => SIE.units[i]).length;
+  let lessonCount = 0, screenCount = 0, badLessons = 0;
+  SIE.units.forEach(u => {
+    if (!u) return;
+    u.lessons.forEach(l => {
+      lessonCount++;
+      screenCount += l.screens.length;
+      if (!l.screens.some(s => s.kind === "check") || l.screens[l.screens.length - 1].kind !== "recap") badLessons++;
+    });
+  });
+
+  const routeChecks = [
+    ["#/learn", "/learn"],
+    ["#/learn/unit/3", "/learn/unit/:u"],
+    ["#/learn/unit/3/lesson/2/4", "/learn/unit/:u/lesson/:l/:s"],
+    ["#/practice", "/practice"],
+    ["#/exam", "/exam"],
+    ["#/progress", "/progress"],
+    ["#/library", "/library"],
+    ["#/settings", "/settings"],
+    ["#/gap/Reg%20T%20margin", "/gap/:topic"],
+    ["#/quiz", "/quiz"]
+  ].map(([h, pat]) => {
+    const p = Router.parse(h);
+    return Boolean(p && p.route.pattern === pat);
+  });
+
+  return {
+    gen: GEN.length, bad, splitBad, marginBad, placements, exams, exam150Valid, secAligned, maps,
+    model, empty, swapped, swappedBut, shortRule, bare, role, negCmo, negSipc, commBoundary,
+    norm1000k: normNums("$1,000k"), unitCount, lessonCount, screenCount, badLessons, routeChecks
+  };
 })()`, sandbox);
 
 let pass = 0, fail = 0;
@@ -197,6 +137,12 @@ function ok(cond, name) {
 }
 
 (async () => {
+  ok(getScriptList().length >= 20, "index.html loads split deferred JS files (got " + getScriptList().length + ")");
+  ok(!/<script(?![^>]*src=)/i.test(html), "index.html has zero inline <script> blocks");
+  ok(!/\bonclick\s*=/i.test(html) && !/\bonclick\s*=/i.test(allJs), "zero inline onclick handlers in HTML or JS");
+  ok(result.unitCount === 9 && result.lessonCount === 42 && result.screenCount >= 260 && result.badLessons === 0,
+     `curriculum loaded cleanly (${result.unitCount} units, ${result.lessonCount} lessons, ${result.screenCount} screens, bad=${result.badLessons})`);
+  ok(result.routeChecks.every(Boolean), "all 10 hash routes parse cleanly");
   ok(result.gen >= 89, "generator count >= 89 (got " + result.gen + ")");
   ok(result.bad.length === 0, "all generators structurally valid: " + JSON.stringify(result.bad.slice(0, 5)));
   ok(result.splitBad.length === 0, "GEN[23] stock splits produce integer share counts across 200 rolls");
@@ -221,47 +167,43 @@ function ok(cond, name) {
   ok(result.negSipc.verdict !== "full", "negated $900k SIPC figure cannot earn full credit (got " + result.negSipc.verdict + ")");
   ok(result.commBoundary.missed.length === 2, "word-boundary prevents 250/300 from matching 25/30 thresholds");
   ok(result.norm1000k.length === 1 && result.norm1000k[0] === 1000000, "normNums('$1,000k') strips comma before k expansion");
-  ok(result.zero === "function", "zero-to-first-trade primer exists");
-  ok(result.placement === "function", "placement diagnostic exists");
-  ok(!html.includes("am_fenrir"), "invalid voice option removed");
-  ok(html.includes("ZERO → FIRST TRADE"), "zero path is visible in the app");
-  ok(!html.includes("Rule 2210/Exchange Act"), "Reg BI does not cite FINRA Rule 2210");
-  ok(!html.includes("Rule 3230"), "gift limit does not cite FINRA Rule 3230");
-  ok(html.includes("Rule 3220"), "gift limit cites FINRA Rule 3220");
-  ok(html.includes("15l-1"), "Reg BI cites Exchange Act Rule 15l-1");
-  ok(!html.includes("/[]/g"), "dead /[]/g regex removed");
-  ok(!html.includes("1%/week"), "Rule 144 states 1% per 3 months rather than 1%/week");
-  ok(html.includes("Rule 5220"), "backing away cites FINRA Rule 5220");
-  ok(html.includes("Rule 3270"), "OBA cites FINRA Rule 3270");
-  ok(html.includes("2150(c)"), "sharing in accounts cites FINRA Rule 2150(c)");
-  ok(html.includes("26-05"), "gift limit updates reference FINRA Notice 26-05 ($300)");
-  ok(html.includes("age 46"), "ABLE eligibility reflects SECURE 2.0 age 46 update");
-  ok(html.includes("REPORTABLE EVENTS"), "REPORTABLE EVENTS heading typo fixed");
+  ok(!allJs.includes("am_fenrir"), "invalid voice option removed");
+  ok(!allJs.includes("Rule 2210/Exchange Act"), "Reg BI does not cite FINRA Rule 2210");
+  ok(!allJs.includes("Rule 3230"), "gift limit does not cite FINRA Rule 3230");
+  ok(allJs.includes("Rule 3220"), "gift limit cites FINRA Rule 3220");
+  ok(allJs.includes("15l-1"), "Reg BI cites Exchange Act Rule 15l-1");
+  ok(!allJs.includes("/[]/g"), "dead /[]/g regex removed");
+  ok(!allJs.includes("1%/week"), "Rule 144 states 1% per 3 months rather than 1%/week");
+  ok(allJs.includes("Rule 5220"), "backing away cites FINRA Rule 5220");
+  ok(allJs.includes("Rule 3270"), "OBA cites FINRA Rule 3270");
+  ok(allJs.includes("2150(c)"), "sharing in accounts cites FINRA Rule 2150(c)");
+  ok(allJs.includes("26-05"), "gift limit updates reference FINRA Notice 26-05 ($300)");
+  ok(allJs.includes("age 46"), "ABLE eligibility reflects SECURE 2.0 age 46 update");
+  ok(allJs.includes("REPORTABLE EVENTS"), "REPORTABLE EVENTS heading typo fixed");
 
-  const stSb = createStatefulSandbox(url =>
-    url === "/api/health"
-      ? Promise.resolve({ json: () => Promise.resolve({ ok: true, ready: true, engine: "kokoro-onnx" }) })
-      : Promise.reject(new Error("offline"))
-  );
+  const stSb = createSandbox({
+    stateful: true,
+    fetch: url =>
+      url === "/api/health"
+        ? Promise.resolve({ json: () => Promise.resolve({ ok: true, ready: true, engine: "kokoro-onnx" }) })
+        : Promise.reject(new Error("offline"))
+  });
   const stRes = vm.runInContext(`(() => {
     const adhd0 = isAdhd();
-    toggleAdhd();
+    ACTIONS["toggle-adhd"]();
     const adhd1 = isAdhd();
-    const chunkHtml = renderLessonBody("First sentence explains accounts. Second sentence covers settlement. Third covers margin. Fourth wraps up orders.");
-    toggleAdhd();
+    ACTIONS["toggle-adhd"]();
     const adhd2 = isAdhd();
-    const plainHtml = renderLessonBody("First sentence explains accounts. Second sentence covers settlement.");
 
     startPlacement();
+    showQ();
     const qiBefore = qi;
     nextQ();
     const qiBlocked = qi;
     answered = true;
     nextQ();
     const qiAfter = qi;
-    window.event = { detail: 2 };
-    answer(0, null);
-    window.event = undefined;
+    answer(0, null, { detail: 2 });
     const dblBlockedAnswered = answered;
 
     current = prepareShort(SHORT[4]);
@@ -282,49 +224,66 @@ function ok(cond, name) {
       badSec: { text: "bad sec", topic: "Reg T margin", sec: 99, choices: ["a", "b"], answer: 0 },
       goodMc: { text: "valid mc", topic: "Reg T margin", sec: 3, choices: ["a", "b"], answer: 0 }
     });
+    const cleanedLp = cleanLessonProgress({ "1-1": { done: true, at: 1 }, bad: { done: true }, "2-1": { done: false } });
 
     const selfCheck = runSelfCheck();
-    return { adhd0, adhd1, adhd2, chunkHtml, plainHtml, qiBefore, qiBlocked, qiAfter, dblBlockedAnswered,
-             ssnBlockedAnswered, shortTimeoutState, cleanedKeys: Object.keys(cleaned), selfCheck };
+    return { adhd0, adhd1, adhd2, qiBefore, qiBlocked, qiAfter, dblBlockedAnswered,
+             ssnBlockedAnswered, shortTimeoutState, cleanedKeys: Object.keys(cleaned),
+             cleanedLpKeys: Object.keys(cleanedLp), selfCheck };
   })()`, stSb);
   await new Promise(r => setTimeout(r, 15));
-  const selfCheckOut = stSb.document.getElementById("selfCheckOut").textContent;
-  ok(stRes.adhd0 === false && stRes.adhd1 === true && stRes.adhd2 === false, "toggleAdhd flips isAdhd state cleanly");
-  ok(stRes.chunkHtml.includes('class="chunk-list"') && stRes.chunkHtml.includes('class="chunk-item"') &&
-     stRes.plainHtml.startsWith("<p>"), "renderLessonBody switches between <p> and .chunk-list micro-chunks");
+  ok(stRes.adhd0 === false && stRes.adhd1 === true && stRes.adhd2 === false, "toggle-adhd flips isAdhd state cleanly");
   ok(stRes.qiBefore === 0 && stRes.qiBlocked === 0 && stRes.qiAfter === 1, "nextQ blocks advance while !answered");
   ok(stRes.dblBlockedAnswered === false, "answer ignores accidental multi-click bleed-through (event.detail > 1)");
   ok(stRes.ssnBlockedAnswered === false, "answerShort blocks and redacts SSN-only submission");
   ok(stRes.shortTimeoutState.answered && stRes.shortTimeoutState.disabled && stRes.shortTimeoutState.missedType === "short",
      "timeoutShort marks answered, disables shortAns, and records short miss");
   ok(stRes.cleanedKeys.length === 1 && stRes.cleanedKeys[0] === "goodMc", "cleanMissedMap drops incomplete short and invalid sec entries");
-  ok(stRes.selfCheck.ok && stRes.selfCheck.issues.length === 0 && selfCheckOut.includes("LIVE SELF-CHECK OK"),
-     "runSelfCheck returns ok:true with 0 issues and populates #selfCheckOut");
+  ok(stRes.cleanedLpKeys.length === 1 && stRes.cleanedLpKeys[0] === "1-1", "cleanLessonProgress drops invalid lesson progress entries");
+  ok(stRes.selfCheck.ok && stRes.selfCheck.issues.length === 0 && stRes.selfCheck.msg.includes("LIVE SELF-CHECK OK"),
+     "runSelfCheck returns ok:true with 0 issues: " + stRes.selfCheck.msg);
 
-  const healthSandbox = createAppSandbox(url =>
-    url === "/api/health"
-      ? Promise.resolve({
-          json: () => Promise.resolve({ ok: true, ready: false, engine: "kokoro-onnx:missing-model", cached_clips: 0 })
-        })
-      : Promise.reject(new Error("offline"))
-  );
-  await new Promise(r => setTimeout(r, 10));
-  const pill = healthSandbox.document.getElementById("gpuPill").textContent;
-  ok(pill === "Voice: browser (local TTS unavailable)", "missing-model health sets browser fallback pill (got " + JSON.stringify(pill) + ")");
+  const healthSb = createSandbox({
+    fetch: url =>
+      url === "/api/health"
+        ? Promise.resolve({
+            json: () => Promise.resolve({ ok: true, ready: false, engine: "kokoro-onnx:missing-model", cached_clips: 0 })
+          })
+        : Promise.reject(new Error("offline"))
+  });
+  await new Promise(r => setTimeout(r, 15));
+  const vlabel = vm.runInContext("VOICE_STATE.label", healthSb);
+  ok(vlabel === "Browser voice (local TTS unavailable)", "missing-model health sets browser fallback label (got " + JSON.stringify(vlabel) + ")");
+
+  let pagesFetched = 0;
+  const pagesSb = createSandbox({
+    location: { hostname: "job4874.github.io", protocol: "https:", hash: "#/learn" },
+    fetch: () => { pagesFetched++; return Promise.reject(new Error("should not fetch")); }
+  });
+  await new Promise(r => setTimeout(r, 15));
+  ok(pagesFetched === 0 && vm.runInContext("VOICE_STATE.engine", pagesSb) === "browser",
+     "GitHub Pages origin skips /api/health probe cleanly with zero fetches");
 
   async function runAudioRaceCase(shouldReject) {
     let settleTts, ttsSignal, browserSpoke = 0;
-    const sb = createAppSandbox((url, opts) => {
-      if (url === "/api/tts") {
-        ttsSignal = opts && opts.signal;
-        return new Promise((res, rej) => { settleTts = shouldReject ? rej : res; });
+    const sb = createSandbox({
+      fetch: (url, opts) => {
+        if (url === "/api/health") {
+          return Promise.resolve({ json: () => Promise.resolve({ ok: true, ready: true, engine: "kokoro-onnx" }) });
+        }
+        if (url === "/api/tts") {
+          ttsSignal = opts && opts.signal;
+          return new Promise((res, rej) => { settleTts = shouldReject ? rej : res; });
+        }
+        return Promise.reject(new Error("offline"));
+      },
+      extras: {
+        AbortController,
+        SpeechSynthesisUtterance: function (t) { this.text = t; },
+        speechSynthesis: { cancel() {}, speak() { browserSpoke++; } }
       }
-      return Promise.reject(new Error("offline"));
-    }, {
-      AbortController,
-      SpeechSynthesisUtterance: function (t) { this.text = t; },
-      speechSynthesis: { cancel() {}, speak() { browserSpoke++; } }
     });
+    await new Promise(r => setTimeout(r, 10));
     sb.testVoice();
     sb.playWelcome();
     settleTts(shouldReject

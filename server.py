@@ -53,20 +53,24 @@ def _parse_byte_range(range_hdr: str, total: int):
     return start, end
 
 
-def _resolve_audio_wav(req_path: str):
-    """Resolve /audio/<name>.wav safely inside STATIC / 'audio', or return None."""
+AUDIO_TYPES = {".wav": "audio/wav", ".mp3": "audio/mpeg"}
+
+
+def _resolve_audio_file(req_path: str):
+    """Resolve /audio/<path>.(wav|mp3) safely inside STATIC / 'audio', or return (None, None)."""
     rel = req_path[len("/audio/"):]
     if not rel or "\x00" in rel or "\\" in rel or rel.startswith("/"):
-        return None
+        return None, None
     audio_root = (STATIC / "audio").resolve()
     try:
         target = (audio_root / rel).resolve()
         target.relative_to(audio_root)
     except (ValueError, OSError):
-        return None
-    if target == audio_root or target.suffix.lower() != ".wav":
-        return None
-    return target
+        return None, None
+    ctype = AUDIO_TYPES.get(target.suffix.lower())
+    if target == audio_root or not ctype:
+        return None, None
+    return target, ctype
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -103,7 +107,7 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Cross-Origin-Resource-Policy", "same-origin")
         self.send_header("X-Permitted-Cross-Domain-Policies", "none")
         self.send_header("Content-Security-Policy",
-            "default-src 'self'; script-src 'self' 'unsafe-inline'; "
+            "default-src 'self'; script-src 'self'; "
             "style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
             "media-src 'self' blob:; connect-src 'self'; font-src 'self'; "
             "object-src 'none'; base-uri 'self'; form-action 'none'; "
@@ -155,13 +159,13 @@ class Handler(SimpleHTTPRequestHandler):
             print(f"health error: {exc}", file=sys.stderr)
             return {"ok": False, "error": "health unavailable"}
 
-    def _serve_wav_file(self, target: Path, cache_control: str, send_body: bool = True):
-        """Serve a WAV file with full RFC 9110 single-byte-range support."""
+    def _serve_audio_file(self, target: Path, content_type: str, cache_control: str, send_body: bool = True):
+        """Serve a WAV or MP3 audio file with full RFC 9110 single-byte-range support."""
         total = target.stat().st_size
         range_hdr = (self.headers.get("Range") or "").strip()
         if not range_hdr:
             self.send_response(200)
-            self.send_header("Content-Type", "audio/wav")
+            self.send_header("Content-Type", content_type)
             self.send_header("Accept-Ranges", "bytes")
             self.send_header("Content-Length", str(total))
             self.send_header("Cache-Control", cache_control)
@@ -180,7 +184,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         start, end = bounds
         self.send_response(206)
-        self.send_header("Content-Type", "audio/wav")
+        self.send_header("Content-Type", content_type)
         self.send_header("Accept-Ranges", "bytes")
         self.send_header("Content-Range", f"bytes {start}-{end}/{total}")
         self.send_header("Content-Length", str(end - start + 1))
@@ -204,14 +208,14 @@ class Handler(SimpleHTTPRequestHandler):
         if match:
             target = clip_path(TTS_DIR, match.group(1))
             if target and target.is_file():
-                return self._serve_wav_file(target, "public, max-age=31536000, immutable", send_body=False)
+                return self._serve_audio_file(target, "audio/wav", "public, max-age=31536000, immutable", send_body=False)
             return self.send_error(404)
         if req_path.startswith("/tts/"):
             return self.send_error(404)
-        if req_path.startswith("/audio/") and req_path.lower().endswith(".wav"):
-            target = _resolve_audio_wav(req_path)
+        if req_path.startswith("/audio/") and req_path.lower().endswith((".wav", ".mp3")):
+            target, ctype = _resolve_audio_file(req_path)
             if target and target.is_file():
-                return self._serve_wav_file(target, "public, max-age=3600", send_body=False)
+                return self._serve_audio_file(target, ctype, "public, max-age=3600", send_body=False)
             return self.send_error(404)
         translated = Path(self.translate_path(req_path))
         if translated.is_dir() and translated != STATIC.resolve():
@@ -230,14 +234,14 @@ class Handler(SimpleHTTPRequestHandler):
         if match:
             target = clip_path(TTS_DIR, match.group(1))
             if target and target.is_file():
-                return self._serve_wav_file(target, "public, max-age=31536000, immutable")
+                return self._serve_audio_file(target, "audio/wav", "public, max-age=31536000, immutable")
             return self.send_error(404)
         if req_path.startswith("/tts/"):
             return self.send_error(404)
-        if req_path.startswith("/audio/") and req_path.lower().endswith(".wav"):
-            target = _resolve_audio_wav(req_path)
+        if req_path.startswith("/audio/") and req_path.lower().endswith((".wav", ".mp3")):
+            target, ctype = _resolve_audio_file(req_path)
             if target and target.is_file():
-                return self._serve_wav_file(target, "public, max-age=3600")
+                return self._serve_audio_file(target, ctype, "public, max-age=3600")
             return self.send_error(404)
         translated = Path(self.translate_path(req_path))
         if translated.is_dir() and translated != STATIC.resolve():

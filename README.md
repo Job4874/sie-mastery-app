@@ -1,19 +1,14 @@
-# SIE Mastery — Localhost App
+# SIE Mastery
 
-**Goal:** Not just pass the FINRA SIE — master financial regulation.
+**Goal:** Not just pass the FINRA SIE — actually understand financial regulation, one step at a time.
 
-The app now starts at zero: a five-card **Zero → First Trade** primer, a 10-question
-placement check, then an adaptive 8-unit curriculum that ends in Final Review and
-Master mode. Experienced users can skip the primer and go straight to trap drilling.
+SIE Mastery is a free, open-source (MIT) learning site built with calm typography, short voiced lessons, adaptive practice, and full 75-question exam simulation. It works equally well on **GitHub Pages** (static, with all 340 pre-recorded Kokoro lesson voice clips shipped), on **localhost** (`python server.py`, adding local Kokoro GPU/ONNX synthesis for live re-rolled questions), or offline by double-clicking `static/index.html`.
 
 ## Quick start — pick your OS
 
-**Zero install needed to study.** Open `static/index.html` in any modern browser
-(double-click it). Everything works offline except live voice synthesis, which
-falls back to your browser's built-in speech. Progress saves in your browser.
+**Zero install needed to study.** Open `static/index.html` in any modern browser (double-click it) or deploy `static/` to GitHub Pages. Every lesson screen plays its pre-recorded Kokoro MP3 voice clip; dynamic re-rolled questions fall back cleanly to your browser's built-in voice. All progress stays on-device in `localStorage`.
 
-**Recommended (adds local GPU/CPU voice + hardened server):** Python 3.10+ only,
-no Node/build step.
+**Recommended (adds local GPU/CPU live voice + hardened server):** Python 3.10+ only, no Node/build step.
 
 **Windows (PowerShell):**
 ```powershell
@@ -45,197 +40,76 @@ python3 server.py
 # open http://127.0.0.1:8765
 ```
 
-If `pip install` fails on the voice packages, the app still runs — skip that step
-and use the browser fallback voice. The server binds to localhost only.
+If `pip install` fails on the voice packages, the app still runs — skip that step and use the shipped lesson clips plus browser voice fallback.
 
-**Research:** see `RESEARCH_ADHD.md` for the ML/learning-science basis of the
-teacher model, retrieval design, and audio choices.
+**Research:** see `RESEARCH_ADHD.md` for the ML/learning-science basis of the teacher model, retrieval design, and audio choices.
 
-## v4 — Security, correctness and zero-to-master onboarding (Nov 19, 2026)
+## v5 — Real learning site, step-through lesson player & GitHub Pages (Nov 19, 2026)
 
-- **ADHD Focus Mode & live self-check:** toggle **ADHD Focus** (`F`) in the header for a compact pacing strip (`#adhdBar`), clickable lesson micro-chunks with progress tracking, **5-Q Micro-Sprint**, **1.0x / 1.15x / 1.3x** voice playback speed (`tibin_sie_vrate`), keyboard shortcuts (`1–4` / `A–D`, `Enter` / `→`, `F` Focus, `T` Theme), reduced-motion-safe confetti, and an in-app **Verify App Live** (`runSelfCheck()`) health/rubric button.
-- **Start from zero:** primer covers accounts, order types, T+1 settlement, cash vs.
-  margin, Reg T/FINRA, risk, and the exam map. A 3-question check plus a 10-question
-  placement check seed the ML teacher; the Home coach then shows the current stage and
-  an exam-readiness score.
-- **Spaced review:** missed questions carry timestamps and a cleared-count; the Missed
-  Bank serves least-cleared/oldest items first with self-healing `localStorage` recovery
-  and HTML escaping; short-response misses clear after two full-credit replays like
-  multiple-choice misses.
-- **Server hardening ([SECURITY.md](SECURITY.md)):** loopback-only bind; strict
-  single-header `Host` allowlist (rejects duplicate `Host` headers); Origin and
-  `Sec-Fetch-Site` checks on mutations; JSON-only POST (forces a CORS preflight
-  cross-site); 64 KB body cap; thread-safe 30/min rate limiter with pruning; SSN PII
-  rejection and client-side `[REDACTED-SSN]` scrubbing; symlink-contained
-  `translate_path` inside `static/`; `HEAD` and explicit `405` (`Allow: GET, HEAD, POST`);
-  exact 32-hex clip routing; direct `404` without directory `301` redirects; generic
-  error bodies; atomic `.tmp` → `os.replace` cache writes; CSP/COOP/COEP/CORP/nosniff/frame-deny
-  headers; no module-level `os.chdir`; `/api/health` includes a `"ready"` engine readiness
-  check; and WAV routes (`/audio/*`, `/tts/*`) support case-insensitive HTTP `Range` audio
-  scrubbing (`206 Partial Content` / `416` with `Accept-Ranges: bytes`).
-- **FINRA rule accuracy & 2026 curriculum updates:**
-  - **Rule 15l-1 Reg BI:** cites SEC Rule 15l-1 under the Exchange Act (distinguishing
-    FINRA Rule 2111 for non-Reg BI suitability).
-  - **Rule 3220 gifts vs. business entertainment:** reflects the FINRA Rule 3220
-    **$300/person/year** gift cap effective March 30, 2026 under FINRA Notice 26-05,
-    distinguishing ordinary, reasonable business entertainment attended by the
-    representative.
-  - **2026 retirement, Social Security & trading updates:** adds Social Security earned
-    income rules, Roth vs. Traditional IRA taxation, and ERISA qualified plan coverage;
-    updates ABLE Act disability onset age to **age 46** (SECURE 2.0), Pattern Day Trader
-    `$25,000` equity's 2026 risk-based intraday margin transition, Rule 144 `1%` / 3 months
-    volume limit, Rule 5220 backing away, Rule 3270 outside business activities, and
-    Rule 2150(c) account sharing.
-  - **Reg T freeriding vs. good-faith violation:** distinguishes freeriding (a single
-    violation triggers a 90-day settled-funds restriction unless paid by settlement)
-    from good-faith violations (three violations in 12 months trigger the 90-day
-    restriction), with swapped-regulator sentences and negations rejected by clause-scoped
-    word-boundary role binding.
-  - **SIE section 1–4 alignment:** aligns all generators across FINRA SIE sections
-    1–4 (16 / 33 / 32 / 8 split, eliminating Section 2 duplicates on 75-question exams
-    and covering long puts, cumulative preferred stock, and closed-end vs. open-end funds);
-    every topic has unit and difficulty mappings; short-response misses retain
-    `unit`/`diff`; partial scores render as decimals, not `7.5 / 10`.
-- **Content:** **89 multiple-choice generators** (numbers/names re-rolled per run) +
-  **12 short-response prompts**, each generator mapped to one of 8 units.
-- **Tests in the repo (12-suite verification pipeline):** `tests/app.test.js` (89
-  generators, split integer math, placement & exam uniqueness, 2026 rule checks, ADHD
-  Focus, live self-check, and adversarial grader traps), `tests/test_security.py` (unit
-  + live server probes), `tests/tests9.js` (theme/CSS audit), `tests/ml_verify.js` (ML
-  teacher verification), `tests/ui_enterprise.js` (UI audit), `tests/grammar_audit.py`
-  (docs/spelling), `tools/verify_dom.py`, `tools/verify_exhaustive.py`, `tools/verify_hell.py`
-  (Playwright chaos & ADHD stress suite), and `tools/verify_bits.py` (`43` tracked hashes).
+- **Learning-first layout & real URLs:** Top navigation (**Learn · Practice · Exam · Progress** + **Focus** / **Dark** / **Settings**) with linkable hash routes (`#/learn`, `#/learn/unit/3/lesson/2/4`, `#/practice`, `#/exam`, `#/progress`, `#/library`, `#/settings`) and a working browser Back button.
+- **Step-through lesson player:** Start Here plus 8 SIE units split into **42 short lessons** (**266 one-idea screens**: concept → worked example → inline check yourself → recap) with a segmented progress bar, answer-to-continue check gates, and a **Listen** button on every screen backed by **340 pre-composed Kokoro MP3 clips**.
+- **Calm study design & Focus mode:** Warm light theme by default (WCAG AAA body text, dark theme toggle `T`), 17px/1.6 system UI typography, generous spacing, single calm teal accent, no ALL-CAPS tags, and **Focus mode (`F`)** hiding secondary chrome, enlarging type, and disabling motion.
+- **Zero-build split architecture & strict CSP:** Split into clean static files (`static/index.html`, `static/css/app.css`, `static/js/core/*`, `static/js/data/*`, `static/js/ui/*`, `static/js/app.js`) with zero inline `<script>` blocks and zero inline `onclick` handlers, enabling strict `script-src 'self'` CSP in `server.py`.
+- **Public hosting + localhost parity:** `.github/workflows/pages.yml` deploys `static/` to GitHub Pages. All 340 lesson clips and 15 overview/library clips play everywhere; dynamic speech uses local Kokoro (GPU → ONNX CPU) when running `server.py` and falls back silently to browser `speechSynthesis` on static hosting.
 
-## v3 — UI/Architecture pass, Short Responses, Gap-Closing Loop (Nov 16, 2026)
+## Core Curriculum, ML Teacher & Security Highlights
 
-- **Architecture:** five clean layers documented in `ARCHITECTURE.md` (UI views /
-  AudioManager / quiz engine / ML teacher / on-device storage). No build step.
-- **AudioManager:** saved lesson clips are preloaded; dynamic speech goes through a
-  single-voice queue — GPU Kokoro via `/api/tts` with disk cache, browser voice as
-  fallback — so nothing talks over itself.
-- **Short-response questions (Very Hard / Master):** 12 prompts where you must
-  *produce* the rule. Rubric grading checks concept groups, numeric answers with
-  tolerance, and bound pairs (e.g. 50% must bind to the Federal Reserve and 25% to
-  FINRA *in the same sentence*, with the role word attached — swapping regulators
-  scores zero).
-- **Gap-closing loop:** a miss on a weak concept opens a tracked gap → Gap Closer:
-  micro-lesson → worked example → 3 fresh questions on that concept; 2-of-3 closes it.
-- **Engagement UX:** coach card with a smart **Continue where I left off** button,
-  daily-goal ring, 8-node path map, badge toasts.
+- **Content (2026 audited):** **42 step-through lessons (266 screens)** + **89 dynamic MC generators** (`16 / 33 / 32 / 8` across Sections 1–4, zero repeats in 75-Q exams) + **12 rubric-graded short-response prompts** (clause-scoped regulator/role bindings and negation guards) + **6 "Why the rules exist" library deep dives**.
+  - Updated for 2026 rules: FINRA Rule 3220 `$300`/person/year gift cap effective March 30, 2026 (Notice 26-05), SECURE 2.0 ABLE disability onset **age 46**, PDT `$25,000` transition note, Rule 144 `1%` per 3 months limit, SEC Rule 15l-1 Reg BI vs. FINRA Rule 2111 suitability, Rule 5220 backing away, Rule 3270 OBA, Rule 3280 selling away, Rule 2150(c) sharing, Social Security/IRA earned income, Roth vs. Traditional IRA taxation, and ERISA qualified plans.
+- **ML Teacher (on-device):** Bayesian Knowledge Tracing per unit, Elo ability rating, speed/accuracy diagnosis (*True gap*, *Fast and trap-prone*, *Knows it, too slow*, *Solid*), adaptive weighting, Missed Bank spaced review, and a 3-question **Gap Closer** loop.
+- **Troubleshooting & shortcuts:** Settings includes an in-browser **Run self-check** button verifying all 89 generators, 12 short rubrics, 266 lesson screens, 75-Q exam weights, Reg T swap traps, and `localStorage`. Keyboard: `F` focus mode, `T` dark theme, `1–4` / `A–D` answer, `Enter` / `→` next, `←` back.
+- **Security ([SECURITY.md](SECURITY.md)):** Loopback-only bind, strict `script-src 'self'` CSP, single-header `Host` allowlist, Origin/`Sec-Fetch-Site` JSON-only POST checks, 64 KB body cap, thread-safe 30/min rate limiter, SSN PII rejection & client-side `[REDACTED-SSN]` scrubbing, symlink-contained `translate_path`, and RFC 9110 `Range` streaming for `.wav` and `.mp3`.
 
-## v2 — ML Teacher, 8-Unit Curriculum, 4 Levels
+## Voice / Audio Clips
 
-- **ML Teacher (in-app, no server needed):** every answer is timed and scored.
-  - *Bayesian Knowledge Tracing* per unit estimates the probability you know the
-    concept (guess 25% / slip 10% model).
-  - *Elo-style ability rating* updates from question difficulty vs. result.
-  - *Diagnosis engine* reads accuracy + speed: repeated slow misses = **TRUE GAP**;
-    fast misses = trap-prone guessing; slow corrects = knowledge without speed.
-  - *Adaptive selection* weights your weakest units and the difficulty where predicted
-    success is ~70%.
-- **Curriculum:** 8 units — (1) Regulators & Capital Markets, (2) Equity Securities,
-  (3) Debt & Bond Traps, (4) Pooled Funds, Options & Packaged Products, (5) Risk,
-  (6) Trading, Settlement & Corporate Actions, (7) Customer Accounts & Compliance,
-  (8) Prohibited Activities & Regulatory Framework. Each unit: lesson → mini quiz,
-  80% to clear. Clear all 8 → Final Exam Review unlocks.
-- **4 levels:** Easy (×1 XP) · Hard (×1.5) · Very Hard (×2) · Master (×3 XP,
-  trap-only, 60-second clock). Badges: Perfect Run, Speed Demon, Trap Slayer,
-  Unit Cleared.
-
-## Modes
-
-- **Trap Drill** — one question at a time, no reveal until you answer; weighted to
-  your misses.
-- **Sprint Quiz** — 10 dynamic questions, randomized every run.
-- **Practice Exam** — 75 questions, 105 minutes, 70% to pass, weighted like the real
-  exam: Sec 1 16% · Sec 2 44% · Sec 3 31% · Sec 4 9%. Duplicate stems are filtered.
-- **Missed Bank** — misses are saved locally and resurface least-cleared first.
-- **Curriculum** — 8 units with lessons, mini quizzes, and a Final Review.
-
-## Voice / TTS (GPU or small ONNX model — Windows, macOS, Linux)
-
-Two layers, so it works everywhere:
-
-1. **Instant (no install):** browser voice (`speechSynthesis`) reads questions,
-   explanations, and lessons.
-2. **Local voice (localhost only):** `server.py` exposes `POST /api/tts`.
-   - Default: **kokoro-onnx int8** — the af_heart female voice in a ~92 MB
-     model, no torch, runs on CPU (or any RTX).
-   - Optional GPU path: `TTS_ENGINE=kokoro` with `torch` + `kokoro` installed.
-   - Optional voice cloning: `TTS_ENGINE=xtts` plus `voices/reference.wav`.
-   - Every clip is cached at `tts_cache/<sha256(backend|voice|text)>.wav`;
-     identical text+voice is synthesized once. Cache writes are atomic.
-
-### Run it
-
-See **Quick start — pick your OS** above for Windows, macOS, and Linux commands.
-The server is identical on all three platforms (stdlib-only HTTP layer; loopback
-bind; Origin/Host checks). PORT is configurable with the `PORT` environment variable.
-
-No pip install? Open `static/index.html` directly — everything except local
-TTS works, and voice falls back to the browser.
-
-Check voice status in the app header, or `GET http://localhost:8765/api/health`
-(includes a `"ready"` flag indicating whether local TTS models/dependencies are
-available). Saved `/audio/*.wav` and cached `/tts/*.wav` clips also serve HTTP
-`Range` requests (`Accept-Ranges: bytes`, `206 Partial Content`) for browser audio
-scrubbing.
-
-## Pre-generated voice clips
-
-`static/audio/` contains the welcome clip and 8 unit-lesson clips, listed with exact
-byte sizes in `static/audio/manifest.json` - **15 clips, ~54 MB of WAV**. The Listen
-buttons play these saved files before any live TTS.
-
-Rebuild them from the curriculum text at any time:
+All curriculum audio is composed directly from `static/js/data/` so voice never drifts from text:
 
 ```powershell
-# one-time voice download (~119 MB for the small int8 model; ~325 MB for the smoother fp32 model)
-curl -L -o models/kokoro-v1.0.int8.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.int8.onnx
-curl -L -o models/voices-v1.0.bin https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
-# optional: smoother voice (preferred automatically when present)
-curl -L -o models/kokoro-v1.0.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+# Re-compose all 340 per-screen lesson MP3 clips in parallel (needs models/kokoro-v1.0.onnx + voices-v1.0.bin)
+python tools/compose_audio.py --lessons --workers 6
 
-python tools/compose_audio.py --list          # clip stems + char counts
-python tools/compose_audio.py --force         # recompose all 15 clips + manifest
-python tools/compose_audio.py --only lesson-3-debt --force
+# Re-compose a single lesson screen clip
+python tools/compose_audio.py --lessons --only u0-l1-s1 --force
+
+# Re-compose the 15 overview / library / welcome WAV clips
+python tools/compose_audio.py --force
 ```
-
-The composer reads lesson text directly from `static/index.html`, so clips cannot
-drift from the curriculum. Model files are local-only and git-ignored; the WAVs and
-manifest are committed like any other asset.
 
 ## Verification
 
-All of these run locally and in CI (`.github/workflows/compile.yml`):
+All checks run locally and in CI (`.github/workflows/compile.yml`):
 
 ```powershell
-python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
-python tools/verify.py                 # manifest + build integrity
+python tools/validate_content.py       # strict-JSON schema check on all 9 unit files
+python tools/verify.py                 # split files + manifests + content integrity
 python -m unittest tests.test_security -v
-node tests/app.test.js                 # 89 generators, exam mix, 2026 rules, ADHD, grader traps
-node tests/tests9.js                   # theme/CSS audit
-node tests/ml_verify.js                # ML teacher verification
-node tests/ui_enterprise.js            # enterprise UI audit
-python tests/grammar_audit.py          # docs + spelling audit
+node tests/app.test.js                 # 89 generators, 42 lessons, router, 2026 rules, audio races
+node tests/tests9.js                   # dual-theme WCAG contrast, zero color leaks, zero inline JS
+node tests/ml_verify.js                # BKT + Elo + adaptive selection math
+node tests/ui_enterprise.js            # calm study UI discipline
+python tests/grammar_audit.py          # docs + codespell across all static JS/CSS/HTML/docs
 powershell -ExecutionPolicy Bypass -File .agents/skills/sie-verify/scripts/run_all.ps1
 ```
 
 ## Layout
 
 ```
-server.py          # stdlib web server + /api/tts (no heavy web framework)
-security.py        # validation, SSN PII checks, clip routing, thread-safe rate limiter
-tts_engine.py      # Kokoro (default) / XTTS (optional) on CUDA, atomic file cache
-SECURITY.md        # threat model & vulnerability disclosure policy
-requirements.txt
-static/index.html  # the entire app: quiz engine, exam, ADHD Focus, lessons, voice UI
-static/audio/      # saved lesson clips + manifest
-tests/             # app, security, theme, ML teacher, UI, and doc audits
-tools/             # audio composer, Playwright DOM/exhaustive/chaos suites, bit manifest
-tts_cache/         # generated TTS .wav files (grows as you study)
-voices/            # optional XTTS reference voice sample
-data/              # notes / future question packs
+server.py                      # stdlib localhost server + /api/tts + WAV/MP3 Range streaming
+security.py                    # validation, SSN PII checks, clip routing, rate limiter
+tts_engine.py                  # Kokoro GPU / ONNX CPU / optional XTTS, atomic cache
+SECURITY.md                    # localhost threat model & disclosure policy
+ARCHITECTURE.md                # split-file architecture & runtime layers
+static/
+  index.html                   # zero-inline-script app shell
+  css/app.css                  # light/dark tokens + calm study UI + Focus mode
+  js/core/                     # util, store, audio, teacher, quiz
+  js/data/                     # registry, units/unit-0..8, questions, short, library, overviews
+  js/ui/                       # hash router + views
+  js/app.js                    # boot, data-action delegation, keyboard shortcuts
+  audio/                       # 15 overview/library WAVs + 340 lessons/*.mp3 Kokoro clips
+tests/                         # load_app, app, tests9, test_security, ml_verify, ui_enterprise, grammar_audit
+tools/                         # content_lib, validate_content, compose_audio, verify_dom/exhaustive/hell/bits
+.github/workflows/             # compile.yml (CI) + pages.yml (GitHub Pages deploy)
 ```
 
 ## License

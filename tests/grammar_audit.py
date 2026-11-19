@@ -20,8 +20,7 @@ def ok(c, m):
 
 
 def main():
-    # docs present
-    for f in ["RESEARCH_ADHD.md", "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md"]:
+    for f in ["RESEARCH_ADHD.md", "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "SECURITY.md"]:
         ok((ROOT / f).is_file(), f"{f} present")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -37,13 +36,16 @@ def main():
                  "stern", "ebu r128", "kokoro", "spaced"]:
         ok(term in research_lower, f"research report covers: {term}")
 
-    # codespell if available
     exe = shutil.which("codespell")
     if exe:
-        files = ["static/index.html", "README.md", "ARCHITECTURE.md",
-                 "PUSH_AUDIO.md", "RESEARCH_ADHD.md", "SECURITY.md", "AGENTS.md",
-                 ".agents/skills/sie-verify/SKILL.md",
-                 ".agents/skills/sie-curriculum-author/SKILL.md"]
+        files = [
+            "static/index.html", "static/css/app.css",
+            "static/js/app.js", "static/js/core", "static/js/data", "static/js/ui",
+            "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
+            "SECURITY.md", "AGENTS.md",
+            ".agents/skills/sie-verify/SKILL.md",
+            ".agents/skills/sie-curriculum-author/SKILL.md",
+        ]
         r = subprocess.run(
             [exe, "--ignore-words-list=sie,trough,posin",
              "--skip=static/audio,tools/bit_manifest.json,*.pyc"] + files,

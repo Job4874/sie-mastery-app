@@ -1,55 +1,42 @@
 # SIE Mastery — Architecture
 
-One light localhost app, five clean layers. No build step, no framework, no server-side state.
+Zero-build, split-file web app that runs identically on localhost (`python server.py`), static hosting (GitHub Pages), and `file://` (double-click `static/index.html`). No npm, no bundler, no framework, no server-side state.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ UI VIEWS (static/index.html)                                │
-│ Zero→First Trade Primer • Home+Coach • Path Map • Lesson •  │
-│ Quiz • Gap Session • Teacher Report • Exam • Results        │
-├─────────────────────────────────────────────────────────────┤
-│ AUDIO MANAGER                                               │
-│ Saved clips (static/audio/*.wav, preloaded) for fixed text  │
-│ + live TTS queue for dynamic text:                          │
-│   localhost → POST /api/tts (Kokoro ONNX/GPU, disk-cached)   │
-│   fallback  → browser speechSynthesis (circuit-broken after │
-│   two TTS failures so a dead server is not hammered)        │
-│ One voice at a time, queue never overlaps, stop on navigate │
-├─────────────────────────────────────────────────────────────┤
-│ QUIZ ENGINE                                                 │
-│ 83 MC generators (numbers re-rolled per run) + 12 short-    │
-│ response prompts (Very Hard / Master) with rubric grading:  │
-│ concept groups + numeric tolerance + regulator-role binding │
-├─────────────────────────────────────────────────────────────┤
-│ ML TEACHER                                                  │
-│ Per answer: correctness + milliseconds + difficulty         │
-│ → BKT mastery per unit (guess/slip model)                   │
-│ → Elo ability rating                                        │
-│ → Diagnosis: TRUE GAP / trap-prone / knows-it-slow / solid  │
-│ → Adaptive selection (~70% predicted-success targeting)     │
-│ → GAP LOOP: gap detected → micro-lesson → worked example →  │
-│   ascending re-drill (same concept, new numbers) → 2-of-3   │
-│   closes the gap → spaced recheck in later quizzes          │
-├─────────────────────────────────────────────────────────────┤
-│ STORAGE (localStorage, on-device only)                      │
-│ XP, streak, per-section stats, teacher state (mastery,      │
-│ theta, badges, open/closed gaps, units cleared, daily goal) │
-└─────────────────────────────────────────────────────────────┘
-Server (server.py, stdlib only): static files + /api/health + /api/tts.
-Security (security.py + server.py): loopback bind, Host allowlist, Origin and
-Sec-Fetch-Site checks, JSON-only POST, 64 KB cap, thread-safe rate limit,
-exact clip routing, atomic cache writes, generic error responses.
-TTS engine (tts_engine.py): kokoro-onnx int8 (af_heart) by default, torch
-Kokoro or XTTS v2 optional; every synthesized clip cached in tts_cache/ by
-content hash. tools/compose_audio.py rebuilds static/audio/*.wav from the
-curriculum text in index.html and refreshes manifest byte sizes.
-CI (.github/workflows/compile.yml): py_compile + node --check + verify.py +
-tests/test_security.py + tests/app.test.js + tests/tests9.js on every push.
+static/
+  index.html                  App shell: top nav, <main id="app">, footer, toast (0 inline scripts/handlers)
+  favicon.svg                 App icon
+  css/app.css                 Calm study design: warm light default + dark theme tokens, Focus mode CSS
+  js/
+    core/util.js              Shared helpers (R, pick, shuffle, esc, $, plainText, redactSSN)
+    core/store.js             Self-healing localStorage state + theme/focus/voice preferences
+    core/audio.js             AudioMan: saved clip -> localhost /api/tts (GPU -> ONNX) -> browser voice
+    core/teacher.js           BKT mastery, Elo ability, speed/accuracy diagnosis, adaptive sets, gaps
+    core/quiz.js              Quiz & exam engine, timers, rubric grading, live self-check
+    data/registry.js          SIE.registerUnit() + deterministic per-screen audio paths
+    data/units/unit-0..8.js   42 step-through lessons / 266 screens (strict JSON inside registerUnit)
+    data/questions.js         89 dynamic MC generators + topic/unit/difficulty maps + levels
+    data/short.js             12 short-response rubrics with clause-scoped regulator/role bindings
+    data/library.js           6 "Why the rules exist" deep dives
+    data/overviews.js         8 full-unit audio overviews
+    ui/router.js              Hash router (#/learn, #/learn/unit/:u/lesson/:l/:s, #/practice, #/exam, ...)
+    ui/views.js               Page views: Learn, Unit, Lesson Player, Practice, Exam, Progress, Library, Settings
+    app.js                    Boot, data-action click/change delegation, keyboard shortcuts
+  audio/
+    *.wav + manifest.json     15 saved overview/library/welcome clips (24 kHz mono PCM_16)
+    lessons/*.mp3 + manifest  340 per-screen Kokoro MP3 voice clips (works on GitHub Pages & file://)
 ```
 
-## Design rules
-1. **Dynamic or it doesn't count** — question numbers/names are generated, never stored, so memorizing answers can't game the teacher's data.
-2. **The teacher owns the sequence** — the user picks a level; the teacher picks what to work on, from measured gaps, not vibes.
-3. **A gap isn't closed by exposure** — only by performance: re-drill the same concept with new numbers until 2 of 3 are right, then re-verify it later (spaced recheck via adaptive weighting).
-4. **Audio is a layer, not a feature** — every screen's core text can be spoken; fixed text ships as saved clips, dynamic text goes through the TTS queue.
-5. **Short answers at high levels** — multiple choice can be gamed by recognition; at Very Hard and Master, the user must produce the rule (rubric-graded), which is what exposes a true gap.
+## Runtime Layers
+
+1. **Views & Router (`js/ui/router.js`, `js/ui/views.js`, `js/app.js`)**: Real hash routes with working browser Back/Forward history (`#/learn`, `#/learn/unit/3/lesson/2/4`, `#/practice`, `#/exam`, `#/progress`, `#/library`, `#/settings`). All buttons use `data-action` delegation so `server.py` enforces strict `script-src 'self'` without `'unsafe-inline'`.
+2. **Audio Manager (`js/core/audio.js`)**: Every lesson screen plays its pre-composed Kokoro MP3 clip directly (`audio/lessons/u{U}-l{L}-s{S}.mp3`) so both localhost and public GitHub Pages learners get natural Kokoro narration. Dynamic speech (re-rolled quiz questions, explanations, progress report) uses `POST /api/tts` on localhost (Kokoro GPU -> Kokoro ONNX CPU, disk-cached) and automatically falls back to browser `speechSynthesis` when offline or on static hosting. Monotonic `gen` counter + `AbortController` prevent stale async responses from hijacking active clips.
+3. **Quiz Engine (`js/core/quiz.js`, `js/data/questions.js`, `js/data/short.js`)**: 89 dynamic MC generators (`16 / 33 / 32 / 8` across Sections 1–4) + 12 rubric-graded short-response prompts with clause-scoped regulator/role bindings, negation guards, and client-side SSN redaction.
+4. **ML Teacher (`js/core/teacher.js`)**: Bayesian Knowledge Tracing per unit (guess 25%, slip 10%, learn 12%) + Elo ability rating + accuracy/speed diagnosis (true gap / fast trap-prone / slow correct / solid) + adaptive weighting + 3-question Gap Closer loop.
+5. **Storage (`js/core/store.js`)**: On-device `localStorage` only, with `cleanMissedMap`, `cleanLessonProgress`, and `loadStore` sanitizing corrupt payloads automatically.
+
+## Server, Audio Composition & CI
+
+- **Localhost Server (`server.py`, `security.py`, `tts_engine.py`)**: Stdlib-only HTTP server bound to `127.0.0.1`, strict `script-src 'self'` CSP, single-header `Host` allowlist, same-origin JSON-only `POST /api/tts`, SSN PII rejection, symlink-contained `translate_path`, and RFC 9110 `Range` (`206` / `416`) streaming for `.wav` and `.mp3`.
+- **Audio Composition (`tools/content_lib.py`, `tools/compose_audio.py`)**: Reads strict-JSON lesson files directly (`unit-0.js`..`unit-8.js`) so audio clips cannot drift from screen text.
+- **CI & Hosting**: `.github/workflows/compile.yml` runs Python compile, lesson schema validation, `node --check` on every JS file, `verify.py`, security probes, unit/contrast/ML/UI/grammar tests; `.github/workflows/pages.yml` deploys `static/` to GitHub Pages.

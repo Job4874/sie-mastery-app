@@ -1,20 +1,25 @@
-"""Rigorous DOM-level verifier for SIE Mastery.
+"""Rigorous DOM-level verifier for SIE Mastery (redesigned multi-page learning site).
 
-Drives a real headless Chromium against the running localhost server and
-inspects the actual rendered DOM, not just source markers. Exits non-zero on
-any assertion failure or uncaught page error.
+Drives real headless Chromium against the running localhost server and verifies:
+  - /api/health and /api/tts WAV round-trip
+  - Learning-first home (#/learn), top nav, warm light theme default, Kokoro ONNX voice status
+  - Step-through lesson player (#/learn/unit/0/lesson/1): audio clip, inline check lock/unlock,
+    lesson completion, and working browser Back button across routes
+  - Unit page (#/learn/unit/1), placement check (10 unique stems across all 8 units),
+    Progress page (#/progress), Exam (75 unique stems, 12/33/23/7, 105:00 timer),
+    Settings live self-check, and zero JS/console/HTTP errors.
 """
 import json
 import os
 import sys
 import urllib.request
-from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
 BASE = os.environ.get("SIE_BASE", "http://127.0.0.1:8765")
 FAILURES = []
 CONSOLE_ERRORS = []
+HTTP_ERRORS = []
 
 
 def check(cond, msg):
@@ -26,18 +31,14 @@ def check(cond, msg):
 
 
 def main():
-    global CONSOLE_ERRORS
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        ctx = browser.new_context()
+        ctx = browser.new_context(viewport={"width": 1280, "height": 900})
         page = ctx.new_page()
 
-        def on_console(m):
-            if m.type == "error":
-                CONSOLE_ERRORS.append(m.text)
-
-        page.on("console", on_console)
+        page.on("console", lambda m: CONSOLE_ERRORS.append(m.text) if m.type == "error" else None)
         page.on("pageerror", lambda e: CONSOLE_ERRORS.append("PAGEERROR: " + str(e)))
+        page.on("response", lambda r: HTTP_ERRORS.append(f"{r.status} {r.url}") if r.status >= 400 else None)
 
         # ---- health / TTS endpoint ----
         health = json.load(urllib.request.urlopen(BASE + "/api/health"))
@@ -45,7 +46,6 @@ def main():
         check("onnx" in (health.get("engine") or ""), "engine is kokoro-onnx")
         check(isinstance(health.get("cached_clips"), int), "cached_clips is int")
 
-        # TTS round-trip
         body = json.dumps({"text": "Margin is collateral.", "voice": "af_heart"}).encode()
         req = urllib.request.Request(BASE + "/api/tts", data=body,
                                     headers={"Content-Type": "application/json"})
@@ -55,138 +55,99 @@ def main():
         clip = urllib.request.urlopen(BASE + tts["url"]).read()
         check(len(clip) > 1000 and clip[:4] == b"RIFF", "TTS clip is a WAV")
 
-        # ---- fresh app load ----
+        # ---- fresh app load (#/learn) ----
         page.goto(BASE + "/", wait_until="networkidle")
         page.evaluate("localStorage.clear()")
-        page.reload(wait_until="networkidle")
-        page.wait_for_timeout(500)
-
-        check(page.locator("#coachHome").is_visible(), "coach home visible")
-        check(page.locator("#gpuPill").inner_text().lower().find("kokoro onnx") >= 0
-              or "onnx" in page.locator("#gpuPill").inner_text().lower(),
-              "gpuPill reports ONNX (" + page.locator("#gpuPill").inner_text() + ")")
-        check(page.locator("#streak").is_visible(), "streak pill visible")
-        check(page.locator("#xp").is_visible(), "xp pill visible")
-
-        # ---- Zero -> First Trade primer ----
-        page.click("text=Start from zero")
-        page.wait_for_timeout(300)
-        check(page.locator("#lessons").is_visible(), "lessons view visible")
-        cards = page.locator("#lessons .card").count()
-        check(cards >= 6, "primer shows >=6 cards (got %d)" % cards)
-
-        page.click("#lessons button:has-text('3-question')")
-        page.wait_for_timeout(300)
-        check(page.locator("#quiz").is_visible(), "quiz view visible after primer")
-        check(page.locator("#quiz").locator(".opt").count() >= 2, "quiz has options")
-        qcount = page.evaluate("quiz.length")
-        check(qcount == 3, "primer quiz has 3 questions (got %d)" % qcount)
-        timer = page.locator("#timer").inner_text()
-        check("untimed" in timer.lower(), "primer quiz untimed (got %r)" % timer)
-        tag = page.locator("#qTag").inner_text()
-        check("Section" in tag, "primer qTag has section (got %r)" % tag)
-
-        # answer all 3
-        for i in range(3):
-            opts = page.locator("#opts .opt")
-            if opts.count():
-                opts.first.click()
-            nb = page.locator("#nextBtn")
-            if nb.is_visible():
-                nb.click()
-            page.wait_for_timeout(150)
+        page.goto(BASE + "/#/learn", wait_until="networkidle")
         page.wait_for_timeout(400)
-        check(page.locator("#result").is_visible(), "result view after primer")
-        res_text = page.locator("#result").inner_text()
-        check("/3" in res_text or "3" in res_text, "result shows score")
-        check("Take placement check" in res_text or "placement" in res_text.lower(),
-              "result offers placement")
 
-        # ---- Placement (10 questions, all 8 units) ----
-        btn = page.locator("#result button:has-text('Take placement check')")
-        if btn.count():
-            btn.first.click()
-        page.wait_for_timeout(300)
-        check(page.locator("#quiz").is_visible(), "placement quiz visible")
-        pcount = page.evaluate("quiz.length")
-        check(pcount == 10, "placement has 10 questions (got %d)" % pcount)
-        punits = page.evaluate("JSON.stringify([...new Set(quiz.map(q=>q.unit))].sort())")
-        check(punits == "[1,2,3,4,5,6,7,8]", "placement covers all 8 units (got %s)" % punits)
+        check(page.evaluate("document.documentElement.getAttribute('data-theme')") == "light",
+              "warm light theme is default")
+        check(page.locator("h1.page-title").inner_text().strip() == "Learn", "Learn home renders")
+        check(page.locator(".unit-list li").count() == 9, "course path shows 9 units (Start here + 1..8)")
+        vstatus = page.locator("[data-voice-status]").first.inner_text()
+        check("kokoro" in vstatus.lower(), f"footer voice status reports Kokoro ({vstatus})")
 
-        for i in range(10):
-            opts = page.locator("#opts .opt")
-            if opts.count():
-                opts.first.click()
-            nb = page.locator("#nextBtn")
-            if nb.is_visible():
-                nb.click()
-            page.wait_for_timeout(150)
-        page.wait_for_timeout(500)
-        check(page.locator("#result").is_visible(), "placement result visible")
-        pres = page.locator("#result").inner_text()
-        check("placed" in pres.lower() or "report" in pres.lower() or "Run it again" in pres,
-              "placement result has next actions")
+        # ---- step-through lesson player + real URL routing + Back button ----
+        page.click(".continue-card a.btn.primary")
+        page.wait_for_selector(".lesson-page", timeout=5000)
+        check("#/learn/unit/0/lesson/1" in page.url, f"URL updated to lesson route ({page.url})")
+        segs = page.locator(".segments .seg").count()
+        check(segs == 6, f"Start-here lesson 1 has 6 screens (got {segs})")
 
-        # ---- Report view ----
-        rbtn = page.locator("#report button:has-text('Back'), #result button:has-text('report')")
-        if not rbtn.count():
-            rbtn = page.locator("button:has-text('See my report')")
-        if rbtn.count():
-            rbtn.first.click()
-        page.wait_for_timeout(300)
-        check(page.locator("#report").is_visible(), "report view visible")
-        report_text = page.locator("#report").inner_text()
-        check("Teacher Report" in report_text or "Ability rating" in report_text,
-              "report renders content")
-        # back home
-        page.evaluate("backHome()")
-        page.wait_for_timeout(300)
-
-        # ---- Curriculum view ----
-        page.evaluate("showUnits()")
-        page.wait_for_timeout(300)
-        check(page.locator("#units").is_visible(), "units view visible")
-        unit_cards = page.locator("#units .card").count()
-        check(unit_cards >= 9, "curriculum shows >=9 cards (got %d)" % unit_cards)
-        # open unit 1 lesson
-        page.evaluate("showUnitLesson(1)")
-        page.wait_for_timeout(300)
-        check(page.locator("#units").is_visible(), "unit lesson view visible")
-        heading = page.locator("#units h3").inner_text()
-        check(len(heading) > 0, "unit lesson has heading (%r)" % heading)
-        check(page.locator("#units").locator("button").count() >= 2,
-              "unit lesson has action buttons")
-
-        # ---- Exam mode ----
-        page.evaluate("quitQuiz()")
+        page.click("[data-action='listen']")
         page.wait_for_timeout(200)
-        page.evaluate("startQuiz('exam',75)")
-        page.wait_for_timeout(300)
-        check(page.locator("#quiz").is_visible(), "exam quiz visible")
-        ecount = page.evaluate("quiz.length")
-        check(ecount == 75, "exam has 75 questions (got %d)" % ecount)
-        eunique = page.evaluate("new Set(quiz.map(q=>q.text)).size")
-        check(eunique == 75, "exam has 75 unique stems (got %d)" % eunique)
+        src1 = page.evaluate("audio.src")
+        check("audio/lessons/u0-l1-s1.mp3" in src1, f"Listen loads per-screen Kokoro MP3 ({src1})")
+        page.evaluate("stopAudio()")
+
+        # Walk through all 6 screens of Lesson 1, testing check-screen lock
+        for step in range(1, 7):
+            is_check = page.locator("[data-action='lesson-check']").count() > 0
+            if is_check:
+                check(page.locator("[data-action='lesson-next']").is_disabled(),
+                      f"screen {step} check locks Next until answered")
+                page.locator("[data-action='lesson-check']").first.click()
+                check(page.locator(".feedback").is_visible(), f"screen {step} shows check feedback")
+                check(not page.locator("[data-action='lesson-next']").is_disabled(),
+                      f"screen {step} unlocks Next after answer")
+            page.click("[data-action='lesson-next']")
+        page.wait_for_selector(".done-card", timeout=5000)
+        check(page.evaluate("store.lp['0-1'] && store.lp['0-1'].done === true"), "lesson 0-1 marked done")
+
+        # Navigate to Unit 1 page, then verify browser Back button works
+        page.goto(BASE + "/#/learn/unit/1", wait_until="networkidle")
+        check(page.locator(".lesson-list li").count() == 5, "Unit 1 lists 5 lessons")
+        page.goto(BASE + "/#/practice", wait_until="networkidle")
+        check(page.locator("h1.page-title").inner_text().strip() == "Practice", "Practice page renders")
+        page.go_back(wait_until="networkidle")
+        check("#/learn/unit/1" in page.url, f"browser Back returned to Unit 1 ({page.url})")
+
+        # ---- Placement check (10 unique stems across all 8 units) ----
+        page.evaluate("prefs.voiceOn=false; savePrefs(); startPlacement()")
+        page.wait_for_selector("#quiz", timeout=5000)
+        pcount = page.evaluate("quiz.length")
+        check(pcount == 10, f"placement has 10 questions (got {pcount})")
+        punits = page.evaluate("JSON.stringify([...new Set(quiz.map(q=>q.unit))].sort())")
+        check(punits == "[1,2,3,4,5,6,7,8]", f"placement covers all 8 units ({punits})")
+        for _ in range(10):
+            page.locator("#opts .opt").first.click()
+            page.click("#nextBtn")
+        page.wait_for_selector("#result:not(.hidden)", timeout=5000)
+        check("10" in page.locator("#result").inner_text(), "placement result shows score")
+
+        # ---- Progress view ----
+        page.click("a[data-nav='progress']")
+        page.wait_for_selector(".unit-report", timeout=5000)
+        check(page.locator(".unit-report .card").count() == 8, "Progress shows all 8 units")
+
+        # ---- Exam view + 75-Q Practice Exam ----
+        page.click("a[data-nav='exam']")
+        page.wait_for_selector("[data-action='exam']", timeout=5000)
+        page.click("[data-action='exam']")
+        page.wait_for_selector("#quiz", timeout=5000)
+        check(page.evaluate("quiz.length") == 75, "exam has 75 questions")
+        check(page.evaluate("new Set(quiz.map(q=>q.text)).size") == 75, "exam has 75 unique stems")
         ecounts = page.evaluate("JSON.stringify(quiz.reduce((a,q)=>{a[q.sec]=(a[q.sec]||0)+1;return a},{}))")
-        check(ecounts == '{"1":12,"2":33,"3":23,"4":7}', "exam section mix (got %s)" % ecounts)
+        check(ecounts == '{"1":12,"2":33,"3":23,"4":7}', f"exam section mix ({ecounts})")
         etimer = page.locator("#timer").inner_text()
-        check("105:00" in etimer, "exam timer 105:00 (got %r)" % etimer)
-        ebad = page.evaluate("quiz.filter(q=>![1,2,3,4].includes(q.sec)).length")
-        check(ebad == 0, "no invalid section codes (got %d)" % ebad)
+        check("105:00" in etimer or "104:59" in etimer, f"exam timer starts at 105:00 ({etimer!r})")
+        page.click("#quitBtn")
 
-        # ---- Saved clip playback (welcome) ----
-        page.evaluate("playWelcome()")
-        page.wait_for_timeout(300)
-        audio_src = page.evaluate("audio.src")
-        check("welcome.wav" in audio_src, "welcome clip src set (%r)" % audio_src)
+        # ---- Settings: live self-check + welcome clip ----
+        page.click("a[data-nav='settings']")
+        page.wait_for_selector("[data-action='self-check']", timeout=5000)
+        page.click("[data-action='self-check']")
+        sc_text = page.locator("#selfCheckOut").inner_text()
+        check("LIVE SELF-CHECK OK" in sc_text and "89 MC generators" in sc_text,
+              f"Settings live self-check OK ({sc_text})")
+        page.click("[data-action='welcome']")
+        page.wait_for_timeout(200)
+        check("welcome.wav" in page.evaluate("audio.src"), "welcome clip src set")
+        page.evaluate("stopAudio()")
 
-        # ---- Console errors ----
-        # Filter out expected resource 404s for legacy clips we don't ship.
-        hard_errors = [e for e in CONSOLE_ERRORS
-                       if "PAGEERROR" in e or "TypeError" in e or "ReferenceError" in e
-                       or "SyntaxError" in e]
-        check(len(hard_errors) == 0,
-              "no JS page errors (got %s)" % (hard_errors[:5] if hard_errors else "none"))
+        check(len(CONSOLE_ERRORS) == 0, f"zero console/page errors (got {len(CONSOLE_ERRORS)})")
+        check(len(HTTP_ERRORS) == 0, f"zero HTTP >=400 responses (got {len(HTTP_ERRORS)})")
 
         page.close()
         browser.close()
@@ -195,14 +156,12 @@ def main():
         print("\n=== DOM VERIFIER FAILED ===")
         for f in FAILURES:
             print(" -", f)
-        print("console errors seen:", len(CONSOLE_ERRORS))
         for e in CONSOLE_ERRORS[:20]:
-            print("   ", e)
+            print(" CONSOLE:", e)
+        for e in HTTP_ERRORS[:20]:
+            print(" HTTP:", e)
         sys.exit(1)
     print("\n=== DOM VERIFIER PASSED ===")
-    print("console messages (errors only):", len(CONSOLE_ERRORS))
-    for e in CONSOLE_ERRORS[:20]:
-        print("   ", e)
 
 
 if __name__ == "__main__":

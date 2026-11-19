@@ -158,9 +158,12 @@ class ServerProbeTests(unittest.TestCase):
         return status, body
 
     def test_app_and_health(self):
-        status, body = self.request("/")
+        status, hdrs, body = self.request_with_headers("/")
         self.assertEqual(status, 200)
         self.assertIn(b"SIE", body)
+        csp = hdrs.get("Content-Security-Policy") or ""
+        self.assertIn("script-src 'self';", csp)
+        self.assertNotIn("script-src 'self' 'unsafe-inline'", csp)
         status, body = self.request("/api/health")
         self.assertEqual(status, 200)
         self.assertIn("ok", json.loads(body))
@@ -210,6 +213,14 @@ class ServerProbeTests(unittest.TestCase):
                 )
                 self.assertEqual(status, 416)
                 self.assertEqual(hdrs.get("Content-Range"), f"bytes */{total}")
+
+        mp3_bytes = (ROOT / "static" / "audio" / "welcome.mp3").read_bytes()
+        status, hdrs, body = self.request_with_headers(
+            "/audio/welcome.mp3", headers={"Range": "bytes=0-63"}
+        )
+        self.assertEqual(status, 206)
+        self.assertEqual(hdrs.get("Content-Type"), "audio/mpeg")
+        self.assertEqual(body, mp3_bytes[:64])
 
     def test_rate_limit(self):
         body = json.dumps({"text": "rate limit check", "voice": "af_heart"}).encode()

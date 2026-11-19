@@ -16,8 +16,15 @@ function Invoke-Step {
 
 Push-Location $Root
 try {
-    Invoke-Step "1. py_compile" {
-        python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
+    Invoke-Step "1. py_compile + JS syntax + content schema" {
+        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        python tools/validate_content.py
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Get-ChildItem static\js -Recurse -Filter *.js | ForEach-Object {
+            node --check $_.FullName
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
     }
     Invoke-Step "2. tests/app.test.js" { node tests/app.test.js }
     Invoke-Step "3. tests/tests9.js" { node tests/tests9.js }
