@@ -53,42 +53,58 @@ teacher model, retrieval design, and audio choices.
 
 ## v4 — Security, correctness and zero-to-master onboarding (Nov 19, 2026)
 
+- **ADHD Focus Mode & live self-check:** toggle **ADHD Focus** (`F`) in the header for a compact pacing strip (`#adhdBar`), clickable lesson micro-chunks with progress tracking, **5-Q Micro-Sprint**, **1.0x / 1.15x / 1.3x** voice playback speed (`tibin_sie_vrate`), keyboard shortcuts (`1–4` / `A–D`, `Enter` / `→`, `F` Focus, `T` Theme), reduced-motion-safe confetti, and an in-app **Verify App Live** (`runSelfCheck()`) health/rubric button.
 - **Start from zero:** primer covers accounts, order types, T+1 settlement, cash vs.
   margin, Reg T/FINRA, risk, and the exam map. A 3-question check plus a 10-question
   placement check seed the ML teacher; the Home coach then shows the current stage and
   an exam-readiness score.
 - **Spaced review:** missed questions carry timestamps and a cleared-count; the Missed
-  Bank serves least-cleared/oldest items first, and short-response misses now clear
-  after two full-credit replays like multiple-choice misses.
-- **Server hardening:** loopback-only bind; Host allowlist (DNS-rebinding defense);
-  Origin and `Sec-Fetch-Site` checks on mutations; JSON-only POST (forces a CORS
-  preflight cross-site); 64 KB body cap; thread-safe 30/min rate limiter with pruning;
-  exact 32-hex clip routing; no directory listings; generic error bodies; atomic
-  `.tmp` → `os.replace` cache writes; CSP/COOP/COEP/CORP/nosniff/frame-deny headers;
-  no module-level `os.chdir`; `/api/health` includes a `"ready"` engine readiness
-  check; and WAV routes (`/audio/*`, `/tts/*`) support HTTP `Range` audio scrubbing
-  (`206 Partial Content` / `416` with `Accept-Ranges: bytes`).
-- **FINRA rule accuracy audit & correctness fixes:**
+  Bank serves least-cleared/oldest items first with self-healing `localStorage` recovery
+  and HTML escaping; short-response misses clear after two full-credit replays like
+  multiple-choice misses.
+- **Server hardening ([SECURITY.md](SECURITY.md)):** loopback-only bind; strict
+  single-header `Host` allowlist (rejects duplicate `Host` headers); Origin and
+  `Sec-Fetch-Site` checks on mutations; JSON-only POST (forces a CORS preflight
+  cross-site); 64 KB body cap; thread-safe 30/min rate limiter with pruning; SSN PII
+  rejection and client-side `[REDACTED-SSN]` scrubbing; symlink-contained
+  `translate_path` inside `static/`; `HEAD` and explicit `405` (`Allow: GET, HEAD, POST`);
+  exact 32-hex clip routing; direct `404` without directory `301` redirects; generic
+  error bodies; atomic `.tmp` → `os.replace` cache writes; CSP/COOP/COEP/CORP/nosniff/frame-deny
+  headers; no module-level `os.chdir`; `/api/health` includes a `"ready"` engine readiness
+  check; and WAV routes (`/audio/*`, `/tts/*`) support case-insensitive HTTP `Range` audio
+  scrubbing (`206 Partial Content` / `416` with `Accept-Ranges: bytes`).
+- **FINRA rule accuracy & 2026 curriculum updates:**
   - **Rule 15l-1 Reg BI:** cites SEC Rule 15l-1 under the Exchange Act (distinguishing
     FINRA Rule 2111 for non-Reg BI suitability).
-  - **Rule 3220 gifts vs. business entertainment:** distinguishes the FINRA Rule 3220
-    $100/person/year gift cap from ordinary, reasonable business entertainment attended
-    by the representative.
+  - **Rule 3220 gifts vs. business entertainment:** reflects the FINRA Rule 3220
+    **$300/person/year** gift cap effective March 30, 2026 under FINRA Notice 26-05,
+    distinguishing ordinary, reasonable business entertainment attended by the
+    representative.
+  - **2026 retirement, Social Security & trading updates:** adds Social Security earned
+    income rules, Roth vs. Traditional IRA taxation, and ERISA qualified plan coverage;
+    updates ABLE Act disability onset age to **age 46** (SECURE 2.0), Pattern Day Trader
+    `$25,000` equity's 2026 risk-based intraday margin transition, Rule 144 `1%` / 3 months
+    volume limit, Rule 5220 backing away, Rule 3270 outside business activities, and
+    Rule 2150(c) account sharing.
   - **Reg T freeriding vs. good-faith violation:** distinguishes freeriding (a single
     violation triggers a 90-day settled-funds restriction unless paid by settlement)
     from good-faith violations (three violations in 12 months trigger the 90-day
-    restriction), with swapped-regulator sentences rejected by role binding.
+    restriction), with swapped-regulator sentences and negations rejected by clause-scoped
+    word-boundary role binding.
   - **SIE section 1–4 alignment:** aligns all generators across FINRA SIE sections
-    1–4 (e.g., offerings and shelf registration in Section 1; long call breakeven and
-    ETFs vs. mutual funds in Section 2), while practice exams dedupe stems and keep the
-    12/33/23/7 section mix; every topic has unit and difficulty mappings; short-response
-    misses retain `unit`/`diff`; partial scores render as decimals, not `7.5 / 10`.
-- **Content:** **83 multiple-choice generators** (numbers/names re-rolled per run) +
+    1–4 (16 / 33 / 32 / 8 split, eliminating Section 2 duplicates on 75-question exams
+    and covering long puts, cumulative preferred stock, and closed-end vs. open-end funds);
+    every topic has unit and difficulty mappings; short-response misses retain
+    `unit`/`diff`; partial scores render as decimals, not `7.5 / 10`.
+- **Content:** **89 multiple-choice generators** (numbers/names re-rolled per run) +
   **12 short-response prompts**, each generator mapped to one of 8 units.
-- **Tests in the repo:** `tests/app.test.js` (question shape, section mix, exam
-  uniqueness, grader traps), `tests/test_security.py` (unit + live server probes),
-  `tests/tests9.js` (theme/CSS audit), `tests/ml_verify.js` (ML teacher verification),
-  `tests/ui_enterprise.js` (UI audit), and `tests/grammar_audit.py` (docs/spelling).
+- **Tests in the repo (12-suite verification pipeline):** `tests/app.test.js` (89
+  generators, split integer math, placement & exam uniqueness, 2026 rule checks, ADHD
+  Focus, live self-check, and adversarial grader traps), `tests/test_security.py` (unit
+  + live server probes), `tests/tests9.js` (theme/CSS audit), `tests/ml_verify.js` (ML
+  teacher verification), `tests/ui_enterprise.js` (UI audit), `tests/grammar_audit.py`
+  (docs/spelling), `tools/verify_dom.py`, `tools/verify_exhaustive.py`, `tools/verify_hell.py`
+  (Playwright chaos & ADHD stress suite), and `tools/verify_bits.py` (`43` tracked hashes).
 
 ## v3 — UI/Architecture pass, Short Responses, Gap-Closing Loop (Nov 16, 2026)
 
@@ -194,25 +210,29 @@ manifest are committed like any other asset.
 All of these run locally and in CI (`.github/workflows/compile.yml`):
 
 ```powershell
-python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tests/test_security.py tests/grammar_audit.py
+python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
 python tools/verify.py                 # manifest + build integrity
 python -m unittest tests.test_security -v
-node tests/app.test.js                 # 83 generators, exam mix, grader traps
+node tests/app.test.js                 # 89 generators, exam mix, 2026 rules, ADHD, grader traps
 node tests/tests9.js                   # theme/CSS audit
 node tests/ml_verify.js                # ML teacher verification
 node tests/ui_enterprise.js            # enterprise UI audit
 python tests/grammar_audit.py          # docs + spelling audit
+powershell -ExecutionPolicy Bypass -File .agents/skills/sie-verify/scripts/run_all.ps1
 ```
 
 ## Layout
 
 ```
 server.py          # stdlib web server + /api/tts (no heavy web framework)
-security.py        # validation, clip routing, thread-safe rate limiter
+security.py        # validation, SSN PII checks, clip routing, thread-safe rate limiter
 tts_engine.py      # Kokoro (default) / XTTS (optional) on CUDA, atomic file cache
+SECURITY.md        # threat model & vulnerability disclosure policy
 requirements.txt
-static/index.html  # the entire app: quiz engine, exam, lessons, voice UI
+static/index.html  # the entire app: quiz engine, exam, ADHD Focus, lessons, voice UI
 static/audio/      # saved lesson clips + manifest
+tests/             # app, security, theme, ML teacher, UI, and doc audits
+tools/             # audio composer, Playwright DOM/exhaustive/chaos suites, bit manifest
 tts_cache/         # generated TTS .wav files (grows as you study)
 voices/            # optional XTTS reference voice sample
 data/              # notes / future question packs

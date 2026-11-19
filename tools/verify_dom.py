@@ -5,13 +5,14 @@ inspects the actual rendered DOM, not just source markers. Exits non-zero on
 any assertion failure or uncaught page error.
 """
 import json
+import os
 import sys
 import urllib.request
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-BASE = "http://127.0.0.1:8765"
+BASE = os.environ.get("SIE_BASE", "http://127.0.0.1:8765")
 FAILURES = []
 CONSOLE_ERRORS = []
 

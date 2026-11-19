@@ -18,7 +18,7 @@ Follow these steps whenever adding or revising exam content inside [static/index
 3. Register every new `topic` key in both `UNIT_BY_TOPIC` (`1..8`) and `DIFF_BY_TOPIC` (`1..3`).
 4. Double-check FINRA/SEC citations:
    - Reg BI: **SEC Rule 15l-1** (`FINRA Rule 2111` for non-Reg BI suitability; never `Rule 2210`).
-   - Gifts vs. entertainment: **FINRA Rule 3220** (`$100`/yr cap; attended business entertainment exempt; never `Rule 3230`).
+   - Gifts vs. entertainment: **FINRA Rule 3220** (`$300`/yr cap effective March 30, 2026 under FINRA Notice 26-05; attended business entertainment exempt; never `Rule 3230`).
    - Cash accounts: **Regulation T freeriding** = single violation triggers `90`-day restriction; **good-faith violations** = `3` violations in `12` months trigger `90`-day restriction.
 
 ## 2. Short-Response Prompts (`SHORT`)

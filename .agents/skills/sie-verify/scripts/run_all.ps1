@@ -17,7 +17,7 @@ function Invoke-Step {
 Push-Location $Root
 try {
     Invoke-Step "1. py_compile" {
-        python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tests/test_security.py tests/grammar_audit.py
+        python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
     }
     Invoke-Step "2. tests/app.test.js" { node tests/app.test.js }
     Invoke-Step "3. tests/tests9.js" { node tests/tests9.js }
@@ -28,17 +28,33 @@ try {
     Invoke-Step "8. unittest test_security.py" { python -m unittest discover -s tests -p "test_*.py" -v }
 
     $srv = $null
+    $prevPort = $env:PORT
+    $prevBase = $env:SIE_BASE
     try {
-        Write-Host "`n=== Starting temporary server.py on 127.0.0.1:8765 ==="
+        $probe = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, 8765)
+        try {
+            $probe.Start()
+            $Port = 8765
+        } catch {
+            $probe2 = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, 0)
+            $probe2.Start()
+            $Port = ([System.Net.IPEndPoint]$probe2.LocalEndpoint).Port
+            $probe2.Stop()
+        } finally {
+            try { $probe.Stop() } catch {}
+        }
+        $env:PORT = "$Port"
+        $env:SIE_BASE = "http://127.0.0.1:$Port"
+        Write-Host "`n=== Starting temporary server.py on $env:SIE_BASE ==="
         $srv = Start-Process -FilePath "python" -ArgumentList "server.py" -WorkingDirectory $Root -PassThru -WindowStyle Hidden
         $ready = $false
         for ($i = 0; $i -lt 50; $i++) {
             Start-Sleep -Milliseconds 200
             if ($srv.HasExited) {
-                throw "Temporary server.py exited early with code $($srv.ExitCode) (is port 8765 already in use?)"
+                throw "Temporary server.py exited early with code $($srv.ExitCode) on port $Port"
             }
             try {
-                $resp = Invoke-WebRequest -Uri "http://127.0.0.1:8765/api/health" -UseBasicParsing -TimeoutSec 2
+                $resp = Invoke-WebRequest -Uri "$env:SIE_BASE/api/health" -UseBasicParsing -TimeoutSec 2
                 if ($resp.StatusCode -eq 200) {
                     $ready = $true
                     break
@@ -47,20 +63,23 @@ try {
             }
         }
         if (-not $ready) {
-            throw "Temporary server.py did not respond on http://127.0.0.1:8765/api/health within 10s"
+            throw "Temporary server.py did not respond on $env:SIE_BASE/api/health within 10s"
         }
 
         Invoke-Step "9. tools/verify_dom.py" { python tools/verify_dom.py }
         Invoke-Step "10. tools/verify_exhaustive.py" { python tools/verify_exhaustive.py }
-        Invoke-Step "11a. tools/verify_bits.py (pass 1)" { python tools/verify_bits.py }
+        Invoke-Step "11. tools/verify_hell.py" { python tools/verify_hell.py }
+        Invoke-Step "12a. tools/verify_bits.py (pass 1)" { python tools/verify_bits.py }
         $hash1 = (Get-FileHash (Join-Path $Root "tools/bit_manifest.json") -Algorithm SHA256).Hash
-        Invoke-Step "11b. tools/verify_bits.py (pass 2)" { python tools/verify_bits.py }
+        Invoke-Step "12b. tools/verify_bits.py (pass 2)" { python tools/verify_bits.py }
         $hash2 = (Get-FileHash (Join-Path $Root "tools/bit_manifest.json") -Algorithm SHA256).Hash
         if ($hash1 -ne $hash2) {
             throw "tools/bit_manifest.json is not idempotent across consecutive runs ($hash1 vs $hash2)"
         }
         Write-Host "`nPASS: tools/bit_manifest.json idempotent SHA-256 = $hash2"
     } finally {
+        if ($null -ne $prevPort) { $env:PORT = $prevPort } else { Remove-Item Env:PORT -ErrorAction SilentlyContinue }
+        if ($null -ne $prevBase) { $env:SIE_BASE = $prevBase } else { Remove-Item Env:SIE_BASE -ErrorAction SilentlyContinue }
         if ($srv -and -not $srv.HasExited) {
             Stop-Process -Id $srv.Id -Force -ErrorAction SilentlyContinue
             $srv.WaitForExit(5000) | Out-Null
@@ -68,7 +87,7 @@ try {
         }
     }
 
-    Write-Host "`n=== ALL 11 SIE-VERIFY SUITES PASSED ==="
+    Write-Host "`n=== ALL 12 SIE-VERIFY SUITES PASSED ==="
 } finally {
     Pop-Location
 }

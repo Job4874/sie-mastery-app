@@ -41,7 +41,7 @@ def main():
     exe = shutil.which("codespell")
     if exe:
         files = ["static/index.html", "README.md", "ARCHITECTURE.md",
-                 "PUSH_AUDIO.md", "RESEARCH_ADHD.md", "AGENTS.md",
+                 "PUSH_AUDIO.md", "RESEARCH_ADHD.md", "SECURITY.md", "AGENTS.md",
                  ".agents/skills/sie-verify/SKILL.md",
                  ".agents/skills/sie-curriculum-author/SKILL.md"]
         r = subprocess.run(

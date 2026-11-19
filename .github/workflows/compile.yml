@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Compile Python
-        run: python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tests/test_security.py tests/grammar_audit.py
+        run: python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
       - uses: actions/setup-node@v4
         with: { node-version: "20" }
       - name: Syntax-check the app JavaScript

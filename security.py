@@ -13,6 +13,7 @@ MAX_BODY = 64 * 1024
 MAX_TEXT = 1200
 CLIP_ID_RE = re.compile(r"^[a-f0-9]{32}$")
 CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u200b-\u200d\ufeff]")
+SSN_RE = re.compile(r"(?<!\d)\d{3}[-\s]\d{2}[-\s]\d{4}(?!\d)")
 
 # Kokoro voices that are safe to expose through /api/tts.
 VOICES = frozenset({"af_heart", "af_bella", "am_michael", "bf_emma"})
@@ -48,6 +49,13 @@ class RateLimiter:
             return True, 0
 
 
+def redact_pii(text):
+    """Mask accidental SSN patterns (NNN-NN-NNNN) before logging or display."""
+    if not isinstance(text, str):
+        return ""
+    return SSN_RE.sub("[REDACTED-SSN]", text)
+
+
 def valid_text(text):
     """Return normalized TTS text, or None when the payload is not usable.
 
@@ -60,6 +68,8 @@ def valid_text(text):
     if not text:
         return None
     if CONTROL_RE.search(text):
+        return None
+    if SSN_RE.search(text):
         return None
     text = " ".join(text.split())[:MAX_TEXT].strip()
     return text or None

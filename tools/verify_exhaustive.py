@@ -2,7 +2,7 @@
 import json, os, sys, urllib.request
 from playwright.sync_api import sync_playwright
 
-BASE = "http://127.0.0.1:8765"
+BASE = os.environ.get("SIE_BASE", "http://127.0.0.1:8765")
 FAILURES = []
 CONSOLE_ERRORS = []
 

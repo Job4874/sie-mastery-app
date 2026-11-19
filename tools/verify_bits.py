@@ -10,13 +10,13 @@ Checks, byte for byte:
   6. index.html single <script>, balanced tags presence, no truncation.
 Exits non-zero on any mismatch. Prints full hashes for audit.
 """
-import hashlib, json, struct, sys, urllib.request
+import hashlib, json, os, struct, sys, urllib.request
 from pathlib import Path
 
 import soundfile as sf
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = "http://127.0.0.1:8765"
+BASE = os.environ.get("SIE_BASE", "http://127.0.0.1:8765")
 FAIL = []
 
 
@@ -34,15 +34,16 @@ def main():
     # ---- 1. source files ----
     src = ["server.py", "security.py", "tts_engine.py", "requirements.txt",
            "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
-           "AGENTS.md", ".agents/skills/sie-verify/SKILL.md",
+           "SECURITY.md", "AGENTS.md", ".agents/skills/sie-verify/SKILL.md",
            ".agents/skills/sie-verify/scripts/run_all.ps1",
            ".agents/skills/sie-curriculum-author/SKILL.md",
            "static/index.html", "static/audio/manifest.json",
            "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",
            "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",
            "tools/verify.py", "tools/verify_dom.py",
-           "tools/verify_exhaustive.py", "tools/compose_audio.py",
-           "tools/visual_capture.py", ".github/workflows/compile.yml"]
+           "tools/verify_exhaustive.py", "tools/verify_hell.py",
+           "tools/compose_audio.py", "tools/visual_capture.py",
+           ".github/workflows/compile.yml"]
     hashes = {}
     for rel in src:
         p = ROOT / rel

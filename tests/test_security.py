@@ -48,6 +48,16 @@ class TextValidationTests(unittest.TestCase):
         self.assertEqual(security.valid_text("  a\n\t b  "), "a b")
         self.assertEqual(len(security.valid_text("x" * 5000)), security.MAX_TEXT)
 
+    def test_rejects_and_redacts_ssn_pii(self):
+        for ssn in ["My SSN is 123-45-6789", "id_123-45-6789", "SSN 123 45 6789"]:
+            with self.subTest(ssn=ssn):
+                self.assertIsNone(security.valid_text(ssn))
+        self.assertEqual(
+            security.redact_pii("Applicant id_123-45-6789 and 123 45 6789 signed Form U4"),
+            "Applicant id_[REDACTED-SSN] and [REDACTED-SSN] signed Form U4",
+        )
+        self.assertEqual(security.redact_pii(None), "")
+
 
 class VoiceAndClipTests(unittest.TestCase):
     def test_voice_allowlist(self):
@@ -187,6 +197,12 @@ class ServerProbeTests(unittest.TestCase):
         self.assertEqual(hdrs.get("Content-Range"), f"bytes {total - 50}-{total - 1}/{total}")
         self.assertEqual(body, welcome_bytes[-50:])
 
+        status, hdrs, body = self.request_with_headers(
+            "/audio/welcome.wav", headers={"Range": "BYTES=0-9"}
+        )
+        self.assertEqual(status, 206)
+        self.assertEqual(body, welcome_bytes[:10])
+
         for bad_range in ["bytes=999999999-", "bytes=-", "bytes=-0", "bytes=50-10", "items=0-5"]:
             with self.subTest(bad_range=bad_range):
                 status, hdrs, _ = self.request_with_headers(
@@ -205,7 +221,8 @@ class ServerProbeTests(unittest.TestCase):
         for path in ["/../server.py", "/%2e%2e/server.py", "/static/../server.py",
                      "/tts/../server.py", "/tts/" + "a" * 32 + "/../../server.py",
                      "/audio/../tts_cache/missing.wav", "/audio/%2e%2e/tts_cache/missing.wav",
-                     "/audio/missing.wav"]:
+                     "/audio/missing.wav", "/audio", "/audio/welcome.wav/..",
+                     "/audio/..%5c..%5cserver.py"]:
             with self.subTest(path=path):
                 status, _ = self.request(path)
                 self.assertIn(status, (404, 400, 421))
@@ -216,6 +233,18 @@ class ServerProbeTests(unittest.TestCase):
         status, _ = self.request("/api/tts", "POST", b"{}", {
             "Content-Type": "application/json", "Host": "evil.example"})
         self.assertEqual(status, 421)
+        import http.client
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        try:
+            conn.putrequest("GET", "/", skip_host=True)
+            conn.putheader("Host", f"127.0.0.1:{self.port}")
+            conn.putheader("Host", "evil.example")
+            conn.endheaders()
+            resp = conn.getresponse()
+            self.assertEqual(resp.status, 421)
+            resp.read()
+        finally:
+            conn.close()
 
     def test_post_requires_json_and_same_origin(self):
         url = "/api/tts"
@@ -248,6 +277,34 @@ class ServerProbeTests(unittest.TestCase):
         self.assertEqual(status, 400)
         self.assertNotIn(b"Traceback", body)
         self.assertNotIn(b"ModuleNotFound", body)
+        status, body = post({"text": "SSN 123-45-6789 should block", "voice": "af_heart"})
+        self.assertEqual(status, 400)
+        self.assertIn(b"text", body)
+
+    def test_head_and_disallowed_methods(self):
+        for path in ["/", "/api/health", "/audio/welcome.wav"]:
+            with self.subTest(path=path):
+                status, hdrs, body = self.request_with_headers(path, method="HEAD")
+                self.assertEqual(status, 200)
+                self.assertEqual(body, b"")
+                self.assertGreater(int(hdrs.get("Content-Length", "0")), 0)
+        for method in ["OPTIONS", "PUT", "DELETE", "PATCH", "TRACE"]:
+            with self.subTest(method=method):
+                status, hdrs, _ = self.request_with_headers("/api/tts", method=method, body=b"{}")
+                self.assertEqual(status, 405)
+                self.assertEqual(hdrs.get("Allow"), "GET, HEAD, POST")
+
+    def test_translate_path_blocks_symlink_escape(self):
+        import server as srv
+        handler = srv.Handler.__new__(srv.Handler)
+        outside = str((ROOT / "server.py").resolve())
+        with unittest.mock.patch.object(
+            srv.SimpleHTTPRequestHandler, "translate_path", return_value=outside
+        ):
+            result = handler.translate_path("/escaped.py")
+        self.assertTrue(result.startswith(str(srv.STATIC.resolve())))
+        self.assertIn("__nonexistent_blocked_path__", result)
+        self.assertFalse(Path(result).exists())
 
 
 if __name__ == "__main__":

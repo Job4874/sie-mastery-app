@@ -30,7 +30,7 @@ HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}", "127.0.0.1", "localhost"}
 ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"}
 LIMITER = RateLimiter(limit=30, window=60.0)
 CLIP_RE = re.compile(r"^/tts/([a-f0-9]{32})\.wav$")
-RANGE_RE = re.compile(r"^bytes=(\d*)-(\d*)$")
+RANGE_RE = re.compile(r"^bytes=(\d*)-(\d*)$", re.IGNORECASE)
 
 
 def _parse_byte_range(range_hdr: str, total: int):
@@ -77,6 +77,16 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(STATIC), **kwargs)
 
+    def translate_path(self, path):
+        candidate = super().translate_path(path)
+        static_root = STATIC.resolve()
+        try:
+            resolved = Path(candidate).resolve()
+            resolved.relative_to(static_root)
+        except (ValueError, OSError):
+            return str(static_root / "__nonexistent_blocked_path__")
+        return str(resolved)
+
     def list_directory(self, path):
         return self.send_error(404, "Directory listing disabled")
 
@@ -103,7 +113,10 @@ class Handler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def _host_ok(self):
-        host = (self.headers.get("Host") or "").strip().lower()
+        hosts = self.headers.get_all("Host") or []
+        if len(hosts) != 1:
+            return False
+        host = hosts[0].strip().lower()
         return bool(host) and host in HOSTS
 
     def _origin_ok(self):
@@ -119,7 +132,7 @@ class Handler(SimpleHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass
 
-    def _json(self, obj, code=200, extra=None):
+    def _json(self, obj, code=200, extra=None, send_body=True):
         data = json.dumps(obj).encode("utf-8")
         self.send_response(code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -128,21 +141,33 @@ class Handler(SimpleHTTPRequestHandler):
         for key, value in (extra or {}).items():
             self.send_header(key, value)
         self.end_headers()
-        self._write_body(data)
+        if send_body:
+            self._write_body(data)
 
-    def _serve_wav_file(self, target: Path, cache_control: str):
+    def _health_payload(self):
+        try:
+            import tts_engine
+            gpu = tts_engine.gpu_info()
+            return {"ok": True, "engine": tts_engine.engine_name(),
+                    "ready": tts_engine.engine_ready(),
+                    "gpu": gpu, "cached_clips": len(list(TTS_DIR.glob("*.wav")))}
+        except Exception as exc:
+            print(f"health error: {exc}", file=sys.stderr)
+            return {"ok": False, "error": "health unavailable"}
+
+    def _serve_wav_file(self, target: Path, cache_control: str, send_body: bool = True):
         """Serve a WAV file with full RFC 9110 single-byte-range support."""
         total = target.stat().st_size
         range_hdr = (self.headers.get("Range") or "").strip()
         if not range_hdr:
-            data = target.read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "audio/wav")
             self.send_header("Accept-Ranges", "bytes")
             self.send_header("Content-Length", str(total))
             self.send_header("Cache-Control", cache_control)
             self.end_headers()
-            self._write_body(data)
+            if send_body:
+                self._write_body(target.read_bytes())
             return
 
         bounds = _parse_byte_range(range_hdr, total)
@@ -154,9 +179,6 @@ class Handler(SimpleHTTPRequestHandler):
             return
 
         start, end = bounds
-        with target.open("rb") as fh:
-            fh.seek(start)
-            chunk = fh.read(end - start + 1)
         self.send_response(206)
         self.send_header("Content-Type", "audio/wav")
         self.send_header("Accept-Ranges", "bytes")
@@ -164,35 +186,61 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(end - start + 1))
         self.send_header("Cache-Control", cache_control)
         self.end_headers()
-        self._write_body(chunk)
+        if send_body:
+            with target.open("rb") as fh:
+                fh.seek(start)
+                chunk = fh.read(end - start + 1)
+            self._write_body(chunk)
+
+    def do_HEAD(self):
+        if not self._host_ok():
+            return self.send_error(421, "Misdirected request")
+        req_path = unquote(urlsplit(self.path).path)
+        if "\\" in self.path or "\\" in req_path:
+            return self.send_error(404)
+        if req_path == "/api/health":
+            return self._json(self._health_payload(), send_body=False)
+        match = CLIP_RE.fullmatch(req_path)
+        if match:
+            target = clip_path(TTS_DIR, match.group(1))
+            if target and target.is_file():
+                return self._serve_wav_file(target, "public, max-age=31536000, immutable", send_body=False)
+            return self.send_error(404)
+        if req_path.startswith("/tts/"):
+            return self.send_error(404)
+        if req_path.startswith("/audio/") and req_path.lower().endswith(".wav"):
+            target = _resolve_audio_wav(req_path)
+            if target and target.is_file():
+                return self._serve_wav_file(target, "public, max-age=3600", send_body=False)
+            return self.send_error(404)
+        translated = Path(self.translate_path(req_path))
+        if translated.is_dir() and translated != STATIC.resolve():
+            return self.send_error(404)
+        return super().do_HEAD()
 
     def do_GET(self):
         if not self._host_ok():
             return self.send_error(421, "Misdirected request")
-        if self.path == "/api/health":
-            try:
-                import tts_engine
-                gpu = tts_engine.gpu_info()
-                info = {"ok": True, "engine": tts_engine.engine_name(),
-                        "ready": tts_engine.engine_ready(),
-                        "gpu": gpu, "cached_clips": len(list(TTS_DIR.glob("*.wav")))}
-            except Exception as exc:
-                print(f"health error: {exc}", file=sys.stderr)
-                info = {"ok": False, "error": "health unavailable"}
-            return self._json(info)
-        match = CLIP_RE.fullmatch(self.path)
+        req_path = unquote(urlsplit(self.path).path)
+        if "\\" in self.path or "\\" in req_path:
+            return self.send_error(404)
+        if req_path == "/api/health":
+            return self._json(self._health_payload())
+        match = CLIP_RE.fullmatch(req_path)
         if match:
             target = clip_path(TTS_DIR, match.group(1))
             if target and target.is_file():
                 return self._serve_wav_file(target, "public, max-age=31536000, immutable")
             return self.send_error(404)
-        if self.path.startswith("/tts/"):
+        if req_path.startswith("/tts/"):
             return self.send_error(404)
-        req_path = unquote(urlsplit(self.path).path)
         if req_path.startswith("/audio/") and req_path.lower().endswith(".wav"):
             target = _resolve_audio_wav(req_path)
             if target and target.is_file():
                 return self._serve_wav_file(target, "public, max-age=3600")
+            return self.send_error(404)
+        translated = Path(self.translate_path(req_path))
+        if translated.is_dir() and translated != STATIC.resolve():
             return self.send_error(404)
         return super().do_GET()
 
@@ -242,10 +290,19 @@ class Handler(SimpleHTTPRequestHandler):
             print(f"tts error: {exc}", file=sys.stderr)
             return self._json({"error": "tts unavailable", "fallback": "browser"}, 503)
 
-    def do_OPTIONS(self):
+    def _method_not_allowed(self):
+        if not self._host_ok():
+            return self.send_error(421, "Misdirected request")
         self.send_response(405)
-        self.send_header("Allow", "GET, POST")
+        self.send_header("Allow", "GET, HEAD, POST")
+        self.send_header("Content-Length", "0")
         self.end_headers()
+
+    do_OPTIONS = _method_not_allowed
+    do_PUT = _method_not_allowed
+    do_DELETE = _method_not_allowed
+    do_PATCH = _method_not_allowed
+    do_TRACE = _method_not_allowed
 
     def log_message(self, *args):
         pass
