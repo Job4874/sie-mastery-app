@@ -16,13 +16,13 @@ import re
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 from security import MAX_BODY, RateLimiter, clip_path, valid_text, valid_voice
 
 ROOT = Path(__file__).resolve().parent
 STATIC = ROOT / "static"
 TTS_DIR = ROOT / "tts_cache"
-os.chdir(STATIC)
 
 PORT = int(os.environ.get("PORT", "8765"))
 BIND = "127.0.0.1"
@@ -30,6 +30,43 @@ HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}", "127.0.0.1", "localhost"}
 ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"}
 LIMITER = RateLimiter(limit=30, window=60.0)
 CLIP_RE = re.compile(r"^/tts/([a-f0-9]{32})\.wav$")
+RANGE_RE = re.compile(r"^bytes=(\d*)-(\d*)$")
+
+
+def _parse_byte_range(range_hdr: str, total: int):
+    """Parse a single RFC 9110 byte range against total size, or return None."""
+    match = RANGE_RE.fullmatch(range_hdr)
+    if not match:
+        return None
+    start_s, end_s = match.groups()
+    if not start_s and not end_s:
+        return None
+    if not start_s:
+        suffix = int(end_s)
+        if suffix <= 0 or total <= 0:
+            return None
+        return max(0, total - suffix), total - 1
+    start = int(start_s)
+    end = total - 1 if not end_s else min(int(end_s), total - 1)
+    if start >= total or start > end:
+        return None
+    return start, end
+
+
+def _resolve_audio_wav(req_path: str):
+    """Resolve /audio/<name>.wav safely inside STATIC / 'audio', or return None."""
+    rel = req_path[len("/audio/"):]
+    if not rel or "\x00" in rel or "\\" in rel or rel.startswith("/"):
+        return None
+    audio_root = (STATIC / "audio").resolve()
+    try:
+        target = (audio_root / rel).resolve()
+        target.relative_to(audio_root)
+    except (ValueError, OSError):
+        return None
+    if target == audio_root or target.suffix.lower() != ".wav":
+        return None
+    return target
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -38,7 +75,7 @@ class Handler(SimpleHTTPRequestHandler):
     protocol_version = "HTTP/1.0"
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, directory=str(STATIC), **kwargs)
 
     def list_directory(self, path):
         return self.send_error(404, "Directory listing disabled")
@@ -76,6 +113,12 @@ class Handler(SimpleHTTPRequestHandler):
         site = (self.headers.get("Sec-Fetch-Site") or "").strip().lower()
         return site not in {"cross-site", "same-site"}
 
+    def _write_body(self, data: bytes):
+        try:
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+
     def _json(self, obj, code=200, extra=None):
         data = json.dumps(obj).encode("utf-8")
         self.send_response(code)
@@ -85,10 +128,43 @@ class Handler(SimpleHTTPRequestHandler):
         for key, value in (extra or {}).items():
             self.send_header(key, value)
         self.end_headers()
-        try:
-            self.wfile.write(data)
-        except (BrokenPipeError, ConnectionResetError):
-            pass
+        self._write_body(data)
+
+    def _serve_wav_file(self, target: Path, cache_control: str):
+        """Serve a WAV file with full RFC 9110 single-byte-range support."""
+        total = target.stat().st_size
+        range_hdr = (self.headers.get("Range") or "").strip()
+        if not range_hdr:
+            data = target.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "audio/wav")
+            self.send_header("Accept-Ranges", "bytes")
+            self.send_header("Content-Length", str(total))
+            self.send_header("Cache-Control", cache_control)
+            self.end_headers()
+            self._write_body(data)
+            return
+
+        bounds = _parse_byte_range(range_hdr, total)
+        if bounds is None:
+            self.send_response(416)
+            self.send_header("Content-Range", f"bytes */{total}")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+
+        start, end = bounds
+        with target.open("rb") as fh:
+            fh.seek(start)
+            chunk = fh.read(end - start + 1)
+        self.send_response(206)
+        self.send_header("Content-Type", "audio/wav")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Range", f"bytes {start}-{end}/{total}")
+        self.send_header("Content-Length", str(end - start + 1))
+        self.send_header("Cache-Control", cache_control)
+        self.end_headers()
+        self._write_body(chunk)
 
     def do_GET(self):
         if not self._host_ok():
@@ -98,6 +174,7 @@ class Handler(SimpleHTTPRequestHandler):
                 import tts_engine
                 gpu = tts_engine.gpu_info()
                 info = {"ok": True, "engine": tts_engine.engine_name(),
+                        "ready": tts_engine.engine_ready(),
                         "gpu": gpu, "cached_clips": len(list(TTS_DIR.glob("*.wav")))}
             except Exception as exc:
                 print(f"health error: {exc}", file=sys.stderr)
@@ -107,19 +184,15 @@ class Handler(SimpleHTTPRequestHandler):
         if match:
             target = clip_path(TTS_DIR, match.group(1))
             if target and target.is_file():
-                data = target.read_bytes()
-                self.send_response(200)
-                self.send_header("Content-Type", "audio/wav")
-                self.send_header("Content-Length", str(len(data)))
-                self.send_header("Cache-Control", "public, max-age=31536000, immutable")
-                self.end_headers()
-                try:
-                    self.wfile.write(data)
-                except (BrokenPipeError, ConnectionResetError):
-                    pass
-                return
+                return self._serve_wav_file(target, "public, max-age=31536000, immutable")
             return self.send_error(404)
         if self.path.startswith("/tts/"):
+            return self.send_error(404)
+        req_path = unquote(urlsplit(self.path).path)
+        if req_path.startswith("/audio/") and req_path.lower().endswith(".wav"):
+            target = _resolve_audio_wav(req_path)
+            if target and target.is_file():
+                return self._serve_wav_file(target, "public, max-age=3600")
             return self.send_error(404)
         return super().do_GET()
 

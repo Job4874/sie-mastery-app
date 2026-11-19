@@ -183,6 +183,7 @@ def main():
 
     hard = [e for e in CONSOLE_ERRORS if "PAGEERROR" in e or "TypeError" in e or "ReferenceError" in e or "SyntaxError" in e]
     check(len(hard) == 0, f"no JS page errors (got {len(hard)})")
+    check(len(CONSOLE_ERRORS) == 0, f"no console errors (got {len(CONSOLE_ERRORS)})")
     if FAILURES:
         print("\n=== EXHAUSTIVE VERIFIER FAILED ===")
         for f in FAILURES:

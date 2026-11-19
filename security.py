@@ -2,6 +2,7 @@
 
 No third-party dependencies. Everything here is deliberately small and testable.
 """
+import math
 import re
 import threading
 import time
@@ -39,7 +40,7 @@ class RateLimiter:
                 self._last_prune = now
             hits = [t for t in self._hits[key] if t > cutoff]
             if len(hits) >= self.limit:
-                retry = max(1, int(self.window - (now - hits[-1])))
+                retry = max(1, math.ceil(self.window - (now - hits[0])))
                 self._hits[key] = hits
                 return False, retry
             hits.append(now)

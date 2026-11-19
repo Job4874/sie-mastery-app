@@ -33,10 +33,10 @@ def sha(b: bytes) -> str:
 def main():
     # ---- 1. source files ----
     src = ["server.py", "security.py", "tts_engine.py", "requirements.txt",
-           "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md",
+           "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
            "static/index.html", "static/audio/manifest.json",
            "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",
-           "tests/ml_verify.js", "tests/ui_enterprise.js",
+           "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",
            "tools/verify.py", "tools/verify_dom.py",
            "tools/verify_exhaustive.py", "tools/compose_audio.py",
            "tools/visual_capture.py", ".github/workflows/compile.yml"]

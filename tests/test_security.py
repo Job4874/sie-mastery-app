@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+import unittest.mock
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -77,6 +78,28 @@ class RateLimiterTests(unittest.TestCase):
         self.assertGreaterEqual(retry, 1)
         self.assertTrue(limiter.allow("5.6.7.8")[0])
 
+    def test_retry_after_uses_oldest_hit(self):
+        with unittest.mock.patch(
+            "security.time.monotonic", side_effect=[100.0, 150.0, 155.0, 156.0]
+        ):
+            limiter = security.RateLimiter(limit=3, window=60)
+            self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+            self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+            self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+            self.assertEqual(limiter.allow("1.2.3.4"), (False, 4))
+
+
+class ServerImportTests(unittest.TestCase):
+    def test_import_server_preserves_cwd(self):
+        res = subprocess.run(
+            [sys.executable, "-c", "import os, server; print(os.getcwd())"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        self.assertEqual(res.stdout.strip(), str(ROOT))
+
 
 def free_port():
     with socket.socket() as sock:
@@ -111,14 +134,18 @@ class ServerProbeTests(unittest.TestCase):
         except subprocess.TimeoutExpired:
             cls.proc.kill()
 
-    def request(self, path, method="GET", body=None, headers=None):
+    def request_with_headers(self, path, method="GET", body=None, headers=None):
         req = urllib.request.Request(self.base + path, data=body, method=method,
                                      headers=headers or {})
         try:
             with urllib.request.urlopen(req, timeout=10) as resp:
-                return resp.status, resp.read()
+                return resp.status, resp.headers, resp.read()
         except urllib.error.HTTPError as exc:
-            return exc.code, exc.read()
+            return exc.code, exc.headers, exc.read()
+
+    def request(self, path, method="GET", body=None, headers=None):
+        status, _, body = self.request_with_headers(path, method=method, body=body, headers=headers)
+        return status, body
 
     def test_app_and_health(self):
         status, body = self.request("/")
@@ -128,6 +155,46 @@ class ServerProbeTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertIn("ok", json.loads(body))
 
+    def test_health_ready_flag(self):
+        status, body = self.request("/api/health")
+        self.assertEqual(status, 200)
+        payload = json.loads(body)
+        self.assertIn("ready", payload)
+        self.assertIsInstance(payload["ready"], bool)
+
+    def test_wav_range_requests(self):
+        welcome_bytes = (ROOT / "static" / "audio" / "welcome.wav").read_bytes()
+        total = len(welcome_bytes)
+
+        status, hdrs, body = self.request_with_headers("/audio/welcome.wav")
+        self.assertEqual(status, 200)
+        self.assertEqual(hdrs.get("Accept-Ranges"), "bytes")
+        self.assertEqual(body, welcome_bytes)
+
+        status, hdrs, body = self.request_with_headers(
+            "/audio/welcome.wav", headers={"Range": "bytes=0-99"}
+        )
+        self.assertEqual(status, 206)
+        self.assertEqual(hdrs.get("Accept-Ranges"), "bytes")
+        self.assertTrue((hdrs.get("Content-Range") or "").startswith("bytes 0-99/"))
+        self.assertEqual(hdrs.get("Content-Range"), f"bytes 0-99/{total}")
+        self.assertEqual(body, welcome_bytes[:100])
+
+        status, hdrs, body = self.request_with_headers(
+            "/audio/welcome.wav", headers={"Range": "bytes=-50"}
+        )
+        self.assertEqual(status, 206)
+        self.assertEqual(hdrs.get("Content-Range"), f"bytes {total - 50}-{total - 1}/{total}")
+        self.assertEqual(body, welcome_bytes[-50:])
+
+        for bad_range in ["bytes=999999999-", "bytes=-", "bytes=-0", "bytes=50-10", "items=0-5"]:
+            with self.subTest(bad_range=bad_range):
+                status, hdrs, _ = self.request_with_headers(
+                    "/audio/welcome.wav", headers={"Range": bad_range}
+                )
+                self.assertEqual(status, 416)
+                self.assertEqual(hdrs.get("Content-Range"), f"bytes */{total}")
+
     def test_rate_limit(self):
         body = json.dumps({"text": "rate limit check", "voice": "af_heart"}).encode()
         headers = {"Content-Type": "application/json"}
@@ -136,7 +203,9 @@ class ServerProbeTests(unittest.TestCase):
 
     def test_traversal_blocked(self):
         for path in ["/../server.py", "/%2e%2e/server.py", "/static/../server.py",
-                     "/tts/../server.py", "/tts/" + "a" * 32 + "/../../server.py"]:
+                     "/tts/../server.py", "/tts/" + "a" * 32 + "/../../server.py",
+                     "/audio/../tts_cache/missing.wav", "/audio/%2e%2e/tts_cache/missing.wav",
+                     "/audio/missing.wav"]:
             with self.subTest(path=path):
                 status, _ = self.request(path)
                 self.assertIn(status, (404, 400, 421))

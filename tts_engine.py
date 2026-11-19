@@ -64,6 +64,19 @@ def engine_name():
     return kind
 
 
+def engine_ready() -> bool:
+    """Return True when the active TTS backend has its model or runtime ready."""
+    kind = backend()
+    if kind == "onnx":
+        return _onnx_files() is not None
+    import importlib.util
+    if kind == "xtts":
+        return (ROOT / "voices" / "reference.wav").is_file() and importlib.util.find_spec("TTS") is not None
+    if kind == "kokoro":
+        return importlib.util.find_spec("kokoro") is not None
+    return False
+
+
 def cache_key(text: str, voice: str) -> str:
     return hashlib.sha256(f"{engine_name()}|{voice}|{text}".encode("utf-8")).hexdigest()[:32]
 

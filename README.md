@@ -64,16 +64,31 @@ teacher model, retrieval design, and audio choices.
   Origin and `Sec-Fetch-Site` checks on mutations; JSON-only POST (forces a CORS
   preflight cross-site); 64 KB body cap; thread-safe 30/min rate limiter with pruning;
   exact 32-hex clip routing; no directory listings; generic error bodies; atomic
-  `.tmp` → `os.replace` cache writes; CSP/COOP/COEP/CORP/nosniff/frame-deny headers.
-- **Correctness fixes:** Reg T swapped-regulator sentences now fail role binding;
-  practice exams dedupe stems and keep the 12/33/23/7 section mix; all generators use
-  valid SIE sections 1–4; every topic has unit and difficulty mappings; short-response
-  misses retain `unit`/`diff`; partial scores render as decimals, not `7.5 / 10`.
+  `.tmp` → `os.replace` cache writes; CSP/COOP/COEP/CORP/nosniff/frame-deny headers;
+  no module-level `os.chdir`; `/api/health` includes a `"ready"` engine readiness
+  check; and WAV routes (`/audio/*`, `/tts/*`) support HTTP `Range` audio scrubbing
+  (`206 Partial Content` / `416` with `Accept-Ranges: bytes`).
+- **FINRA rule accuracy audit & correctness fixes:**
+  - **Rule 15l-1 Reg BI:** cites SEC Rule 15l-1 under the Exchange Act (distinguishing
+    FINRA Rule 2111 for non-Reg BI suitability).
+  - **Rule 3220 gifts vs. business entertainment:** distinguishes the FINRA Rule 3220
+    $100/person/year gift cap from ordinary, reasonable business entertainment attended
+    by the representative.
+  - **Reg T freeriding vs. good-faith violation:** distinguishes freeriding (a single
+    violation triggers a 90-day settled-funds restriction unless paid by settlement)
+    from good-faith violations (three violations in 12 months trigger the 90-day
+    restriction), with swapped-regulator sentences rejected by role binding.
+  - **SIE section 1–4 alignment:** aligns all generators across FINRA SIE sections
+    1–4 (e.g., offerings and shelf registration in Section 1; long call breakeven and
+    ETFs vs. mutual funds in Section 2), while practice exams dedupe stems and keep the
+    12/33/23/7 section mix; every topic has unit and difficulty mappings; short-response
+    misses retain `unit`/`diff`; partial scores render as decimals, not `7.5 / 10`.
 - **Content:** **83 multiple-choice generators** (numbers/names re-rolled per run) +
   **12 short-response prompts**, each generator mapped to one of 8 units.
 - **Tests in the repo:** `tests/app.test.js` (question shape, section mix, exam
-  uniqueness, grader traps), `tests/test_security.py` (unit + live server probes), and
-  `tests/tests9.js` (theme/CSS audit).
+  uniqueness, grader traps), `tests/test_security.py` (unit + live server probes),
+  `tests/tests9.js` (theme/CSS audit), `tests/ml_verify.js` (ML teacher verification),
+  `tests/ui_enterprise.js` (UI audit), and `tests/grammar_audit.py` (docs/spelling).
 
 ## v3 — UI/Architecture pass, Short Responses, Gap-Closing Loop (Nov 16, 2026)
 
@@ -144,7 +159,11 @@ bind; Origin/Host checks). PORT is configurable with the `PORT` environment vari
 No pip install? Open `static/index.html` directly — everything except local
 TTS works, and voice falls back to the browser.
 
-Check voice status in the app header, or `GET http://localhost:8765/api/health`.
+Check voice status in the app header, or `GET http://localhost:8765/api/health`
+(includes a `"ready"` flag indicating whether local TTS models/dependencies are
+available). Saved `/audio/*.wav` and cached `/tts/*.wav` clips also serve HTTP
+`Range` requests (`Accept-Ranges: bytes`, `206 Partial Content`) for browser audio
+scrubbing.
 
 ## Pre-generated voice clips
 
@@ -175,11 +194,14 @@ manifest are committed like any other asset.
 All of these run locally and in CI (`.github/workflows/compile.yml`):
 
 ```powershell
-python -m py_compile server.py security.py tts_engine.py tools/verify.py tests/test_security.py
+python -m py_compile server.py security.py tts_engine.py tools/verify.py tools/compose_audio.py tests/test_security.py tests/grammar_audit.py
 python tools/verify.py                 # manifest + build integrity
 python -m unittest tests.test_security -v
 node tests/app.test.js                 # 83 generators, exam mix, grader traps
 node tests/tests9.js                   # theme/CSS audit
+node tests/ml_verify.js                # ML teacher verification
+node tests/ui_enterprise.js            # enterprise UI audit
+python tests/grammar_audit.py          # docs + spelling audit
 ```
 
 ## Layout

@@ -1,7 +1,7 @@
 {
   ".github/workflows/compile.yml": {
-    "bytes": 1043,
-    "sha256": "b4671f35deb3403ab91356a33379a120784037393b57a475460655a4f35dd26b"
+    "bytes": 1305,
+    "sha256": "78ab7af1b6458056051e99e464111c82c529d8a8f7f8edaba809cdf7c69c33ae"
   },
   "ARCHITECTURE.md": {
     "bytes": 4708,
@@ -12,20 +12,24 @@
     "sha256": "345520f1b895a6f6052622ad1d2e0b7e40025eda631b87d130530fad9cc772bc"
   },
   "README.md": {
-    "bytes": 10065,
-    "sha256": "b474fe98992f0634f730a03a4f94808c09affe21cd31d3ac449166bab2b439cc"
+    "bytes": 11746,
+    "sha256": "42a5c6ef8558c3e8eb6c83b9dd77cd2ad09c49884453935167b67c14c55787fa"
+  },
+  "RESEARCH_ADHD.md": {
+    "bytes": 11052,
+    "sha256": "ab527f73c9850c2239ca9c284fd88404c5bdc68bbdf742688e133cb5b5553760"
   },
   "requirements.txt": {
     "bytes": 458,
     "sha256": "eec4c3ce24649a4355c600310395f7ab362753e8c5e939f74d7452e1200210ef"
   },
   "security.py": {
-    "bytes": 2570,
-    "sha256": "cb6b5d74bd90fed7849a19cd69c8f16760f655c004ac6ab2d74981355c43c2a1"
+    "bytes": 2587,
+    "sha256": "b206b54aae7d90f651c262d1e961838c808b92b01551358c182bbed9812cb624"
   },
   "server.py": {
-    "bytes": 8006,
-    "sha256": "7d900b16b30b1777696a20297b3189fb630ae60e256c92e375b0135f0032e029"
+    "bytes": 10815,
+    "sha256": "15587169fc0d940e6ccddda1defba5a98f212ffb33803ac43b163fd664f46d27"
   },
   "static/audio/lesson-1-regulators.wav": {
     "bytes": 6912620,
@@ -48,8 +52,8 @@
     "sha256": "fa8efd0c95271d279e0ccb6235c704d7db02a686ce50f1aa7efed33c86f9ebda"
   },
   "static/audio/lesson-3-freeriding.wav": {
-    "bytes": 1037356,
-    "sha256": "beaf9bbeb77476f9cddfb168b15df0dbb6797048bf00e5e49d4458f1fa30afda"
+    "bytes": 1293996,
+    "sha256": "b6248ebe184f44a4723dd5323af16d1a8d80926d2fdc63e30349d8527faec1fd"
   },
   "static/audio/lesson-4-numbers.wav": {
     "bytes": 1602316,
@@ -85,27 +89,31 @@
   },
   "static/audio/manifest.json": {
     "bytes": 2559,
-    "sha256": "905e8fad54069a14731d44fef9866e8aa7a64367e1e14bf41ff56a22208b839a"
+    "sha256": "1fd1bdedf1521277063b316fc5114004249c29abec04e79f612671f5a0adc821"
   },
   "static/audio/welcome.wav": {
     "bytes": 992300,
     "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
   },
   "static/index.html": {
-    "bytes": 135010,
-    "sha256": "65b28bf82d7404d3c2d6440e58c19976f6f0850d224e3add5642c57ac417a20d"
+    "bytes": 136066,
+    "sha256": "26cdf97af0dc9084b1a88c49a5bfaeef997836220d2bc19b71daf2e30ebbb95c"
   },
   "tests/app.test.js": {
-    "bytes": 5144,
-    "sha256": "c0c3cc1869d5485fb6c9c2447999587b682872dba1710d9dcfa02f6048e91162"
+    "bytes": 8961,
+    "sha256": "ace48804f53659a04984b6f6d7a9b56ca0f5e95526d011ff2f606b58c43e33a4"
+  },
+  "tests/grammar_audit.py": {
+    "bytes": 2195,
+    "sha256": "0189131e8ac50ac9ca4342a7986ca7481d99c9965cc1c3aaa9f805fceacb195c"
   },
   "tests/ml_verify.js": {
     "bytes": 6998,
     "sha256": "6e1a135980cfa15ae6db7f26486ea6dce3dbd9fb08a93f58bb6f2900f62d3c22"
   },
   "tests/test_security.py": {
-    "bytes": 7177,
-    "sha256": "10888499ee4a770deae5b821479e09a5a99f67d5e677b9e006cd0906c2752ba9"
+    "bytes": 10269,
+    "sha256": "4fe126f24bbffb1ac752cd9de62724e34307f296a292d3737f5945f86dfdaa4a"
   },
   "tests/tests9.js": {
     "bytes": 8268,
@@ -128,15 +136,15 @@
     "sha256": "3c112626667adf8922f48bdb5cb24355b0b57d33e27718313cb9cda70eb8b15c"
   },
   "tools/verify_exhaustive.py": {
-    "bytes": 7496,
-    "sha256": "d60207325d44b3d51fe036ba0336eb6c4e91d6c737337d4c98193127a6da48b5"
+    "bytes": 7582,
+    "sha256": "1e3e87c1af7c56454c49df1e8fe54b05f2cd1fa66e3bf86a679773a288da07fd"
   },
   "tools/visual_capture.py": {
     "bytes": 1505,
     "sha256": "51b08cbf2087501ec3f5d49df793e36cf8c879065de5b85ed0a2eed38077bb17"
   },
   "tts_engine.py": {
-    "bytes": 6071,
-    "sha256": "8e370b0d5020ca008c651d27a63b5cfee60e9ca09a11165cbb19d26abf1d8a68"
+    "bytes": 6530,
+    "sha256": "efa359be94d34f70be23c2e3f2c74a32337803576a17be4db8b386658a776f63"
   }
 }

@@ -225,7 +225,7 @@ const GEN=[
  fall?`Falling rates → homeowners refinance → prepayments surge → support tranche absorbs the excess first, so it CONTRACTS. Extension is the rising-rate case.`:`Rising rates → refinancing stops → prepayments dry up → support tranche is paid slower to keep the PAC on schedule, so it EXTENDS. Contraction is the falling-rate case.`,"Rates ↓ = contraction. Rates ↑ = extension. Support absorbs variability to protect the PAC.")},
 ()=>{const n=pick(NAMES);return Q(3,"Freeriding",`${n} has a cash account. Monday ${n} buys 200 shares using unsettled funds, then sells them Tuesday before paying for the purchase. This is:`,
  ["Freeriding — a Reg T violation; account can be frozen 90 days","A legal day trade","A wash sale","Front running"],0,
- `Selling a security bought with unsettled funds before payment = freeriding (Reg T, cash account). Consequence: if it recurs, the account is restricted to settled-funds-only for 90 days. A good-faith violation is the milder cousin (liquidating other assets to cover).`,"Freeriding = buy + sell before paying, in a cash account.")},
+ `Selling a security bought with unsettled funds before paying in full = freeriding (Reg T, cash account). Consequence: a single freeriding violation restricts the account to settled-funds-only for 90 calendar days (unless paid in full by settlement). A good-faith violation is the milder cousin (three GFVs in 12 months trigger the 90-day restriction).`,"Freeriding = buy + sell before paying, in a cash account.")},
 ()=>{const d=R(5,28);return Q(3,"Wash sale",`An investor sells a stock at a loss and repurchases a substantially identical security ${d} days later. Under the wash sale rule:`,
  ["The loss is disallowed for now and added to the cost basis of the new shares","The loss is permanently lost","Nothing happens — the rule only covers 61+ days","The loss is doubled as a penalty"],0,
  `30 days before or after the sale (61-day window total). ${d} days is inside it. The loss isn't destroyed — it's deferred into the new shares' basis, and the holding period tacks on.`,"Wash sale window: 30 days either side = 61 days total.")},
@@ -289,10 +289,10 @@ GEN.push(
 ()=>Q(3,"Callable bonds / yield to worst",`An investor buys a callable bond at a PREMIUM. The yield figure that best represents the investor's likely return — and the one that must be quoted — is:`,
  ["The lower of yield to call and yield to maturity (yield to worst)","Yield to maturity, always","Nominal yield","Current yield"],0,
  `Premium bonds are likely to be called at the first opportunity, so YTC < YTM and the lower figure governs: yield to worst. For discount bonds YTM is the lower, governing figure. Always quote/consider the worst case.`,"Premium → YTC governs. Discount → YTM governs. Quote yield to worst."),
-()=>{const k=R(40,90),pr=R(1,8);return Q(4,"Long call breakeven",`An investor buys a $${k} call for $${pr}. The breakeven point and maximum loss are:`,
+()=>{const k=R(40,90),pr=R(1,8);return Q(2,"Long call breakeven",`An investor buys a $${k} call for $${pr}. The breakeven point and maximum loss are:`,
  [`Breakeven $${k+pr}; max loss $${pr*100} per contract`,`Breakeven $${k-pr}; max loss $${pr*100} per contract`,`Breakeven $${k+pr}; max loss unlimited`,`Breakeven $${k}; max loss $${(k+pr)*100} per contract`],0,
  `Long call breakeven = strike + premium = $${k}+$${pr} = $${k+pr}. The most a buyer can ever lose is the premium paid: $${pr} × 100 shares = $${pr*100}. Buyers risk the premium; writers of uncovered calls carry the unlimited risk.`,"Long call: BE = strike + premium. Max loss = premium.")},
-()=>Q(4,"ETFs vs mutual funds",`Which feature distinguishes an ETF from an open-end mutual fund?`,
+()=>Q(2,"ETFs vs mutual funds",`Which feature distinguishes an ETF from an open-end mutual fund?`,
  ["ETFs trade intraday on an exchange at market prices; mutual funds price once daily at forward NAV","Mutual funds trade intraday; ETFs price once daily","ETFs cannot hold diversified portfolios","Mutual funds are not redeemable"],0,
  `ETF = exchange-traded, intraday, market price can sit at a premium/discount to NAV, bought through a BD with commissions/spreads. Open-end mutual funds transact with the fund itself once a day at the next-calculated NAV (forward pricing).`,"ETF: intraday market price. Mutual fund: once-daily forward NAV."),
 ()=>Q(2,"Reinvestment risk",`A retiree living on coupon income from long-term bonds faces the GREATEST reinvestment risk when interest rates:`,
@@ -323,13 +323,13 @@ GEN.push(
 ()=>Q(1,"Business cycle","The business cycle phase in which output, employment, and income are RISING is called:",
  ["Expansion","Contraction","Trough","Peak"],0,
  `Expansion = rising output/employment. Peak = the top (turning point). Contraction = falling. Trough = the bottom.`,"Expansion = rising phase of the business cycle."),
-()=>Q(4,"IPO vs follow-on","A company already listed on an exchange issues NEW shares to the public. This is a:",
+()=>Q(1,"IPO vs follow-on","A company already listed on an exchange issues NEW shares to the public. This is a:",
  ["Follow-on offering (secondary offering)","Initial public offering (IPO)","Private placement","Shelf takedown"],0,
  `IPO = first time a company lists. Follow-on = additional shares from an already-public company. Both are public offerings; an IPO is the debut.`,"Follow-on = more shares from an already-public issuer."),
-()=>Q(4,"Best efforts vs firm commitment","In a BEST EFFORTS underwriting, the underwriter:",
+()=>Q(1,"Best efforts vs firm commitment","In a BEST EFFORTS underwriting, the underwriter:",
  ["Sells as much as it can but is not obligated to buy unsold shares","Buys the entire issue and resells it","Guarantees the issuer receives a fixed amount","May only sell to institutional investors"],0,
  `Best efforts = underwriter acts as agent, sells what it can, no firm purchase commitment. Firm commitment = underwriter buys the whole issue and bears the resale risk.`,"Best efforts = agent role, no guaranteed purchase."),
-()=>Q(4,"Shelf registration","A shelf registration (Rule 415) lets an issuer:",
+()=>Q(1,"Shelf registration","A shelf registration (Rule 415) lets an issuer:",
  ["Register securities once and sell them over time (up to 3 years)","Sell securities without any SEC registration","Sell only to accredited investors","Avoid delivering a prospectus"],0,
  `Shelf registration = file one registration statement, then "takedown" and sell pieces later as needed, usually up to 3 years. Still requires prospectus delivery at sale.`,"Shelf = register once, sell over time."),
 ()=>Q(1,"Blue-sky laws","State-level securities registration and anti-fraud rules are known as:",
@@ -405,7 +405,7 @@ GEN.push(
  `KYC = collect customer profile (income, net worth, objectives, experience) BEFORE recommending anything. Suitability = recommendations must fit that profile.`,"KYC before any recommendation."),
 ()=>Q(3,"Best interest (Reg BI)","REGULATION BEST INTEREST requires a broker-dealer to:",
  ["Act in the retail customer's best interest at the time of the recommendation","Guarantee the customer a profit","Recommend only the highest-commission product","Put the firm's profit first"],0,
- `Reg BI (FINRA Rule 2210/Exchange Act 15l-1): disclose conflicts, care, skill, diligence; act in best interest. Not a fiduciary standard like an IA, but a BD conduct obligation.`,"Reg BI = act in retail customer's best interest."),
+ `Reg BI (SEC Rule 15l-1 under the Exchange Act; FINRA Rule 2111 covers non-Reg BI suitability): disclose conflicts, care, skill, diligence; act in best interest. Not a fiduciary standard like an IA, but a BD conduct obligation.`,"Reg BI = act in retail customer's best interest."),
 ()=>Q(3,"Do-not-call","The national Do-Not-Call Registry restricts:",
  ["Telemarketing sales calls to consumers who opted out","Emails from broker-dealers","Cold emails about IPOs","Fax advertising to businesses"],0,
  `DNC = telemarketers (including BDs selling) may not call numbers on the registry. Exceptions: existing business relationship, written consent.`,"DNC restricts telemarketing to opted-out consumers."),
@@ -458,7 +458,7 @@ GEN.push(
  `OBA = any outside income-generating activity; must give prior written notice to employer, firm approves/supervises. Private securities deals = selling away (Rule 3280) if not approved.`,"OBA = prior written firm notice/approval."),
 ()=>Q(4,"Political contributions & gifts","POLITICAL CONTRIBUTIONS by a broker-dealer can:",
   ["Trigger a pay-to-play ban on doing business with a government client","Always be deducted as business expenses","Be unlimited if disclosed","Only be made to state-level candidates"],0,
- `Pay-to-play (MSRB Rule G-37, SEC Rule 206(4)-5 for advisers): contributions to officials who control municipal business can bar the firm from underwriting for 2 years. Gift limits (FINRA Rule 3230) cap business entertainment.`,"Pay-to-play can ban municipal underwriting."),
+ `Pay-to-play (MSRB Rule G-37, SEC Rule 206(4)-5 for advisers): contributions to officials who control municipal business can bar the firm from underwriting for 2 years. FINRA Rule 3220 caps gifts at $100 per person per year; ordinary, reasonable business entertainment attended by the rep is not subject to the $100 gift limit.`,"Pay-to-play can ban municipal underwriting."),
 ()=>Q(4,"Customer complaints","A customer complaint alleging investment-related misconduct must be:",
  ["Disclosed on Form U4 and reported to the firm","Ignored if under $5,000","Reported only to the customer's spouse","Deleted after 30 days"],0,
  `Complaints (written, alleging misconduct) = reportable on U4 (Question 14) and retained in firm records. Red flags for supervision.`,"Complaints = reportable on Form U4."),
@@ -476,7 +476,7 @@ function curLevel(){return ($("levelSel")&&$("levelSel").value)||"hard"}
 const LESSONS=[
 {t:"SIPC — Capacity, Not Person",a:"audio/lesson-1-sipc.wav",s:"Sec 4 • Your #1 trap",b:`SIPC protects against a BD <b>failing</b> — never against market loss. The unit is <b>separate capacity</b>: individual, IRA, and joint are different capacities, each capped at <b>$500k</b>, with cash inside capped at <b>$250k</b>. A joint account is <b>one</b> capacity shared by both people — the single most-tested trap on the SIE.`},
 {t:"CMO Tranches — Who Absorbs the Shock",a:"audio/lesson-2-cmo.wav",s:"Sec 2 • Your #2 trap",b:`A PAC tranche has a planned schedule. The <b>support/companion</b> tranche absorbs prepayment variability to defend it. Rates <b>fall</b> → prepayments surge → support gets paid early = <b>contraction</b>. Rates <b>rise</b> → prepayments vanish → support waits = <b>extension</b>. Ask 'who takes the shock?' and the answer follows.`},
-{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/lesson-3-freeriding.wav",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell first = <b>freeriding</b> (Reg T). Liquidate something else to cover after a good-faith purchase = <b>good faith violation</b>. Three violations in 12 months → 90-day settled-funds restriction. The Fed wrote Reg T; FINRA enforces the account consequences.`},
+{t:"Cash Account Discipline — Freeriding & Good Faith",a:"audio/lesson-3-freeriding.wav",s:"Sec 3",b:`In a cash account you must pay before you sell what you bought with unsettled money. Sell before paying = <b>freeriding</b> (Reg T — a single violation triggers a 90-day settled-funds freeze). Liquidate something else to cover, or sell a good-faith purchase before the funding trade settles = <b>good faith violation</b> (three violations in 12 months trigger the 90-day restriction). The Fed wrote Reg T; FINRA enforces the account consequences.`},
 {t:"The Numbers Vault",a:"audio/lesson-4-numbers.wav",s:"All sections",b:`<b>50%</b> Reg T initial • <b>25%</b> FINRA long maintenance • <b>$25k</b> PDT equity • <b>$2k</b> margin minimum • <b>30 days</b> wash sale (61-day window) • <b>>25</b> retail investors in <b>30 days</b> = retail communication • <b>65+</b> specified adult • <b>20 days</b> cooling-off • <b>25/40/90 days</b> prospectus delivery • <b>$500k/$250k</b> SIPC. Numbers are where the SIE grades you.`},
 {t:"Prohibited Activities — The Pattern Language",a:"audio/lesson-5-prohibited.wav",s:"Sec 3",b:`FINRA tests labels by pattern: <b>front running</b> (trade ahead of a customer), <b>painting the tape / matched orders</b> (fake activity), <b>churning</b> (excessive trading for commissions — needs control + excessiveness + scienter), <b>selling away</b> (private deals off the firm's books), <b>guaranteeing against loss</b> (never allowed). Match the fact pattern to the motive and the label picks itself.`},
 {t:"Why Regulation Exists — The Master Frame",a:"audio/lesson-6-master-frame.wav",s:"Beyond the exam",b:`Every rule here answers a historical abuse: the <b>1933 Act</b> = disclosure at issuance (prospectus, liability for lies). The <b>1934 Act</b> = ongoing markets (SEC, exchanges, anti-fraud 10b-5). <b>FINRA</b> = conduct of BDs and reps. <b>MSRB</b> = muni dealers (no regulator of muni issuers — Tower Amendment). <b>SIPC</b> (1970) = custody failure, not losses. Know the abuse, and the rule's shape becomes predictable on questions you've never seen.`},
@@ -518,19 +518,26 @@ let audio=new Audio();
    Fixed text (lessons) plays from saved WAVs instantly; dynamic text (questions,
    feedback, reports) goes GPU Kokoro via /api/tts (disk-cached server-side),
    falling back to the browser voice. Nothing ever talks over itself. */
-const AudioMan={q:[],busy:false,gpuFail:0,
- stop(){ this.q=[]; try{audio.pause()}catch(e){} try{speechSynthesis.cancel()}catch(e){} this.busy=false },
+const AudioMan={q:[],busy:false,gpuFail:0,gen:0,_ac:null,
+ stop(){ this.gen++; this.q=[]; if(this._ac){try{this._ac.abort()}catch(e){} this._ac=null} audio.onended=null; audio.onerror=null; try{audio.pause()}catch(e){} try{speechSynthesis.cancel()}catch(e){} this.busy=false },
  clip(path){ this.stop(); audio.src=path; audio.play().catch(()=>{}); },
  enq(text){ if(!$("voiceOn").checked)return; this.q.push(text); this._pump() },
  _browser(text,done){ const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.onend=done; u.onerror=done; speechSynthesis.speak(u) },
- async _pump(){ if(this.busy||!this.q.length)return; this.busy=true; const text=this.q.shift();
-  const done=()=>{ this.busy=false; this._pump() };
+ async _pump(){ if(this.busy||!this.q.length)return; this.busy=true; const myGen=this.gen, text=this.q.shift();
+  const done=()=>{ if(myGen!==this.gen)return; this.busy=false; this._pump() };
   if(this.gpuFail>=2){ this._browser(text,done); return }
   const voice=$("voiceSel").value;
-  try{ const r=await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice})});
-   if(!r.ok)throw 0; const d=await r.json(); this.gpuFail=0; const eng=(d.engine||"").includes("onnx")?"Kokoro ONNX (CPU)":"GPU • Kokoro"; $("gpuPill").textContent="Voice: "+eng+(d.cached?" • cached clip":" • new clip saved");
+  const ac=typeof AbortController!=="undefined"?new AbortController():null; this._ac=ac;
+  try{ const opts={method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice})};
+   if(ac)opts.signal=ac.signal;
+   const r=await fetch("/api/tts",opts);
+   if(myGen!==this.gen)return;
+   if(!r.ok)throw 0; const d=await r.json();
+   if(myGen!==this.gen)return;
+   if(this._ac===ac)this._ac=null;
+   this.gpuFail=0; const eng=(d.engine||"").includes("onnx")?"Kokoro ONNX (CPU)":"GPU • Kokoro"; $("gpuPill").textContent="Voice: "+eng+(d.cached?" • cached clip":" • new clip saved");
    audio.src=d.url; audio.onended=done; audio.onerror=done; await audio.play();
-  }catch(e){ this.gpuFail++; $("gpuPill").textContent="Voice: browser (GPU TTS unavailable)"; this._browser(text,done); }
+  }catch(e){ if(this._ac===ac)this._ac=null; if(myGen!==this.gen)return; audio.onended=null; audio.onerror=null; this.gpuFail++; $("gpuPill").textContent="Voice: browser (GPU TTS unavailable)"; this._browser(text,done); }
  },
  preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips; m.clips.forEach(c=>{ const a=new Audio(); a.preload="metadata"; a.src="audio/"+c.file }) }).catch(()=>{}) }
 };
@@ -548,7 +555,7 @@ function buildExam(n){
  Object.keys(weights).forEach(s=>{const cnt=Math.round(n*weights[s]);const ids=GEN.map((g,i)=>i).filter(i=>GEN[i]().sec==s);
   if(!ids.length)return; const seen=new Set(),pool=[];let guard=0,cursor=0;
   while(pool.length<cnt&&guard++<cnt*80){const q=GEN[ids[cursor++%ids.length]]();if(!seen.has(q.text)){seen.add(q.text);pool.push(q)}}
-  while(pool.length<cnt)pool.push(GEN[pick(ids)]);
+  while(pool.length<cnt)pool.push(GEN[pick(ids)]());
   out.push(...pool)});
  while(out.length<n)out.push(GEN[R(0,GEN.length-1)]());
  return shuffle(out).slice(0,n).map(prepare);
@@ -717,7 +724,7 @@ function beginQuiz(){ qi=0;score=0;window._qt=[]; ["home","lessons","units","rep
 const SHORT=[
 {topic:"SIPC separate capacity",unit:7,prompt:"In your own words: at one failed broker-dealer, a couple has a joint account with $600,000 in securities and one spouse's IRA with $400,000. How much total SIPC coverage do they have, and why?",groups:[{k:"joint = one capacity",any:["separate capacity","one capacity","single capacity","not per person","per capacity"]},{k:"$500k cap on the joint account",any:["500","five hundred"]}],num:900000,model:"$900,000. The joint account is ONE separate capacity, capped at $500,000 (not $500k per person). The IRA is a different capacity, covered in full at $400,000. $500k + $400k = $900k.",rule:"SIPC: $500k per separate capacity."},
 {topic:"CMO tranches",unit:3,prompt:"Interest rates fall sharply. Explain what happens to a CMO support tranche's average life, and why.",groups:[{k:"contraction / shorter life",any:["contract","shorten","shorter","paid early","paid off early","returned early"]},{k:"prepayments rise as borrowers refinance",any:["prepay","refinanc"]}],model:"It contracts — average life shortens. Falling rates make homeowners refinance, prepayments surge, and the support tranche absorbs the excess prepayments first to protect the PAC's schedule, so its principal comes back early.",rule:"Rates down = contraction (support absorbs prepayments)."},
-{topic:"Freeriding",unit:6,prompt:"Define freeriding in a cash account and state the consequence if it becomes a pattern.",groups:[{k:"buy and sell before paying / unsettled funds",any:["before pay","unsettled","before paying","not yet paid","sell before"]},{k:"90-day settled-funds restriction",any:["90"]}],model:"Freeriding is buying a security in a cash account with unsettled funds and selling it before paying for it (a Regulation T violation). If it recurs, the account is restricted to settled funds only for 90 days.",rule:"Freeriding: sell before paying = Reg T violation, 90-day freeze."},
+{topic:"Freeriding",unit:6,prompt:"Define freeriding in a cash account and state the account consequence under Regulation T.",groups:[{k:"buy and sell before paying / unsettled funds",any:["before pay","unsettled","before paying","not yet paid","sell before"]},{k:"90-day settled-funds restriction",any:["90"]}],model:"Freeriding is buying a security in a cash account with unsettled funds and selling it before paying for it in full (a Regulation T violation). Under Reg T, a freeriding violation restricts the account to settled funds only for 90 calendar days unless full payment arrives by settlement.",rule:"Freeriding: sell before paying = Reg T violation, 90-day freeze."},
 {topic:"Wash sale",unit:6,prompt:"An investor sells at a loss and rebuys the same stock 10 days later. What happens to the loss, and what is the full window the rule covers?",groups:[{k:"loss disallowed/deferred now",any:["disallow","defer","not allowed","cannot claim","can't claim","postpone"]},{k:"added to cost basis of new shares",any:["basis","added to the cost","new shares"]},{k:"30 days either side / 61-day window",any:["61","30 days","thirty"]}],model:"The loss is disallowed for now (deferred, not destroyed): it is added to the cost basis of the replacement shares and the holding period tacks on. The wash sale window is 30 days before and after the sale — 61 days total.",rule:"Wash sale: 61-day window, loss goes into new basis."},
 {topic:"Reg T margin",unit:7,prompt:"Two numbers, two regulators: state the initial margin requirement and who sets it, and the long maintenance requirement and who sets that.",groups:[{k:"initial 50% — set by the Federal Reserve",bind:{a:["50"],b:["federal reserve","the fed"," fed "],notB:["finra"],role:["initial"],otherRole:["maintenance"]}},{k:"maintenance 25% — set by FINRA",bind:{a:["25"],b:["finra"],notB:["federal reserve","the fed"],role:["maintenance"],otherRole:["initial"]}}],model:"Regulation T initial margin is 50%, set by the Federal Reserve. FINRA's minimum maintenance for long positions is 25%. Swapping the two regulators or the two numbers is the classic trap.",rule:"Reg T 50% = Fed. Maintenance 25% = FINRA."},
 {topic:"Bond risk",unit:3,prompt:"Bond A: 30-year, zero coupon. Bond B: 30-year, 8% coupon. Bond C: 5-year, zero coupon. Which bond's price moves most when yields change, and what concept explains it?",groups:[{k:"Bond A / the 30-year zero",any:["bond a","30-year zero","thirty-year zero","the zero"]},{k:"duration",any:["duration"]},{k:"long maturity + no coupon = highest sensitivity",any:["longest","no coupon","zero coupon","highest duration","most sensitive"]}],model:"Bond A. Duration — price sensitivity to yield changes — rises with maturity and falls with coupon size. The 30-year zero-coupon bond has the highest duration, so its price moves the most for a given yield change.",rule:"Duration: up with maturity, down with coupon."},
@@ -808,13 +815,13 @@ function beginGapDrill(){ const topic=window._gapTopic; const gi=GEN.map((g,i)=>
  while(qs.length<3) qs.push(GEN[R(0,GEN.length-1)]());
  quiz=qs.map(prepare); beginQuiz(); }
 function coachText(){ if(!store.zero||!store.zero.done)return "New here? Start with the first trade primer: order types, settlement, cash versus margin, and a three question check. Then I will place you."; if(!store.t.placed)return "Next, take the placement check. Ten questions across all eight units so I can see what you already own."; const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[]/g,"") }
+ return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).trim() }
 function startZero(){
  ["home","result","units","quiz","report"].forEach(id=>$(id).classList.add("hidden")); $("lessons").classList.remove("hidden");
  $("lessons").innerHTML=`<div class="card lesson"><div class="tag">ZERO → FIRST TRADE</div><h3>How a trade actually works</h3><p class="mut">Five plain-English cards, then a 3-question check. I will use it to place you.</p></div>
  <div class="card lesson"><h3>1. Account, ticket, execution, settlement</h3><p>A brokerage account holds your cash and securities. An order ticket says buy or sell, symbol, quantity, order type, and time in force. The broker routes it; execution is the fill. US equities settle <b>T+1</b> — cash and shares move the next business day. The broker holds shares in book-entry form at DTCC.</p></div>
  <div class="card lesson"><h3>2. The four orders you must know</h3><p><b>Market:</b> fills now, price is not guaranteed. <b>Limit:</b> price is capped, execution is not guaranteed. <b>Stop:</b> waits for a trigger, then becomes a market order. <b>Stop-limit:</b> waits for a trigger, then becomes a limit order. The bid is what buyers pay; the ask is what sellers accept; the spread is the cost of immediacy.</p></div>
- <div class="card lesson"><h3>3. Cash, margin, and the two regulators</h3><p>In a cash account you must pay before you sell what you bought with unsettled funds. Margin is a loan from the broker: Reg T initial margin is <b>50%</b>, set by the <b>Federal Reserve</b>; FINRA's long maintenance minimum is <b>25%</b>. A pattern day trader needs <b>$25,000</b> equity. Selling before paying is freeriding; three violations in 12 months can restrict the account to settled funds for 90 days.</p></div>
+ <div class="card lesson"><h3>3. Cash, margin, and the two regulators</h3><p>In a cash account you must pay before you sell what you bought with unsettled funds. Margin is a loan from the broker: Reg T initial margin is <b>50%</b>, set by the <b>Federal Reserve</b>; FINRA's long maintenance minimum is <b>25%</b>. A pattern day trader needs <b>$25,000</b> equity. Selling before paying is freeriding, which triggers a 90-day settled-funds restriction under Reg T (whereas good-faith violations trigger the 90-day restriction after three violations in 12 months).</p></div>
  <div class="card lesson"><h3>4. What can go wrong</h3><p>Market risk, credit risk, liquidity risk, interest-rate risk, inflation risk, and opportunity cost. Diversification reduces company-specific risk, not systematic risk. Options and futures add leverage, which magnifies both gains and losses. Never risk money you cannot afford to lose while learning.</p></div>
  <div class="card lesson"><h3>5. The exam map</h3><p>The SIE weights <b>Capital Markets 16%</b>, <b>Products and Risks 44%</b>, <b>Trading, Accounts and Prohibited Activities 31%</b>, and <b>Regulatory Framework 9%</b>. This app turns that into 8 units, adaptive drills, a missed bank, and a teacher that diagnoses why you miss — not just what you missed.</p></div>
  <div class="row"><button class="pink" onclick="startZeroQuiz()">Take the 3-question check</button><button class="ghost" onclick="backHome()">Back home</button></div>`;
@@ -828,8 +835,8 @@ function smartContinue(){ if(!store.zero||!store.zero.done)return startZero(); i
  startFinalReview(); }
 function speakReport(){ const totA=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).a,0), totC=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).c,0);
  const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
- speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).replace(/[]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
+ speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).trim()+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
 
 AudioMan.preload(); renderHome();
-fetch("/api/health").then(r=>r.json()).then(d=>{const eng=(d.engine||""); if(d.ok&&eng.includes("onnx"))$("gpuPill").textContent=`Voice: Kokoro ONNX • ${d.cached_clips} clips saved`; else if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=`GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`;else $("gpuPill").textContent="Voice: browser (local TTS unavailable)"}).catch(()=>{$("gpuPill").textContent="Voice: browser (server offline)"});
+fetch("/api/health").then(r=>r.json()).then(d=>{const eng=(d.engine||""),ready=d.ready!==false&&!eng.includes("missing"); if(d.ok&&ready&&eng.includes("onnx"))$("gpuPill").textContent=`Voice: Kokoro ONNX • ${d.cached_clips} clips saved`; else if(d.ok&&ready&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=`GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`; else $("gpuPill").textContent="Voice: browser (local TTS unavailable)"}).catch(()=>{$("gpuPill").textContent="Voice: browser (server offline)"});
 </script></body></html>
