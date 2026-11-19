@@ -2,97 +2,97 @@
   "voice": "af_heart (Kokoro ONNX)",
   "generated": "2026-11-19",
   "format": "wav",
-  "engine": "kokoro-82m-onnx (kokoro-v1.0.int8.onnx)",
+  "engine": "kokoro-82m-onnx (kokoro-v1.0.onnx)",
   "clips": [
     {
       "file": "welcome.wav",
       "title": "Welcome — SIE Mastery intro",
-      "bytes": 1001516,
-      "duration_s": 20.9
+      "bytes": 992300,
+      "duration_s": 20.7
     },
     {
       "file": "lesson-1-regulators.wav",
       "title": "Regulators & Capital Markets",
-      "bytes": 6893164,
-      "duration_s": 143.6
+      "bytes": 6912620,
+      "duration_s": 144.0
     },
     {
       "file": "lesson-2-equity.wav",
       "title": "Equity Securities",
-      "bytes": 3953292,
-      "duration_s": 82.4
+      "bytes": 3962508,
+      "duration_s": 82.6
     },
     {
       "file": "lesson-3-debt.wav",
       "title": "Debt Instruments",
-      "bytes": 4599148,
-      "duration_s": 95.8
+      "bytes": 4601196,
+      "duration_s": 95.9
     },
     {
       "file": "lesson-4-options.wav",
       "title": "Options & Packaged Products",
-      "bytes": 5092268,
-      "duration_s": 106.1
+      "bytes": 5086124,
+      "duration_s": 106.0
     },
     {
       "file": "lesson-5-otherproducts.wav",
       "title": "Other Products & Investment Risks",
-      "bytes": 5064236,
-      "duration_s": 105.5
+      "bytes": 5039660,
+      "duration_s": 105.0
     },
     {
       "file": "lesson-6-trading.wav",
       "title": "Trading, Settlement & Corporate Actions",
-      "bytes": 4794924,
-      "duration_s": 99.9
+      "bytes": 4791852,
+      "duration_s": 99.8
     },
     {
       "file": "lesson-7-accounts.wav",
       "title": "Customer Accounts & Compliance",
-      "bytes": 6524780,
-      "duration_s": 135.9
+      "bytes": 6577004,
+      "duration_s": 137.0
     },
     {
       "file": "lesson-8-regframework.wav",
       "title": "Prohibited Activities & Regulatory Framework",
-      "bytes": 8336556,
-      "duration_s": 173.7
+      "bytes": 8332460,
+      "duration_s": 173.6
     },
     {
       "file": "lesson-1-sipc.wav",
       "title": "SIPC — Capacity, Not Person",
-      "bytes": 1090844,
-      "duration_s": 22.7
+      "bytes": 1070124,
+      "duration_s": 22.3
     },
     {
       "file": "lesson-2-cmo.wav",
       "title": "CMO Tranches — Who Absorbs the Shock",
-      "bytes": 975644,
-      "duration_s": 20.3
+      "bytes": 1052716,
+      "duration_s": 21.9
     },
     {
       "file": "lesson-3-freeriding.wav",
       "title": "Cash Account Discipline — Freeriding & Good Faith",
-      "bytes": 1071644,
-      "duration_s": 22.3
+      "bytes": 1037356,
+      "duration_s": 21.6
     },
     {
       "file": "lesson-4-numbers.wav",
       "title": "The Numbers Vault",
-      "bytes": 1494044,
-      "duration_s": 31.1
+      "bytes": 1602316,
+      "duration_s": 33.4
     },
     {
       "file": "lesson-5-prohibited.wav",
       "title": "Prohibited Activities — The Pattern Language",
-      "bytes": 1119644,
-      "duration_s": 23.3
+      "bytes": 1068076,
+      "duration_s": 22.3
     },
     {
       "file": "lesson-6-master-frame.wav",
       "title": "Why Regulation Exists — The Master Frame",
-      "bytes": 1598444,
-      "duration_s": 33.3
+      "bytes": 1591052,
+      "duration_s": 33.1
     }
   ],
   "sample_rate": 24000

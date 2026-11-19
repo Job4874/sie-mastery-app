@@ -114,9 +114,11 @@ buttons play these saved files before any live TTS.
 Rebuild them from the curriculum text at any time:
 
 ```powershell
-# one-time voice download (~119 MB, into models/)
+# one-time voice download (~119 MB for the small int8 model; ~325 MB for the smoother fp32 model)
 curl -L -o models/kokoro-v1.0.int8.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.int8.onnx
 curl -L -o models/voices-v1.0.bin https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+# optional: smoother voice (preferred automatically when present)
+curl -L -o models/kokoro-v1.0.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
 
 python tools/compose_audio.py --list          # clip stems + char counts
 python tools/compose_audio.py --force         # recompose all 15 clips + manifest

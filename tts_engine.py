@@ -31,7 +31,7 @@ def _onnx_files():
     """Return (model, voices) when the small ONNX voice pack is present."""
     env_model = os.environ.get("KOKORO_MODEL")
     candidates = [Path(env_model)] if env_model else []
-    candidates += [MODELS / "kokoro-v1.0.int8.onnx", MODELS / "kokoro-v1.0.onnx"]
+    candidates += [MODELS / "kokoro-v1.0.onnx", MODELS / "kokoro-v1.0.int8.onnx"]
     model = next((p for p in candidates
                   if p.is_file() and p.stat().st_size > 1_000_000), None)
     voices = Path(os.environ.get("KOKORO_VOICES", MODELS / "voices-v1.0.bin"))

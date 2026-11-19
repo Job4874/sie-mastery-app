@@ -107,7 +107,7 @@ def write_manifest(clips, voice=None, engine=None):
 
 
 def pick_model(model_arg: str | None) -> tuple[Path, Path]:
-    names = [model_arg] if model_arg else ["kokoro-v1.0.int8.onnx", "kokoro-v1.0.onnx"]
+    names = [model_arg] if model_arg else ["kokoro-v1.0.onnx", "kokoro-v1.0.int8.onnx"]
     model = next((MODELS / n for n in names if (MODELS / n).is_file()), None)
     voices = MODELS / "voices-v1.0.bin"
     if model is None or not voices.is_file():
