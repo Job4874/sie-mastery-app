@@ -1,0 +1,142 @@
+{
+  ".github/workflows/compile.yml": {
+    "bytes": 1043,
+    "sha256": "b4671f35deb3403ab91356a33379a120784037393b57a475460655a4f35dd26b"
+  },
+  "ARCHITECTURE.md": {
+    "bytes": 4708,
+    "sha256": "dbefa517954e3480f57fb55d6d90095f48c23efcead1733edb9781c3b7f3a9ea"
+  },
+  "PUSH_AUDIO.md": {
+    "bytes": 1684,
+    "sha256": "345520f1b895a6f6052622ad1d2e0b7e40025eda631b87d130530fad9cc772bc"
+  },
+  "README.md": {
+    "bytes": 8368,
+    "sha256": "09d1fc6b7bc3d7d64cfbd7fddd83f9b152b5004cb082c9e6504fed709e147633"
+  },
+  "requirements.txt": {
+    "bytes": 458,
+    "sha256": "eec4c3ce24649a4355c600310395f7ab362753e8c5e939f74d7452e1200210ef"
+  },
+  "security.py": {
+    "bytes": 2570,
+    "sha256": "cb6b5d74bd90fed7849a19cd69c8f16760f655c004ac6ab2d74981355c43c2a1"
+  },
+  "server.py": {
+    "bytes": 8006,
+    "sha256": "7d900b16b30b1777696a20297b3189fb630ae60e256c92e375b0135f0032e029"
+  },
+  "static/audio/lesson-1-regulators.wav": {
+    "bytes": 6912620,
+    "sha256": "99ff3d8d60a1720ed482dec20b4302c66391fb48f3631e77a866f555e3b99a43"
+  },
+  "static/audio/lesson-1-sipc.wav": {
+    "bytes": 1070124,
+    "sha256": "3321a2643073296ea42c173555b921f4ce24573f6749729cc7b2f34b3ca5b143"
+  },
+  "static/audio/lesson-2-cmo.wav": {
+    "bytes": 1052716,
+    "sha256": "6766f46f8b3ab7aa54b5b87951c7fec7ceaa2fee0d54245b1ea0145355f93f87"
+  },
+  "static/audio/lesson-2-equity.wav": {
+    "bytes": 3962508,
+    "sha256": "dce8c947d8ae68b9cf8d296d5a8af150ea7dfd918bf10d1006537e874c2ba823"
+  },
+  "static/audio/lesson-3-debt.wav": {
+    "bytes": 4601196,
+    "sha256": "fa8efd0c95271d279e0ccb6235c704d7db02a686ce50f1aa7efed33c86f9ebda"
+  },
+  "static/audio/lesson-3-freeriding.wav": {
+    "bytes": 1037356,
+    "sha256": "beaf9bbeb77476f9cddfb168b15df0dbb6797048bf00e5e49d4458f1fa30afda"
+  },
+  "static/audio/lesson-4-numbers.wav": {
+    "bytes": 1602316,
+    "sha256": "e1c661791db072d51fba545999896777ae29ac8ee821debaf902181c556d2a00"
+  },
+  "static/audio/lesson-4-options.wav": {
+    "bytes": 5086124,
+    "sha256": "7dd56511643acd7adf0e01b9a3534bebb88494b8227f6ca1cef211c817590bf3"
+  },
+  "static/audio/lesson-5-otherproducts.wav": {
+    "bytes": 5039660,
+    "sha256": "620b37cbdf6b81a0eb154a06aa747130dddf4a5b451ebbd370e45a2896ffb104"
+  },
+  "static/audio/lesson-5-prohibited.wav": {
+    "bytes": 1068076,
+    "sha256": "36daaaf86f7f58cf839a29dfeaea221861c80acfa5830223e0057db9aeb23ffc"
+  },
+  "static/audio/lesson-6-master-frame.wav": {
+    "bytes": 1591052,
+    "sha256": "02d73a82c906cc34b0e48322af5c4ba793e12c096a65d0d048d3eaa7414fe5e1"
+  },
+  "static/audio/lesson-6-trading.wav": {
+    "bytes": 4791852,
+    "sha256": "2195f7ba63f8efbd6fbe90ee8c36174e38f7a9fb5adab2c85bd1dc72e8cb38b0"
+  },
+  "static/audio/lesson-7-accounts.wav": {
+    "bytes": 6577004,
+    "sha256": "beaa97159f48a585d3d86cc8237ff4c03e26e1340a098b9620157f52cfaa1dce"
+  },
+  "static/audio/lesson-8-regframework.wav": {
+    "bytes": 8332460,
+    "sha256": "b6dc98db3210f5428f3fca0a8ad85bc64ff09d870668c56473daeb4d56ae49a4"
+  },
+  "static/audio/manifest.json": {
+    "bytes": 2559,
+    "sha256": "905e8fad54069a14731d44fef9866e8aa7a64367e1e14bf41ff56a22208b839a"
+  },
+  "static/audio/welcome.wav": {
+    "bytes": 992300,
+    "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
+  },
+  "static/index.html": {
+    "bytes": 135010,
+    "sha256": "65b28bf82d7404d3c2d6440e58c19976f6f0850d224e3add5642c57ac417a20d"
+  },
+  "tests/app.test.js": {
+    "bytes": 5144,
+    "sha256": "c0c3cc1869d5485fb6c9c2447999587b682872dba1710d9dcfa02f6048e91162"
+  },
+  "tests/ml_verify.js": {
+    "bytes": 6998,
+    "sha256": "6e1a135980cfa15ae6db7f26486ea6dce3dbd9fb08a93f58bb6f2900f62d3c22"
+  },
+  "tests/test_security.py": {
+    "bytes": 7177,
+    "sha256": "10888499ee4a770deae5b821479e09a5a99f67d5e677b9e006cd0906c2752ba9"
+  },
+  "tests/tests9.js": {
+    "bytes": 8268,
+    "sha256": "c44e3679f238583ddec2698557224d0529f1764b6ea5338d9dc172aa15bd515d"
+  },
+  "tests/ui_enterprise.js": {
+    "bytes": 2278,
+    "sha256": "6ca45f67e0e4b8b77723188cf4d42a2f88c7c82c4b86d98731a8d5aa27374a98"
+  },
+  "tools/compose_audio.py": {
+    "bytes": 8009,
+    "sha256": "ae8dd217bd0ba8a4ad57059365f6dcff83091e517132c64119337eceeeba8eba"
+  },
+  "tools/verify.py": {
+    "bytes": 1463,
+    "sha256": "cd9f3d08f3446e2615e6de40d9b4f2a09733e5e6719e9d6a731551137e379b3c"
+  },
+  "tools/verify_dom.py": {
+    "bytes": 9091,
+    "sha256": "3c112626667adf8922f48bdb5cb24355b0b57d33e27718313cb9cda70eb8b15c"
+  },
+  "tools/verify_exhaustive.py": {
+    "bytes": 7496,
+    "sha256": "d60207325d44b3d51fe036ba0336eb6c4e91d6c737337d4c98193127a6da48b5"
+  },
+  "tools/visual_capture.py": {
+    "bytes": 1505,
+    "sha256": "51b08cbf2087501ec3f5d49df793e36cf8c879065de5b85ed0a2eed38077bb17"
+  },
+  "tts_engine.py": {
+    "bytes": 6071,
+    "sha256": "8e370b0d5020ca008c651d27a63b5cfee60e9ca09a11165cbb19d26abf1d8a68"
+  }
+}
