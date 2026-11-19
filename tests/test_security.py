@@ -1,0 +1,185 @@
+"""Unit tests for security.py and a live server security probe (stdlib only).
+
+Run:  python -m unittest discover -s tests -p "test_*.py" -v
+"""
+import json
+import os
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+import unittest
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+import security  # noqa: E402
+
+
+class TextValidationTests(unittest.TestCase):
+    def test_allows_normal_finance_punctuation(self):
+        samples = [
+            "The customer's account is frozen",
+            "Reg T & margin rules",
+            "Price < 5% then > 10%",
+            'He said "buy"',
+            "Spouse's IRA, PAC's schedule; 50% / 25%.",
+        ]
+        for sample in samples:
+            with self.subTest(sample=sample):
+                self.assertEqual(security.valid_text(sample), sample)
+
+    def test_rejects_empty_and_non_strings(self):
+        for value in [None, "", "   ", 5, [], {}]:
+            with self.subTest(value=value):
+                self.assertIsNone(security.valid_text(value))
+
+    def test_rejects_control_characters(self):
+        for value in ["a\x00b", "a\x1fb", "a\u200bb", "a\ufeffb"]:
+            with self.subTest(value=value):
+                self.assertIsNone(security.valid_text(value))
+
+    def test_collapses_whitespace_and_caps_length(self):
+        self.assertEqual(security.valid_text("  a\n\t b  "), "a b")
+        self.assertEqual(len(security.valid_text("x" * 5000)), security.MAX_TEXT)
+
+
+class VoiceAndClipTests(unittest.TestCase):
+    def test_voice_allowlist(self):
+        for voice in ["af_heart", "af_bella", "am_michael", "bf_emma"]:
+            self.assertTrue(security.valid_voice(voice))
+        for voice in ["am_fenrir", "", None, 1, "../x"]:
+            self.assertFalse(security.valid_voice(voice))
+
+    def test_clip_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            good = security.clip_path(base, "a" * 32)
+            self.assertEqual(good, (base.resolve() / ("a" * 32 + ".wav")).resolve())
+            for bad in ["", "..", "../" + "a" * 32, "a" * 31, "A" * 32,
+                        "a" * 32 + ".wav", "a" * 32 + "/../../x"]:
+                with self.subTest(bad=bad):
+                    self.assertIsNone(security.clip_path(base, bad))
+
+
+class RateLimiterTests(unittest.TestCase):
+    def test_limit_and_retry(self):
+        limiter = security.RateLimiter(limit=3, window=60)
+        self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+        self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+        self.assertEqual(limiter.allow("1.2.3.4"), (True, 0))
+        allowed, retry = limiter.allow("1.2.3.4")
+        self.assertFalse(allowed)
+        self.assertGreaterEqual(retry, 1)
+        self.assertTrue(limiter.allow("5.6.7.8")[0])
+
+
+def free_port():
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
+
+
+class ServerProbeTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.port = free_port()
+        env = dict(os.environ, PORT=str(cls.port))
+        cls.proc = subprocess.Popen(
+            [sys.executable, "server.py"], cwd=ROOT, env=env,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        cls.base = f"http://127.0.0.1:{cls.port}"
+        deadline = time.time() + 15
+        while time.time() < deadline:
+            try:
+                with socket.create_connection(("127.0.0.1", cls.port), 0.3):
+                    return
+            except OSError:
+                time.sleep(0.1)
+        raise RuntimeError("server did not start")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.proc.terminate()
+        try:
+            cls.proc.wait(5)
+        except subprocess.TimeoutExpired:
+            cls.proc.kill()
+
+    def request(self, path, method="GET", body=None, headers=None):
+        req = urllib.request.Request(self.base + path, data=body, method=method,
+                                     headers=headers or {})
+        try:
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                return resp.status, resp.read()
+        except urllib.error.HTTPError as exc:
+            return exc.code, exc.read()
+
+    def test_app_and_health(self):
+        status, body = self.request("/")
+        self.assertEqual(status, 200)
+        self.assertIn(b"SIE", body)
+        status, body = self.request("/api/health")
+        self.assertEqual(status, 200)
+        self.assertIn("ok", json.loads(body))
+
+    def test_rate_limit(self):
+        body = json.dumps({"text": "rate limit check", "voice": "af_heart"}).encode()
+        headers = {"Content-Type": "application/json"}
+        codes = [self.request("/api/tts", "POST", body, headers)[0] for _ in range(35)]
+        self.assertIn(429, codes, "limiter never engaged: " + repr(codes))
+
+    def test_traversal_blocked(self):
+        for path in ["/../server.py", "/%2e%2e/server.py", "/static/../server.py",
+                     "/tts/../server.py", "/tts/" + "a" * 32 + "/../../server.py"]:
+            with self.subTest(path=path):
+                status, _ = self.request(path)
+                self.assertIn(status, (404, 400, 421))
+
+    def test_host_allowlist(self):
+        status, _ = self.request("/", headers={"Host": "evil.example"})
+        self.assertEqual(status, 421)
+        status, _ = self.request("/api/tts", "POST", b"{}", {
+            "Content-Type": "application/json", "Host": "evil.example"})
+        self.assertEqual(status, 421)
+
+    def test_post_requires_json_and_same_origin(self):
+        url = "/api/tts"
+        body = json.dumps({"text": "The customer's order", "voice": "af_heart"}).encode()
+        status, _ = self.request(url, "POST", body, {"Content-Type": "text/plain"})
+        self.assertEqual(status, 415)
+        status, _ = self.request(url, "POST", body, {
+            "Content-Type": "application/json", "Origin": "https://evil.example"})
+        self.assertEqual(status, 403)
+        status, _ = self.request(url, "POST", body, {
+            "Content-Type": "application/json", "Sec-Fetch-Site": "cross-site"})
+        self.assertEqual(status, 403)
+
+    def test_post_validation(self):
+        def post(payload, headers=None):
+            body = json.dumps(payload).encode()
+            hdrs = {"Content-Type": "application/json"}
+            hdrs.update(headers or {})
+            return self.request("/api/tts", "POST", body, hdrs)
+
+        status, _ = post({"text": "x" * (security.MAX_BODY + 1), "voice": "af_heart"})
+        self.assertEqual(status, 413)
+        status, body = post({"text": "hello", "voice": "am_fenrir"})
+        self.assertEqual(status, 400)
+        self.assertIn(b"voice", body)
+        status, body = post({"text": "\x00bad", "voice": "af_heart"})
+        self.assertEqual(status, 400)
+        self.assertIn(b"text", body)
+        status, body = post({})
+        self.assertEqual(status, 400)
+        self.assertNotIn(b"Traceback", body)
+        self.assertNotIn(b"ModuleNotFound", body)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

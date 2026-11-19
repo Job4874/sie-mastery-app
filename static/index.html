@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="SIE Mastery — adaptive SIE exam prep with trap-only drilling, 8-unit curriculum, ML teacher diagnostics, and GPU voice tutoring. Zero emojis, institutional aesthetic."><meta property="og:title" content="SIE Mastery — Regulation, Mastered"><meta property="og:description" content="Adaptive SIE exam prep with trap-only drilling and ML teacher diagnostics."><meta property="og:type" content="website"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%230b0f17%22/%3E%3Ctext x=%2250%25%22 y=%2265%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2255%22 fill=%22%23c2a053%22 font-weight=%22bold%22%3ESM%3C/text%3E%3C/svg%3E">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="SIE Mastery — adaptive SIE exam prep from first trade to mastery: 8-unit curriculum, ML teacher diagnostics, practice exams, and voice tutoring."><meta property="og:title" content="SIE Mastery — Regulation, Mastered"><meta property="og:description" content="From first trade to SIE mastery: adaptive drills, 8-unit curriculum, and ML teacher diagnostics."><meta property="og:type" content="website"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%230b0f17%22/%3E%3Ctext x=%2250%25%22 y=%2265%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2255%22 fill=%22%23c2a053%22 font-weight=%22bold%22%3ESM%3C/text%3E%3C/svg%3E">
 <title>SIE Mastery — Regulation, Mastered</title>
 <style>
 :root{
@@ -151,19 +151,19 @@ textarea{width:100%;min-height:92px;background:var(--input-bg);color:var(--text-
 </style></head>
 <body>
 <header>
- <div><div class="logo"><svg width="26" height="26" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="12" fill="var(--bg-surface)"/><circle cx="50" cy="50" r="20" fill="var(--accent-primary)"/><path d="M35 50 L48 63 L65 40" stroke="white" stroke-width="5" stroke-linecap="round"/></svg><span>MASTERY</span></div><div class="sub">Pass the exam. Master the regulation. Trap-only drilling for an experienced trader.</div></div>
+ <div><div class="logo"><svg width="26" height="26" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="12" fill="var(--bg-surface)"/><circle cx="50" cy="50" r="20" fill="var(--accent-primary)"/><path d="M35 50 L48 63 L65 40" stroke="white" stroke-width="5" stroke-linecap="round"/></svg><span>MASTERY</span></div><div class="sub">From your first trade to SIE mastery. Adaptive drills, real exam simulation.</div></div>
  <div class="row">
   <span class="pill"> Streak <b id="streak">0</b></span><span class="pill"> XP <b id="xp">0</b></span>
-  <span class="pill" id="gpuPill"> Voice: checking GPU…</span>
+  <span class="pill" id="gpuPill"> Voice: checking engine…</span>
    <button id="themeToggle" class="ghost" aria-pressed="false" onclick="toggleTheme()">DARK / LIGHT</button>
  </div>
 </header>
 <div class="wrap">
  <div class="card depth-3" style="margin-bottom:14px"><div class="row" style="justify-content:space-between">
-  <div><b> Voice Tutor</b> <span class="mut">— GPU Kokoro on localhost, browser voice as fallback. Clips are cached/saved server-side.</span></div>
+  <div><b> Voice Tutor</b> <span class="mut">— Kokoro on localhost (GPU, or the small ONNX model on CPU), browser voice as fallback. Clips are cached/saved server-side.</span></div>
   <div class="row"><label class="mut">Voice <select id="voiceSel">
-    <option value="af_heart">Heart (F, US)</option><option value="am_michael">Michael (M, US)</option>
-    <option value="bf_emma">Emma (F, UK)</option><option value="am_fenrir">Fenrir (M, deep)</option></select></label>
+    <option value="af_heart">Heart (F, US)</option><option value="af_bella">Bella (F, US)</option>
+    <option value="am_michael">Michael (M, US)</option><option value="bf_emma">Emma (F, UK)</option></select></label>
    <label class="mut"><input type="checkbox" id="voiceOn" checked> Read aloud</label>
    <button class="ghost" onclick="playWelcome()"> Welcome clip</button> <button class="ghost" onclick="testVoice()">Test voice</button></div>
  </div></div>
@@ -294,22 +294,22 @@ GEN.push(
 ()=>Q(4,"ETFs vs mutual funds",`Which feature distinguishes an ETF from an open-end mutual fund?`,
  ["ETFs trade intraday on an exchange at market prices; mutual funds price once daily at forward NAV","Mutual funds trade intraday; ETFs price once daily","ETFs cannot hold diversified portfolios","Mutual funds are not redeemable"],0,
  `ETF = exchange-traded, intraday, market price can sit at a premium/discount to NAV, bought through a BD with commissions/spreads. Open-end mutual funds transact with the fund itself once a day at the next-calculated NAV (forward pricing).`,"ETF: intraday market price. Mutual fund: once-daily forward NAV."),
-()=>Q(5,"Reinvestment risk",`A retiree living on coupon income from long-term bonds faces the GREATEST reinvestment risk when interest rates:`,
+()=>Q(2,"Reinvestment risk",`A retiree living on coupon income from long-term bonds faces the GREATEST reinvestment risk when interest rates:`,
  ["Fall — coupons and called principal must be reinvested at lower rates","Rise — bond prices fall","Stay flat for a decade","Fall — bond prices fall"],0,
  `Reinvestment risk is the falling-rate risk: income streams get reinvested cheaper, and issuers call bonds away exactly then. It is the mirror image of interest-rate (price) risk, which is the rising-rate risk. Zero-coupon bonds have NO reinvestment risk — and the most price risk.`,"Reinvestment risk lives in falling rates. Price risk lives in rising rates."),
-()=>Q(5,"ADR / currency risk",`A U.S. investor buys an ADR of a foreign company. The foreign stock is flat in its home market, but the foreign currency weakens against the dollar. The ADR will most likely:`,
+()=>Q(2,"ADR / currency risk",`A U.S. investor buys an ADR of a foreign company. The foreign stock is flat in its home market, but the foreign currency weakens against the dollar. The ADR will most likely:`,
  ["Fall in dollar terms, due to currency risk","Rise in dollar terms","Be unchanged — ADRs are priced only on the underlying stock","Be converted automatically to the foreign shares"],0,
  `An ADR's dollar price reflects BOTH the underlying shares and the exchange rate. A weaker foreign currency means each unit of foreign earnings/price converts into fewer dollars. Currency risk is a core, separately-testable ADR risk.`,"ADR = stock risk + currency risk."),
-()=>Q(6,"Settlement T+1",`Under current rules, regular-way settlement for a corporate stock trade executed on Monday (a business day) is:`,
+()=>Q(3,"Settlement T+1",`Under current rules, regular-way settlement for a corporate stock trade executed on Monday (a business day) is:`,
  ["Tuesday — T+1","Wednesday — T+2","Monday — same day for all trades","Friday — T+4"],0,
  `Equities and corporate/muni bonds settle T+1 (since May 2024). U.S. government securities and options settle next business day as well; cash settlement is same-day. The old T+2 answer is now a trap.`,"Regular way equities: T+1."),
-()=>Q(6,"Stop orders",`A customer places a buy stop order above the current market to limit a short position's loss. Once the stop price is triggered, the order:`,
+()=>Q(3,"Stop orders",`A customer places a buy stop order above the current market to limit a short position's loss. Once the stop price is triggered, the order:`,
  ["Becomes a market order — execution is certain, price is not","Becomes a limit order at the stop price","Is cancelled automatically","Guarantees execution at or better than the stop price"],0,
  `A stop order is an ELECTED order: trigger → market order. It guarantees execution, never price (gaps can blow through it). A stop-LIMIT adds a price floor/ceiling but risks no execution at all. Stops do not protect against gaps.`,"Stop → market order when triggered. Execution yes, price no."),
-()=>Q(8,"Insider trading",`A corporate officer tells a friend material nonpublic information, and the friend trades on it and profits. Under SEC Rule 10b-5:`,
+()=>Q(3,"Insider trading",`A corporate officer tells a friend material nonpublic information, and the friend trades on it and profits. Under SEC Rule 10b-5:`,
  ["Both can be liable — the officer as tipper (for a personal benefit) and the friend as tippee who knew or should have known the information was improperly disclosed","Only the friend is liable, as the trader","Neither is liable if the officer did not personally trade","Liability requires the friend to be an employee of the company"],0,
  `Tipper/tippee liability: a tipper who discloses MNPI in breach of duty for a personal benefit (which includes gifting information to a trading relative or friend) is liable, and a tippee who knows/should know of the breach inherits the duty. The misappropriation theory covers outsiders who steal information.`,"10b-5: tipper + knowing tippee are both liable."),
-()=>Q(8,"Selling away",`A registered rep privately sells promissory notes issued by a company the rep owns, without notifying or involving the employing BD. This is:`,
+()=>Q(3,"Selling away",`A registered rep privately sells promissory notes issued by a company the rep owns, without notifying or involving the employing BD. This is:`,
  ["Selling away — prohibited unless the firm gives prior written approval and records the transactions","Acceptable, because the notes are not securities","Churning","Permitted if customers are told it is separate from the firm"],0,
  `Private securities transactions away from the firm = selling away (FINRA Rule 3280). The rep must give prior written notice; the firm must approve in writing and supervise/record it if it allows it at all. Promissory notes are usually securities — 'not a security' is the classic wrong answer.`,"Selling away: private deals off the books without prior written approval."),
 
@@ -340,6 +340,10 @@ GEN.push(
 ()=>Q(1,"Third & fourth markets","The THIRD market is:",
  ["Exchange-listed securities traded OTC between dealers","New issues sold before the IPO","Options traded on the CBOE","Mutual funds priced at NAV"],0,
  `Third market = exchange-listed stocks traded OTC (dealer-to-dealer). Fourth market = large institutions trading directly with each other (no broker).`,"Third market = listed stocks traded OTC."),
+
+()=>Q(1,"Securities Act of 1933",`The Securities Act of 1933 primarily requires:`,
+  ["Registration and a prospectus for new public offerings","Registration of broker-dealers and ongoing issuer reporting","Establishment of the Federal Reserve","Insurance of customer accounts against broker-dealer failure"],0,
+  `The 1933 Act governs the PRIMARY market: new issues must be registered and delivered with a prospectus unless an exemption applies. The 1934 Act governs the secondary market and broker-dealer conduct; SIPC covers custody failure, not market loss.`,"1933 Act = new issues + prospectus."),
 
 // SECTION 2 - Products
 ()=>Q(2,"Rights & warrants","A RIGHT is issued by a company to let existing shareholders:",
@@ -462,8 +466,8 @@ GEN.push(
  `Reportable events (U4 disclosure) = felonies, investment-related misdemeanors, injunctions, revocations, liens, bankruptcies. Routine debts/tickets are not.`,"Felonies/liens/bankruptcy = reportable."),
 
 );
-const UNIT_BY_TOPIC={"SIPC separate capacity":7,"CMO tranches":3,"Freeriding":6,"Wash sale":6,"Reg T margin":7,"Pattern day trader":7,"Reg SHO":6,"Options \u2014 covered call":4,"Bond risk":3,"Communications":7,"Trusted contact / seniors":7,"Discretionary accounts":7,"Prohibited activities":8,"Mutual fund pricing":4,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":8,"Systematic risk":5,"Account opening / AML":7,"Fed tools":1,"MSRB":1,"Preferred vs common":2,"Stock splits":2,"Dividend dates":2,"Yield ordering":3,"Callable bonds / yield to worst":3,"Long call breakeven":4,"ETFs vs mutual funds":4,"Reinvestment risk":5,"ADR / currency risk":5,"Settlement T+1":6,"Stop orders":6,"Insider trading":8,"Selling away":8,"Economic indicators":1,"Monetary vs fiscal":1,"Business cycle":1,"IPO vs follow-on":1,"Best efforts vs firm commitment":1,"Shelf registration":1,"Blue-sky laws":1,"Market participants":1,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":3,"GO vs revenue munis":3,"Money market instruments":3,"Bond ratings":3,"UITs vs mutual funds":4,"Variable annuities":4,"Share classes & breakpoints":4,"529 & ABLE":5,"DPPs & REITs":5,"ETFs vs ETNs":5,"Inflation & political risk":5,"Liquidity & prepayment risk":5,"Diversification & rebalancing":5,"Buybacks & tender offers":6,"Rights offerings & proxies":6,"Basis points & cost basis":6,"Marking close & backing away":6,"SAR vs CTR":7,"FinCEN & OFAC":7,"KYC & suitability":7,"Best interest (Reg BI)":7,"Do-not-call":7,"Reg S-P privacy":7,"UTMA accounts":7,"IRA & RMDs":7,"Signatures of convenience":8,"IPO purchase restrictions":8,"Senior exploitation":8,"Forms U4 & U5":8,"Background checks":8,"Statutory disqualification":8,"Continuing education":8,"Outside business activities":8,"Political contributions & gifts":8,"Customer complaints":8,"Felonies/liens/bankruptcy":8};
-const DIFF_BY_TOPIC={"SIPC separate capacity":3,"CMO tranches":3,"Freeriding":2,"Wash sale":2,"Reg T margin":1,"Pattern day trader":1,"Reg SHO":2,"Options \u2014 covered call":2,"Bond risk":2,"Communications":3,"Trusted contact / seniors":2,"Discretionary accounts":2,"Prohibited activities":1,"Mutual fund pricing":2,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":3,"Systematic risk":1,"Account opening / AML":2,"Fed tools":1,"MSRB":2,"Preferred vs common":1,"Stock splits":1,"Dividend dates":3,"Yield ordering":2,"Callable bonds / yield to worst":2,"Long call breakeven":1,"ETFs vs mutual funds":1,"Reinvestment risk":2,"ADR / currency risk":1,"Settlement T+1":1,"Stop orders":2,"Insider trading":2,"Selling away":2,"Economic indicators":2,"Monetary vs fiscal":2,"Business cycle":2,"IPO vs follow-on":2,"Best efforts vs firm commitment":2,"Shelf registration":2,"Blue-sky laws":1,"Market participants":1,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":2,"GO vs revenue munis":2,"Money market instruments":1,"Bond ratings":2,"UITs vs mutual funds":2,"Variable annuities":2,"Share classes & breakpoints":2,"529 & ABLE":1,"DPPs & REITs":2,"ETFs vs ETNs":2,"Inflation & political risk":2,"Liquidity & prepayment risk":2,"Diversification & rebalancing":2,"Buybacks & tender offers":2,"Rights offerings & proxies":2,"Basis points & cost basis":1,"Marking close & backing away":2,"SAR vs CTR":2,"FinCEN & OFAC":2,"KYC & suitability":2,"Best interest (Reg BI)":2,"Do-not-call":1,"Reg S-P privacy":2,"UTMA accounts":1,"IRA & RMDs":1,"Signatures of convenience":1,"IPO purchase restrictions":1,"Senior exploitation":2,"Forms U4 & U5":1,"Background checks":1,"Statutory disqualification":1,"Continuing education":1,"Outside business activities":1,"Political contributions & gifts":1,"Customer complaints":1,"Felonies/liens/bankruptcy":1};
+const UNIT_BY_TOPIC={"SIPC separate capacity":7,"CMO tranches":3,"Freeriding":6,"Wash sale":6,"Reg T margin":7,"Pattern day trader":7,"Reg SHO":6,"Options \u2014 covered call":4,"Bond risk":3,"Communications":7,"Trusted contact / seniors":7,"Discretionary accounts":7,"Prohibited activities":8,"Mutual fund pricing":4,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":8,"Systematic risk":5,"Account opening / AML":7,"Fed tools":1,"MSRB":1,"Preferred vs common":2,"Stock splits":2,"Dividend dates":2,"Yield ordering":3,"Callable bonds / yield to worst":3,"Long call breakeven":4,"ETFs vs mutual funds":4,"Reinvestment risk":5,"ADR / currency risk":5,"Settlement T+1":6,"Stop orders":6,"Insider trading":8,"Selling away":8,"Economic indicators":1,"Monetary vs fiscal":1,"Business cycle":1,"IPO vs follow-on":1,"Best efforts vs firm commitment":1,"Shelf registration":1,"Blue-sky laws":1,"Market participants":1,"Third & fourth markets":1,"Securities Act of 1933":1,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":3,"GO vs revenue munis":3,"Money market instruments":3,"Bond ratings":3,"UITs vs mutual funds":4,"Variable annuities":4,"Share classes & breakpoints":4,"529 & ABLE":5,"DPPs & REITs":5,"ETFs vs ETNs":5,"Inflation & political risk":5,"Liquidity & prepayment risk":5,"Diversification & rebalancing":5,"Buybacks & tender offers":6,"Rights offerings & proxies":6,"Basis points & cost basis":6,"Marking close & backing away":6,"SAR vs CTR":7,"FinCEN & OFAC":7,"KYC & suitability":7,"Best interest (Reg BI)":7,"Do-not-call":7,"Reg S-P privacy":7,"UTMA accounts":7,"IRA & RMDs":7,"Signatures of convenience":8,"IPO purchase restrictions":8,"Senior exploitation":8,"Forms U4 & U5":8,"Background checks":8,"Statutory disqualification":8,"Continuing education":8,"Outside business activities":8,"Political contributions & gifts":8,"Customer complaints":8,"Felonies/liens/bankruptcy":8};
+const DIFF_BY_TOPIC={"SIPC separate capacity":3,"CMO tranches":3,"Freeriding":2,"Wash sale":2,"Reg T margin":1,"Pattern day trader":1,"Reg SHO":2,"Options \u2014 covered call":2,"Bond risk":2,"Communications":3,"Trusted contact / seniors":2,"Discretionary accounts":2,"Prohibited activities":1,"Mutual fund pricing":2,"Convertibles":3,"Treasury / Fed":1,"Primary vs secondary":1,"Registration timelines":3,"Systematic risk":1,"Account opening / AML":2,"Fed tools":1,"MSRB":2,"Preferred vs common":1,"Stock splits":1,"Dividend dates":3,"Yield ordering":2,"Callable bonds / yield to worst":2,"Long call breakeven":1,"ETFs vs mutual funds":1,"Reinvestment risk":2,"ADR / currency risk":1,"Settlement T+1":1,"Stop orders":2,"Insider trading":2,"Selling away":2,"Economic indicators":2,"Monetary vs fiscal":2,"Business cycle":2,"IPO vs follow-on":2,"Best efforts vs firm commitment":2,"Shelf registration":2,"Blue-sky laws":1,"Market participants":1,"Third & fourth markets":1,"Securities Act of 1933":2,"Rights & warrants":2,"Rule 144":2,"Agency & MBS":2,"GO vs revenue munis":2,"Money market instruments":1,"Bond ratings":2,"UITs vs mutual funds":2,"Variable annuities":2,"Share classes & breakpoints":2,"529 & ABLE":1,"DPPs & REITs":2,"ETFs vs ETNs":2,"Inflation & political risk":2,"Liquidity & prepayment risk":2,"Diversification & rebalancing":2,"Buybacks & tender offers":2,"Rights offerings & proxies":2,"Basis points & cost basis":1,"Marking close & backing away":2,"SAR vs CTR":2,"FinCEN & OFAC":2,"KYC & suitability":2,"Best interest (Reg BI)":2,"Do-not-call":1,"Reg S-P privacy":2,"UTMA accounts":1,"IRA & RMDs":1,"Signatures of convenience":1,"IPO purchase restrictions":1,"Senior exploitation":2,"Forms U4 & U5":1,"Background checks":1,"Statutory disqualification":1,"Continuing education":1,"Outside business activities":1,"Political contributions & gifts":1,"Customer complaints":1,"Felonies/liens/bankruptcy":1};
 const LEVELS={easy:{label:" Easy",mult:1,rating:800,maxDiff:1},hard:{label:" Hard",mult:1.5,rating:1000,maxDiff:2},veryhard:{label:" Very Hard",mult:2,rating:1200,maxDiff:3},master:{label:" Master",mult:3,rating:1400,maxDiff:3,perQ:60,trapOnly:true}};
 function curLevel(){return ($("levelSel")&&$("levelSel").value)||"hard"}
 
@@ -491,8 +495,14 @@ initTheme();
 function save(){localStorage.setItem("sie",JSON.stringify(store));renderHome()}
 function renderHome(){ const ch=$("coachHome"); if(ch){ try{ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
   const dn=store.day&&store.day.d===new Date().toDateString()?store.day.n:0; const gpct=Math.min(100,dn/10*100);
-  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><b> Coach:</b> ${store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
-  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()"> Continue where I left off</button><button class="ghost" onclick="speak(coachText())"></button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Gaps closed so far: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
+  const stage=!store.zero||!store.zero.done?"ZERO → FIRST TRADE":!store.t.placed?"PLACEMENT CHECK":Object.keys(store.t.done||{}).length>=8?"FINAL REVIEW":"CURRICULUM";
+  const cta=!store.zero||!store.zero.done?"Start from zero":!store.t.placed?"Take placement check":"Continue where I left off";
+  const totA=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).a,0), totC=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).c,0);
+  const bktAvg=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).bkt,0)/8, coverage=Object.keys(store.t.done||{}).length/8;
+  const ready=totA?Math.max(0,Math.min(100,Math.round((bktAvg*0.5+(totC/totA)*0.25+coverage*0.25)*100))):0;
+  const due=Object.values(store.missed).filter(m=>Date.now()-(m.ts||0)>(m._cleared?864e5:6e5)).length;
+  ch.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><div class="tag" style="margin-bottom:6px">${stage} • ${ready}% READY</div><b> Coach:</b> ${!store.zero||!store.zero.done?"New here? Start with the first-trade primer — order types, settlement, and a 3-question check.":!store.t.placed?"Let's calibrate: 10 questions across all 8 units so I can see what you already own.":store.t&&Object.keys(store.t.done||{}).length>=8?"All 8 units cleared. Final Review and Master mode — that's where you live now.":diagnose(weak).includes("TRUE GAP")?`Unit ${weak} (${UNITS[weak-1].n}) has a true gap. Lesson first — it's queued for you.`:`Your weakest unit is ${UNITS[weak-1].n} at ${Math.round(unitStats(weak).bkt*100)}% mastery. Small reps close it.`}</div>
+  <div class="row"><div class="ring" style="--p:${gpct}%"><span style="background:var(--bg-surface);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:13px">${dn}/10</span></div><button class="pink" onclick="smartContinue()">${cta}</button><button class="ghost" onclick="speak(coachText())">Hear coach</button></div></div><div class="mut" style="font-size:12px;margin-top:6px">Daily goal: 10 answers • Due reviews: ${due} • Gaps closed: ${(store.t&&store.t.gapsClosed)||0} • Open gaps: ${Object.keys((store.t&&store.t.openGaps)||{}).length}</div></div>`; }catch(e){} }
  $("xp").textContent=store.xp;$("streak").textContent=store.streak;
  $("missedCount").textContent=Object.keys(store.missed).length;
  $("level").textContent=store.xp>1500?"Regulation Master":store.xp>700?"Compliance Pro":store.xp>250?"Associate":"Analyst";
@@ -503,43 +513,48 @@ renderHome();
 
 /* ============ voice ============ */
 let audio=new Audio();
-/* AudioManager — one voice at a time, saved clips preloaded, dynamic text queued.
-   Fixed text (lessons) plays from saved MP3s instantly; dynamic text (questions,
+/* AudioManager — one voice at a time, saved clips metadata-preloaded, dynamic text queued.
+   Fixed text (lessons) plays from saved WAVs instantly; dynamic text (questions,
    feedback, reports) goes GPU Kokoro via /api/tts (disk-cached server-side),
    falling back to the browser voice. Nothing ever talks over itself. */
-const AudioMan={q:[],busy:false,
+const AudioMan={q:[],busy:false,gpuFail:0,
  stop(){ this.q=[]; try{audio.pause()}catch(e){} try{speechSynthesis.cancel()}catch(e){} this.busy=false },
  clip(path){ this.stop(); audio.src=path; audio.play().catch(()=>{}); },
  enq(text){ if(!$("voiceOn").checked)return; this.q.push(text); this._pump() },
+ _browser(text,done){ const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.onend=done; u.onerror=done; speechSynthesis.speak(u) },
  async _pump(){ if(this.busy||!this.q.length)return; this.busy=true; const text=this.q.shift();
   const done=()=>{ this.busy=false; this._pump() };
+  if(this.gpuFail>=2){ this._browser(text,done); return }
   const voice=$("voiceSel").value;
   try{ const r=await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice})});
-   if(!r.ok)throw 0; const d=await r.json(); $("gpuPill").textContent=" Voice: GPU (RTX • Kokoro)"+(d.cached?" • cached clip":" • new clip saved");
+   if(!r.ok)throw 0; const d=await r.json(); this.gpuFail=0; const eng=(d.engine||"").includes("onnx")?"Kokoro ONNX (CPU)":"GPU • Kokoro"; $("gpuPill").textContent="Voice: "+eng+(d.cached?" • cached clip":" • new clip saved");
    audio.src=d.url; audio.onended=done; audio.onerror=done; await audio.play();
-  }catch(e){ $("gpuPill").textContent=" Voice: browser (start server.py for GPU)";
-   const u=new SpeechSynthesisUtterance(text); u.rate=1.02; u.onend=done; u.onerror=done; speechSynthesis.speak(u); }
+  }catch(e){ this.gpuFail++; $("gpuPill").textContent="Voice: browser (GPU TTS unavailable)"; this._browser(text,done); }
  },
- preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips; m.clips.forEach(c=>{ const a=new Audio(); a.preload="auto"; a.src="audio/"+c.file }) }).catch(()=>{}) }
+ preload(){ fetch("audio/manifest.json").then(r=>r.json()).then(m=>{ window._clips=m.clips; m.clips.forEach(c=>{ const a=new Audio(); a.preload="metadata"; a.src="audio/"+c.file }) }).catch(()=>{}) }
 };
-function speak(text){ AudioMan.enq(text) }
+function plainText(s){return String(s).replace(/<[\/!]?[a-zA-Z][^>]*>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/&lt;/gi,"<").replace(/&gt;/gi,">").replace(/&quot;/gi,'"').replace(/\s+/g," ").trim()}
+function speak(text){ AudioMan.enq(plainText(text)) }
 function stopAudio(){ AudioMan.stop() }
 function testVoice(){speak("S I P C is per separate capacity. Not per person. Five hundred thousand dollars, with a two hundred fifty thousand dollar cash sub limit.")}
-function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a); $("gpuPill").textContent=" Playing saved voice clip from codebase";} else speak(l.b.replace(/<[^>]+>/g,""))}
+function playLesson(i){const l=LESSONS[i]; if(l.a){AudioMan.clip(l.a); $("gpuPill").textContent="Playing saved voice clip from codebase";} else speak(l.b.replace(/<[^>]+>/g,""))}
 function playWelcome(){AudioMan.clip("audio/welcome.wav")}
 function speakCurrent(){if(current)speak(current.text)}
 
 /* ============ quiz engine ============ */
 function buildExam(n){
  const weights={1:.16,2:.44,3:.31,4:.09},out=[];
- Object.keys(weights).forEach(s=>{const cnt=Math.round(n*weights[s]);const pool=GEN.map(g=>g()).filter(q=>q.sec==s);
-  for(let i=0;i<cnt&&pool.length;i++)out.push(pool[i%pool.length])});
+ Object.keys(weights).forEach(s=>{const cnt=Math.round(n*weights[s]);const ids=GEN.map((g,i)=>i).filter(i=>GEN[i]().sec==s);
+  if(!ids.length)return; const seen=new Set(),pool=[];let guard=0,cursor=0;
+  while(pool.length<cnt&&guard++<cnt*80){const q=GEN[ids[cursor++%ids.length]]();if(!seen.has(q.text)){seen.add(q.text);pool.push(q)}}
+  while(pool.length<cnt)pool.push(GEN[pick(ids)]);
+  out.push(...pool)});
  while(out.length<n)out.push(GEN[R(0,GEN.length-1)]());
  return shuffle(out).slice(0,n).map(prepare);
 }
 function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer),unit:UNIT_BY_TOPIC[q.topic]||7,diff:DIFF_BY_TOPIC[q.topic]||2}}
 function startQuiz(m,n){m=m||"trap";n=n||10;mode=m;
- if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first "); quiz=shuffle(miss).slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
+ if(m==="missed"){const miss=Object.values(store.missed); if(!miss.length)return alert("Missed Bank is empty — go miss something first."); const ordered=miss.slice().sort((a,b)=>(a._cleared||0)-(b._cleared||0)||(a.ts||0)-(b.ts||0)); quiz=ordered.slice(0,n).map(m=>m.type==="short"?{...m}:prepare(m))}
  else if(m==="exam"){quiz=buildExam(75)}
  else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(GEN[i]())); const rest=adaptiveSet(n, true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3) rest.push(prepare(GEN[R(0,GEN.length-1)]())); quiz=[...seeded, ...rest.slice(0,Math.max(0,n-3))] } else{ quiz=adaptiveSet(n,false) }
  qi=0;score=0;$("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
@@ -549,9 +564,9 @@ function startQuiz(m,n){m=m||"trap";n=n||10;mode=m;
 }
 function tick(){$("timer").textContent=" "+Math.floor(timeLeft/60)+":"+String(timeLeft%60).padStart(2,"0")}
 function showQ(){answered=false;current=quiz[qi];window._qStart=Date.now();startPerQ();$("progress").textContent=(qi+1)+" / "+quiz.length;
- $("pbar").style.width=(qi/quiz.length*100)+"%";$("qTag").textContent=(mode==="trap"?" TRAP • ":"")+"Section "+current.sec+" • "+current.topic;
+ $("pbar").style.width=(qi/quiz.length*100)+"%";$("qTag").textContent=(mode==="trap"?"TRAP • ":"")+(current.sec?"Section "+current.sec:"Short response")+" • "+current.topic;
  $("qText").textContent=current.text;$("explain").classList.add("hidden");$("nextBtn").classList.add("hidden");
- if(current.type==="short"){ $("opts").innerHTML=`<p class="mut" style="margin:4px 0"> Short response — produce the rule, don't recognize it. Numbers and key concepts are graded.</p><textarea id="shortAns" placeholder="Type your answer in your own words..."></textarea><div class="row" style="margin-top:10px"><button onclick="answerShort()">Submit answer</button><button class="ghost" onclick="speak(current.text)"> Hear question</button></div>`; }
+ if(current.type==="short"){ $("opts").innerHTML=`<p class="mut" style="margin:4px 0"> Short response — produce the rule, don't recognize it. Numbers and key concepts are graded.</p><textarea id="shortAns" aria-label="Short answer" placeholder="Type your answer in your own words..."></textarea><div class="row" style="margin-top:10px"><button onclick="answerShort()">Submit answer</button><button class="ghost" onclick="speak(current.text)"> Hear question</button></div>`; }
  else $("opts").innerHTML=current.choices.map((c,i)=>`<button class="opt" aria-pressed="false" data-state="idle" onclick="answer(${i},this)">${"ABCD"[i]}. ${c}</button>`).join("");
  if($("voiceOn").checked)speak(current.text);
 }
@@ -561,7 +576,7 @@ function answer(i,btn){if(answered)return;answered=true;clearInterval(perQInt);c
  store.seen++;store.sec[current.sec]=store.sec[current.sec]||{a:0,c:0};store.sec[current.sec].a++;
  const key=current.topic+current.text.slice(0,40);
  if(right){score++;store.xp+=Math.round((mode==="exam"?10:15)*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1));store.sec[current.sec].c++; if(store.missed[key]){store.missed[key]._cleared=(store.missed[key]._cleared||0)+1; if(store.missed[key]._cleared>=2)delete store.missed[key]}}
- else{store.missed[key]={sec:current.sec,topic:current.topic,text:current.text,choices:current.choices,answer:current.answer,explain:current.explain,rule:current.rule}}
+ else{store.missed[key]={sec:current.sec,topic:current.topic,text:current.text,choices:current.choices,answer:current.answer,explain:current.explain,rule:current.rule,ts:Date.now()}}
  $("explain").innerHTML=`<b>${right?" Correct.":" Trap sprung."}</b> ${current.explain}<br><br> <b>Rule:</b> ${current.rule}`;
  $("explain").classList.remove("hidden");$("nextBtn").classList.remove("hidden");registerGap(current,right);trackMissStreak(right);save();
  if(!right||mode!=="trap")speak((right?"Correct. ":"") + current.explain);
@@ -571,22 +586,24 @@ function nextQ(){ if(window._ms&&window._ms.c>=2&&qi<quiz.length-1){ const pool=
  qi++;qi<quiz.length?showQ():finish()}
 function quitQuiz(){clearInterval(timerInt);clearInterval(perQInt);$("quiz").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
 function finish(){clearInterval(timerInt);clearInterval(perQInt);awardBadges();$("quiz").classList.add("hidden");const pct=Math.round(score/quiz.length*100);
- const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");confettiBurst();setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
- $("result").innerHTML=`<div class="card" style="text-align:center"><div class="big">${score} / ${quiz.length} — ${pct}%</div>
- <p>${coachLine(pct)}</p><p class="mut">${mode==="exam"?(pass?" PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>
- <div class="row" style="justify-content:center">${gapBtn()}<button onclick="startQuiz('${mode}',${mode==='exam'?75:10})">Run it again</button><button class="ghost" onclick="backHome()">Home</button></div></div>`;
+ const pass=mode==="exam"?pct>=70:pct>=70; if(mode==="zero"){store.zero={done:true,at:Date.now()};save()} if(mode==="placement"){store.t.placed=true;save()} if(mode==="unit"&&window._unit&&pct>=80){store.t=store.t||{units:{},theta:1000,badges:[],done:{}};store.t.done=store.t.done||{};store.t.done[window._unit]=1;save()} if(mode==="gap"&&window._gapTopic){ if(pct>=66){ delete (store.t.openGaps||{})[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; save(); setTimeout(()=>showToast(" Gap closed: "+window._gapTopic),400); } } if(pass&&mode==="exam"){store.streak++;$("confetti").classList.remove("hidden");confettiBurst();setTimeout(()=>$("confetti").classList.add("hidden"),3500)}
+ const scoreText=Number.isInteger(score)?score:score.toFixed(1); $("result").innerHTML=`<div class="card" style="text-align:center"><div class="big">${scoreText} / ${quiz.length} — ${pct}%</div>
+ <p>${coachLine(pct)}</p>${mode==="zero"?`<p class="mut">Primer complete. Next: a 10-question placement check so I can target the right unit.</p>`:mode==="placement"?`<p class="mut">Calibration complete. The teacher now has a baseline; your next session targets the weakest unit.</p>`:`<p class="mut">${mode==="exam"?(pass?"PASS — at or above the 70% FINRA line.":"Below 70%. The Missed Bank now owns your weak spots — drill them."):"Session complete. Misses were saved to your Missed Bank for spaced repetition."}</p>`}
+ <div class="row" style="justify-content:center">${mode==="zero"?`<button class="pink" onclick="startPlacement()">Take placement check</button>`:mode==="placement"?`<button class="pink" onclick="showReport()">See my report</button>`:""}${mode==="zero"||mode==="placement"?"":gapBtn()}<button onclick="${mode==="zero"?"startZeroQuiz()":mode==="placement"?"startPlacement()":`startQuiz('${mode}',${mode==='exam'?75:10})`}">Run it again</button><button class="ghost" onclick="backHome()">Home</button></div></div>`;
  $("result").classList.remove("hidden");save(); if(window._newBadges&&window._newBadges.length) setTimeout(()=>showToast(" New badge: "+window._newBadges.join(", ")),600);
  speak(`You scored ${score} out of ${quiz.length}. ${pct} percent. ${mode==="exam"?(pass?"That is a pass.":"That is below the seventy percent pass line."):""}`)}
 function confettiBurst(){ const c=$("confetti"); const colors=["var(--accent-primary)","var(--accent-deep)","var(--status-pass)","var(--status-warn)"]; for(let i=0;i<40;i++){ const el=document.createElement("div"); el.className="confetti-piece"; el.style.left=Math.random()*100+"vw"; el.style.top=Math.random()*20-10+"vh"; el.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)]; el.style.animationDuration=(Math.random()*1.5+1)+"s"; el.style.animationDelay=(Math.random()*0.5)+"s"; el.style.transform=`rotate(${Math.random()*360}deg)`; c.appendChild(el); } setTimeout(()=>{ c.querySelectorAll(".confetti-piece").forEach(el=>el.remove()); },3000);}
-function backHome(){$("result").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("report").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
-function showLessons(){$("home").classList.add("hidden");$("result").classList.add("hidden");
- $("lessons").innerHTML=LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})"> Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
+function backHome(){["result","lessons","units","report","quiz"].forEach(id=>$(id).classList.add("hidden"));$("home").classList.remove("hidden");renderHome()}
+function showLessons(){["home","result","units","report","quiz"].forEach(id=>$(id).classList.add("hidden"));
+ $("lessons").innerHTML=`<div class="card lesson" style="margin-bottom:12px"><div class="tag">START HERE</div><h3>Zero → First Trade</h3><p>New to trading? Five plain-English cards on accounts, orders, settlement, margin, and risk, then a 3-question check that places you into the adaptive path.</p><button class="pink" onclick="startZero()">Start the primer</button></div>`+LESSONS.map((l,i)=>`<div class="card lesson" style="margin-bottom:12px"><div class="tag">${l.s}</div><h3>${l.t}</h3><p>${l.b}</p><button class="ghost" onclick="playLesson(${i})"> Listen (saved voice clip)</button> <button onclick="startQuiz('trap',10)">Drill this area</button></div>`).join("")+`<button class="ghost" onclick="backHome()">← Back</button>`;
  $("lessons").classList.remove("hidden")}
 
 /* ============ v2: ML TEACHER (BKT mastery + Elo ability + time/accuracy diagnosis) ============ */
 let perQInt=null;
 store.t=store.t||{units:{},theta:1000,badges:[],done:{}};
 store.t.units=store.t.units||{}; store.t.done=store.t.done||{}; store.t.badges=store.t.badges||[];
+if(store.zero===undefined&&Object.values(store.t.units).some(s=>s&&s.a>0))store.zero={done:true,at:Date.now()};
+if(store.t.placed===undefined)store.t.placed=Object.values(store.t.units).some(s=>s&&s.a>0);
 function unitStats(u){ if(!store.t.units[u]) store.t.units[u]={a:0,c:0,time:0,bkt:0.15,fastWrong:0,slowRight:0}; return store.t.units[u] }
 function recordPerf(q,right,ms){
  const s=unitStats(q.unit); s.a++; s.time+=ms; if(right)s.c++;
@@ -632,7 +649,7 @@ function adaptiveSet(n,trapFirst){
  return shuffle(arr);
 }
 function startPerQ(){ clearInterval(perQInt); const L=LEVELS[curLevel()];
- if(!L||!L.perQ||mode==="exam"){ if(mode!=="exam")$("timer").textContent=" untimed"; return }
+ if(!L||!L.perQ||mode==="exam"||mode==="zero"||mode==="placement"){ if(mode!=="exam")$("timer").textContent=" untimed"; return }
  let left=L.perQ; $("timer").textContent=" "+left+"s (Master)";
  perQInt=setInterval(()=>{ left--; $("timer").textContent=" "+left+"s (Master)"; if(left<=0){clearInterval(perQInt); if(!answered)answer(-1)} },1000); }
 function coachLine(pct){
@@ -649,8 +666,8 @@ function coachLine(pct){
 function awardBadges(){ window._newBadges=[]; const pct=quiz.length?score/quiz.length*100:0;
  const avg=(window._qt&&window._qt.length)?window._qt.reduce((a,b)=>a+b,0)/window._qt.length/1000:999;
  const add=b=>{ if(!store.t.badges.includes(b)){store.t.badges.push(b);window._newBadges.push(b)} };
- if(pct===100)add(" Perfect Run"); if(pct>=80&&avg<9)add(" Speed Demon");
- if(pct>=80&&curLevel()==="master")add(" Trap Slayer"); if(pct>=80&&mode==="unit")add(" Unit Cleared");
+ if(pct===100)add("Perfect Run"); if(pct>=80&&avg<9)add("Speed Demon");
+ if(pct>=80&&curLevel()==="master")add("Trap Slayer"); if(pct>=80&&mode==="unit")add("Unit Cleared");
  window._qt=[]; save(); }
 
 /* ============ v2: 8-UNIT CURRICULUM (detailed lesson -> mini quiz) ============ */
@@ -666,7 +683,7 @@ const UNITS=[
 ];
 
 function gensForUnit(u){ return GEN.map((g,i)=>i).filter(i=>UNIT_BY_TOPIC[GEN[i]().topic]===u) }
-function showUnits(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("report").classList.add("hidden");$("result").classList.add("hidden");
+function showUnits(){ ["home","lessons","report","result","quiz"].forEach(id=>$(id).classList.add("hidden")); $("units").classList.remove("hidden");
  const doneCount=Object.keys(store.t.done).length;
  $("units").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> The Lesson Plan — 8 units</h3><p class="mut">Detailed lesson → mini quiz (5 questions, 80% to clear). Your teacher re-weights every quiz toward what the data says you don't own yet. Progress: <b>${doneCount} / 8 units cleared</b></p><div class="bar"><i style="width:${doneCount/8*100}%"></i></div>
  <div class="pathmap">${UNITS.map((_,i)=>`<span class="node ${store.t.done[i+1]?"done":(i+1===doneCount+1?"now":"")}">${store.t.done[i+1]?"":i+1}</span>${i<7?'<span class="link"></span>':""}`).join("")}</div>
@@ -677,11 +694,13 @@ function showUnits(){ $("home").classList.add("hidden");$("lessons").classList.a
  + `<button class="ghost" onclick="backHome()">← Back</button>`;
  $("units").classList.remove("hidden"); }
 function showUnitLesson(u){ const un=UNITS[u-1];
+ ["home","lessons","report","result","quiz"].forEach(id=>$(id).classList.add("hidden")); $("units").classList.remove("hidden");
  $("units").innerHTML=`<div class="card lesson"><div class="tag">UNIT ${u} • DETAILED LESSON</div><h3>${un.n}</h3><p>${un.lesson}</p>
  <div class="row"><button class="ghost" onclick="playUnitAudio(${u})"> Listen (saved clip)</button><button onclick="startUnitQuiz(${u})"> Mini quiz — 5 questions</button><button class="ghost" onclick="showUnits()">All units</button></div></div>`; }
-function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a);$("gpuPill").textContent=" Playing saved voice clip"} else speak(UNITS[u-1].lesson.replace(/<[^>]+>/g,"")) }
+function playUnitAudio(u){ const a=UNITS[u-1].audio; if(a){AudioMan.clip(a);$("gpuPill").textContent="Playing saved voice clip"} else speak(UNITS[u-1].lesson.replace(/<[^>]+>/g,"")) }
 function startUnitQuiz(u){ window._unit=u; mode="unit"; const pool=gensForUnit(u);
- let qs=[]; while(qs.length<5) qs.push(GEN[pick(pool)]());
+ let qs=[],seen=new Set(),guard=0; while(qs.length<5&&pool.length&&guard++<100){ const q=GEN[pick(pool)](); if(!seen.has(q.text)){ seen.add(q.text); qs.push(q) } }
+ while(qs.length<5) qs.push(GEN[pick(pool)]());
  quiz=shuffle(qs).map(prepare);
  if(curLevel()==="veryhard"||curLevel()==="master"){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) quiz[quiz.length-1]=prepareShort(pick(ss)); }
  beginQuiz(); }
@@ -699,7 +718,7 @@ const SHORT=[
 {topic:"CMO tranches",unit:3,prompt:"Interest rates fall sharply. Explain what happens to a CMO support tranche's average life, and why.",groups:[{k:"contraction / shorter life",any:["contract","shorten","shorter","paid early","paid off early","returned early"]},{k:"prepayments rise as borrowers refinance",any:["prepay","refinanc"]}],model:"It contracts — average life shortens. Falling rates make homeowners refinance, prepayments surge, and the support tranche absorbs the excess prepayments first to protect the PAC's schedule, so its principal comes back early.",rule:"Rates down = contraction (support absorbs prepayments)."},
 {topic:"Freeriding",unit:6,prompt:"Define freeriding in a cash account and state the consequence if it becomes a pattern.",groups:[{k:"buy and sell before paying / unsettled funds",any:["before pay","unsettled","before paying","not yet paid","sell before"]},{k:"90-day settled-funds restriction",any:["90"]}],model:"Freeriding is buying a security in a cash account with unsettled funds and selling it before paying for it (a Regulation T violation). If it recurs, the account is restricted to settled funds only for 90 days.",rule:"Freeriding: sell before paying = Reg T violation, 90-day freeze."},
 {topic:"Wash sale",unit:6,prompt:"An investor sells at a loss and rebuys the same stock 10 days later. What happens to the loss, and what is the full window the rule covers?",groups:[{k:"loss disallowed/deferred now",any:["disallow","defer","not allowed","cannot claim","can't claim","postpone"]},{k:"added to cost basis of new shares",any:["basis","added to the cost","new shares"]},{k:"30 days either side / 61-day window",any:["61","30 days","thirty"]}],model:"The loss is disallowed for now (deferred, not destroyed): it is added to the cost basis of the replacement shares and the holding period tacks on. The wash sale window is 30 days before and after the sale — 61 days total.",rule:"Wash sale: 61-day window, loss goes into new basis."},
-{topic:"Reg T margin",unit:7,prompt:"Two numbers, two regulators: state the initial margin requirement and who sets it, and the long maintenance requirement and who sets that.",groups:[{k:"initial 50% — set by the Federal Reserve",bind:{a:["50"],b:["federal reserve","the fed"," fed "],notB:["finra"]}},{k:"maintenance 25% — set by FINRA",bind:{a:["25"],b:["finra"],notB:["federal reserve","the fed"]}}],model:"Regulation T initial margin is 50%, set by the Federal Reserve. FINRA's minimum maintenance for long positions is 25%. Swapping the two regulators or the two numbers is the classic trap.",rule:"Reg T 50% = Fed. Maintenance 25% = FINRA."},
+{topic:"Reg T margin",unit:7,prompt:"Two numbers, two regulators: state the initial margin requirement and who sets it, and the long maintenance requirement and who sets that.",groups:[{k:"initial 50% — set by the Federal Reserve",bind:{a:["50"],b:["federal reserve","the fed"," fed "],notB:["finra"],role:["initial"],otherRole:["maintenance"]}},{k:"maintenance 25% — set by FINRA",bind:{a:["25"],b:["finra"],notB:["federal reserve","the fed"],role:["maintenance"],otherRole:["initial"]}}],model:"Regulation T initial margin is 50%, set by the Federal Reserve. FINRA's minimum maintenance for long positions is 25%. Swapping the two regulators or the two numbers is the classic trap.",rule:"Reg T 50% = Fed. Maintenance 25% = FINRA."},
 {topic:"Bond risk",unit:3,prompt:"Bond A: 30-year, zero coupon. Bond B: 30-year, 8% coupon. Bond C: 5-year, zero coupon. Which bond's price moves most when yields change, and what concept explains it?",groups:[{k:"Bond A / the 30-year zero",any:["bond a","30-year zero","thirty-year zero","the zero"]},{k:"duration",any:["duration"]},{k:"long maturity + no coupon = highest sensitivity",any:["longest","no coupon","zero coupon","highest duration","most sensitive"]}],model:"Bond A. Duration — price sensitivity to yield changes — rises with maturity and falls with coupon size. The 30-year zero-coupon bond has the highest duration, so its price moves the most for a given yield change.",rule:"Duration: up with maturity, down with coupon."},
 {topic:"Communications",unit:7,prompt:"A firm emails a sales piece to 40 retail investors this month. What is this called under FINRA rules, what approval does it need, and what are the two threshold numbers?",groups:[{k:"retail communication",any:["retail communication"]},{k:"principal approval before use",any:["principal","approval before","approved before","pre-approval","prior approval"]},{k:"more than 25 investors",any:["25"]},{k:"within 30 days",any:["30"]}],model:"It is a retail communication: written material distributed to more than 25 retail investors within any 30-calendar-day period. A principal must approve it before use. 25 or fewer would be correspondence, under a different standard.",rule:"Retail communication: >25 retail investors / 30 days, principal pre-approval."},
 {topic:"Callable bonds / yield to worst",unit:3,prompt:"You buy a callable bond at a premium. Which yield governs your expected return and why?",groups:[{k:"yield to call",any:["yield to call","ytc","to call"]},{k:"issuer will call it / lower of YTC and YTM",any:["call","lower","worst"]}],model:"Yield to call governs. At a premium, the issuer is likely to call the bond at the first call date, cutting the return short, so YTC is lower than YTM — and the lower figure (yield to worst) is the honest one to quote and expect.",rule:"Premium bond: YTC (yield to worst) governs."},
@@ -717,7 +736,7 @@ function gradeShort(q,text){
  q.groups.forEach(g=>{ let hit=false;
    if(g.bind){ const sents=t.split(/[.!?]+/); const posIn=(s,arr)=>arr.flatMap(x=>{ const out=[]; let i=s.indexOf(x); while(i>=0){out.push(i); i=s.indexOf(x,i+1)} return out });
      const dIn=(s,A,B)=>{ let m=1e9; A.forEach(a=>B.forEach(b=>{ m=Math.min(m,Math.abs(a-b)) })); return m };
-     hit=sents.some(s=>{ const A=posIn(s,g.bind.a); if(!A.length) return false; const db=dIn(s,A,posIn(s,g.bind.b)); if(db>1e8) return false; const dn=dIn(s,A,posIn(s,g.bind.notB||[])); return db<dn }); }
+     hit=sents.some(s=>{ const A=posIn(s,g.bind.a); if(!A.length) return false; const db=dIn(s,A,posIn(s,g.bind.b)); if(db>1e8) return false; const dn=dIn(s,A,posIn(s,g.bind.notB||[])); const dr=g.bind.role?dIn(s,A,posIn(s,g.bind.role)):0; const dOther=g.bind.otherRole?dIn(s,A,posIn(s,g.bind.otherRole)):1e9; if(g.bind.role&&dr>=dOther) return false; return db<dn }); }
    else hit=g.any.some(s=>t.includes(s));
    (hit?hits:missed).push(g.k) });
  let total=q.groups.length, got=hits.length;
@@ -733,18 +752,19 @@ function answerShort(){ if(answered)return; const ta=$("shortAns"); const text=(
  if(full){score++;store.xp+=Math.round(20*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1))}
  else if(g.verdict==="partial"){score+=0.5;store.xp+=8}
  const key=current.topic+current.text.slice(0,40);
- if(!full){ store.missed[key]={sec:0,topic:current.topic,text:current.text,choices:["(short response) "+current.model],answer:0,explain:current.model,rule:current.rule,type:"short",groups:current.groups,num:current.num,model:current.model} }
- $("explain").innerHTML=`<b>${full?" Full credit.":g.verdict==="partial"?"🟡 Partial credit — the shape is there, a piece is missing.":" Not yet — this is exactly the gap the teacher hunts."}</b>
+ if(full){ const m=store.missed[key]; if(m){ m._cleared=(m._cleared||0)+1; if(m._cleared>=2)delete store.missed[key] } }
+ else{ store.missed[key]={sec:0,topic:current.topic,unit:current.unit,diff:current.diff,text:current.text,choices:["(short response) "+current.model],answer:0,explain:current.model,rule:current.rule,type:"short",groups:current.groups,num:current.num,model:current.model,ts:Date.now()} }
+ $("explain").innerHTML=`<b>${full?"Full credit.":g.verdict==="partial"?"Partial credit — the shape is there, a piece is missing.":"Not yet — this is exactly the gap the teacher hunts."}</b>
  <br> You covered: ${g.hits.length?g.hits.join(" • "):"—"}<br> Missing: ${g.missed.length?g.missed.join(" • "):"nothing"}
  <br><br> <b>Model answer:</b> ${current.model}<br> <b>Rule:</b> ${current.rule}`;
  $("explain").classList.remove("hidden"); $("nextBtn").classList.remove("hidden"); save();
- registerGap(current,full);
+ registerGap(current,full);trackMissStreak(full);
  speak((full?"Full credit. ":g.verdict==="partial"?"Partial credit. ":"Not yet. ")+"The model answer is: "+current.model);
 }
 
 /* ============ v2: TEACHER REPORT ============ */
-function showReport(){ $("home").classList.add("hidden");$("lessons").classList.add("hidden");$("units").classList.add("hidden");$("result").classList.add("hidden");
- const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
+function showReport(){ ["home","lessons","units","result","quiz"].forEach(id=>$(id).classList.add("hidden"));
+ const totA=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).a,0), totC=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).c,0);
  $("report").innerHTML=`<div class="card" style="margin-bottom:12px"><h3 style="margin:0"> Teacher Report</h3>
  <p class="mut">Ability rating (Elo-style, from difficulty + results): <b>${store.t.theta}</b> • Overall: <b>${totA?Math.round(totC/totA*100):0}%</b> across ${totA} answers • Badges: ${store.t.badges.length?store.t.badges.join(" • "):"none yet — clear a unit or run a Perfect Run"}</p><button class="ghost" onclick="speakReport()"> Hear my report</button>
  <p class="mut">How your teacher reads you: repeated slow misses = a concept you truly don't own (lesson assigned). Fast misses = trap-guessing (slow down). Slow corrects = knowledge without speed (timed drills). The model updates after every single answer.</p></div>`
@@ -761,20 +781,21 @@ function showReport(){ $("home").classList.add("hidden");$("lessons").classList.
 store.t.openGaps=store.t.openGaps||{}; store.t.topicMiss=store.t.topicMiss||{};
 function showToast(msg){ const t=$("toast"); if(!t)return; t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),3200) }
 function registerGap(q,correct){
+ if(mode==="zero"||mode==="placement") return;
  store.t.topicMiss=store.t.topicMiss||{};
  if(!correct){ store.t.topicMiss[q.topic]=(store.t.topicMiss[q.topic]||0)+1;
    if(unitStats(q.unit).bkt<0.55||store.t.topicMiss[q.topic]>=2){ store.t.openGaps[q.topic]={unit:q.unit,topic:q.topic}; save(); } }
 }
-function trackMissStreak(right){ if(!right){ if(window._ms&&window._ms.u===current.unit)window._ms.c++; else window._ms={u:current.unit,c:1} } else window._ms=null }
+function trackMissStreak(right){ if(mode==="zero"||mode==="placement") return; if(!right){ if(window._ms&&window._ms.u===current.unit)window._ms.c++; else window._ms={u:current.unit,c:1} } else window._ms=null }
 function gapBtn(){ const ks=Object.keys(store.t.openGaps||{}); return ks.length?`<button class="pink" onclick="closeFirstGap()"> Close a gap now (${ks.length} open)</button>`:"" }
 function closeFirstGap(){ const ks=Object.keys(store.t.openGaps||{}); if(ks.length) startGapClose(ks[0]) }
 function startGapClose(topic){
- const info=(store.t.openGaps||{})[topic]; const u=info?info.unit:(UNIT_BY_TOPIC[topic]||7);
+ const info=(store.t.openGaps||{})[topic]; let u=info&&Number.isInteger(info.unit)&&info.unit>=1&&info.unit<=8?info.unit:(UNIT_BY_TOPIC[topic]||7); if(!UNITS[u-1])u=7;
  window._gapTopic=topic; window._gapUnit=u;
  const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
  const ex=gi.length?GEN[gi[0]]():null; const exp=ex?prepare(ex):null;
  ["home","lessons","report","result","quiz"].forEach(id=>$(id).classList.add("hidden")); $("units").classList.remove("hidden");
- $("units").innerHTML=`<div class="card lesson"><div class="tag"> GAP CLOSER • ${topic}</div>
+ $("units").innerHTML=`<div class="card lesson"><div class="tag">GAP CLOSER • ${topic}</div>
  <h3>Step 1 — Re-learn it, shorter and sharper</h3><p>${UNITS[u-1].lesson}</p>
  ${exp?`<h3>Step 2 — Worked example (watch the trap spring)</h3><p><b>${exp.text}</b></p><p> Correct: <b>${exp.choices[exp.answer]}</b></p><div class="explain">${exp.explain}<br> ${exp.rule}</div>`:""}
  <h3>Step 3 — Prove it's closed</h3><p class="mut">Three fresh questions on this exact concept, numbers re-rolled. Get at least 2 of 3 and the gap closes. Miss, and we loop — that's the point.</p>
@@ -782,19 +803,32 @@ function startGapClose(topic){
  speak("Gap closer. "+topic+". First, the lesson again, shorter and sharper. Then a worked example. Then you prove it is closed.");
 }
 function beginGapDrill(){ const topic=window._gapTopic; const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
- mode="gap"; let qs=[]; if(gi.length){ while(qs.length<3) qs.push(GEN[pick(gi)]()) }
+ mode="gap"; let qs=[]; if(gi.length){ let guard=0; while(qs.length<3&&guard++<80){ const q=GEN[pick(gi)](); if(!qs.some(x=>x.text===q.text))qs.push(q) } }
  while(qs.length<3) qs.push(GEN[R(0,GEN.length-1)]());
  quiz=qs.map(prepare); beginQuiz(); }
-function coachText(){ const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
+function coachText(){ if(!store.zero||!store.zero.done)return "New here? Start with the first trade primer: order types, settlement, cash versus margin, and a three question check. Then I will place you."; if(!store.t.placed)return "Next, take the placement check. Ten questions across all eight units so I can see what you already own."; const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
  return "Your weakest unit is "+UNITS[weak-1].n+", at "+Math.round(unitStats(weak).bkt*100)+" percent mastery. "+diagnose(weak).replace(/[]/g,"") }
-function smartContinue(){ const gaps=Object.keys(store.t.openGaps||{});
+function startZero(){
+ ["home","result","units","quiz","report"].forEach(id=>$(id).classList.add("hidden")); $("lessons").classList.remove("hidden");
+ $("lessons").innerHTML=`<div class="card lesson"><div class="tag">ZERO → FIRST TRADE</div><h3>How a trade actually works</h3><p class="mut">Five plain-English cards, then a 3-question check. I will use it to place you.</p></div>
+ <div class="card lesson"><h3>1. Account, ticket, execution, settlement</h3><p>A brokerage account holds your cash and securities. An order ticket says buy or sell, symbol, quantity, order type, and time in force. The broker routes it; execution is the fill. US equities settle <b>T+1</b> — cash and shares move the next business day. The broker holds shares in book-entry form at DTCC.</p></div>
+ <div class="card lesson"><h3>2. The four orders you must know</h3><p><b>Market:</b> fills now, price is not guaranteed. <b>Limit:</b> price is capped, execution is not guaranteed. <b>Stop:</b> waits for a trigger, then becomes a market order. <b>Stop-limit:</b> waits for a trigger, then becomes a limit order. The bid is what buyers pay; the ask is what sellers accept; the spread is the cost of immediacy.</p></div>
+ <div class="card lesson"><h3>3. Cash, margin, and the two regulators</h3><p>In a cash account you must pay before you sell what you bought with unsettled funds. Margin is a loan from the broker: Reg T initial margin is <b>50%</b>, set by the <b>Federal Reserve</b>; FINRA's long maintenance minimum is <b>25%</b>. A pattern day trader needs <b>$25,000</b> equity. Selling before paying is freeriding; three violations in 12 months can restrict the account to settled funds for 90 days.</p></div>
+ <div class="card lesson"><h3>4. What can go wrong</h3><p>Market risk, credit risk, liquidity risk, interest-rate risk, inflation risk, and opportunity cost. Diversification reduces company-specific risk, not systematic risk. Options and futures add leverage, which magnifies both gains and losses. Never risk money you cannot afford to lose while learning.</p></div>
+ <div class="card lesson"><h3>5. The exam map</h3><p>The SIE weights <b>Capital Markets 16%</b>, <b>Products and Risks 44%</b>, <b>Trading, Accounts and Prohibited Activities 31%</b>, and <b>Regulatory Framework 9%</b>. This app turns that into 8 units, adaptive drills, a missed bank, and a teacher that diagnoses why you miss — not just what you missed.</p></div>
+ <div class="row"><button class="pink" onclick="startZeroQuiz()">Take the 3-question check</button><button class="ghost" onclick="backHome()">Back home</button></div>`;
+ speak("First trade primer. An account holds your cash and securities. An order ticket says buy or sell, symbol, quantity, order type, and time in force. A market order fills now but does not guarantee price. A limit order caps price but does not guarantee a fill. A stop becomes a market order after its trigger. US equities settle T plus one. In a cash account, pay before you sell unsettled purchases. Margin is a loan: Reg T initial margin is fifty percent, set by the Federal Reserve; FINRA maintenance is twenty-five percent. Now take the three question check and I will place you.");
+}
+function startZeroQuiz(){ const ids=GEN.map((g,i)=>i).filter(i=>{const q=GEN[i]();return q.sec>=1&&q.sec<=3&&(DIFF_BY_TOPIC[q.topic]||2)<=1}); const picks=shuffle(ids).slice(0,3); while(picks.length<3)picks.push(R(0,GEN.length-1)); quiz=picks.map(i=>prepare(GEN[i]())); mode="zero"; beginQuiz(); }
+function startPlacement(){ const ids=[]; for(let u=1;u<=8;u++){ const pool=GEN.map((g,i)=>i).filter(i=>{const q=GEN[i]();return (UNIT_BY_TOPIC[q.topic]||7)===u}); if(pool.length)ids.push(pick(pool)); } while(ids.length<10)ids.push(R(0,GEN.length-1)); quiz=shuffle(ids).slice(0,10).map(i=>prepare(GEN[i]())); mode="placement"; beginQuiz(); }
+function smartContinue(){ if(!store.zero||!store.zero.done)return startZero(); if(!store.t.placed)return startPlacement(); const gaps=Object.keys(store.t.openGaps||{});
  if(gaps.length) return startGapClose(gaps[0]);
  for(let u=1;u<=8;u++) if(!store.t.done[u]) return showUnitLesson(u);
  startFinalReview(); }
-function speakReport(){ const totA=Object.values(store.t.units).reduce((a,s)=>a+s.a,0), totC=Object.values(store.t.units).reduce((a,s)=>a+s.c,0);
+function speakReport(){ const totA=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).a,0), totC=[1,2,3,4,5,6,7,8].reduce((a,u)=>a+unitStats(u).c,0);
  const weak=[1,2,3,4,5,6,7,8].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0];
  speak("Teacher report. Your ability rating is "+store.t.theta+". Overall accuracy "+(totA?Math.round(totC/totA*100):0)+" percent across "+totA+" answers. Weakest unit: "+UNITS[weak-1].n+". "+diagnose(weak).replace(/[]/g,"")+" Open gaps: "+Object.keys(store.t.openGaps||{}).length+". Units cleared: "+Object.keys(store.t.done||{}).length+" of 8."); }
 
 AudioMan.preload(); renderHome();
-fetch("/api/health").then(r=>r.json()).then(d=>{if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=` GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`}).catch(()=>{});
+fetch("/api/health").then(r=>r.json()).then(d=>{const eng=(d.engine||""); if(d.ok&&eng.includes("onnx"))$("gpuPill").textContent=`Voice: Kokoro ONNX • ${d.cached_clips} clips saved`; else if(d.ok&&d.gpu&&d.gpu.cuda)$("gpuPill").textContent=`GPU: ${d.gpu.device} • ${d.cached_clips} clips saved`;else $("gpuPill").textContent="Voice: browser (local TTS unavailable)"}).catch(()=>{$("gpuPill").textContent="Voice: browser (server offline)"});
 </script></body></html>

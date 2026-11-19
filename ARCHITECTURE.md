@@ -5,20 +5,21 @@ One light localhost app, five clean layers. No build step, no framework, no serv
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ UI VIEWS (static/index.html)                                │
-│ Home+Coach • Path Map • Lesson • Quiz • Gap Session •       │
-│ Teacher Report • Exam • Results                             │
+│ Zero→First Trade Primer • Home+Coach • Path Map • Lesson •  │
+│ Quiz • Gap Session • Teacher Report • Exam • Results        │
 ├─────────────────────────────────────────────────────────────┤
 │ AUDIO MANAGER                                               │
-│ Saved clips (static/audio/*.mp3, preloaded) for fixed text  │
+│ Saved clips (static/audio/*.wav, preloaded) for fixed text  │
 │ + live TTS queue for dynamic text:                          │
-│   localhost → POST /api/tts (Kokoro on RTX, disk-cached)    │
-│   fallback  → browser speechSynthesis                       │
+│   localhost → POST /api/tts (Kokoro ONNX/GPU, disk-cached)   │
+│   fallback  → browser speechSynthesis (circuit-broken after │
+│   two TTS failures so a dead server is not hammered)        │
 │ One voice at a time, queue never overlaps, stop on navigate │
 ├─────────────────────────────────────────────────────────────┤
 │ QUIZ ENGINE                                                 │
-│ 35 MC generators (numbers re-rolled per run) + 12 short-    │
+│ 83 MC generators (numbers re-rolled per run) + 12 short-    │
 │ response prompts (Very Hard / Master) with rubric grading:  │
-│ concept groups (synonyms) + numeric answers with tolerance  │
+│ concept groups + numeric tolerance + regulator-role binding │
 ├─────────────────────────────────────────────────────────────┤
 │ ML TEACHER                                                  │
 │ Per answer: correctness + milliseconds + difficulty         │
@@ -35,9 +36,15 @@ One light localhost app, five clean layers. No build step, no framework, no serv
 │ theta, badges, open/closed gaps, units cleared, daily goal) │
 └─────────────────────────────────────────────────────────────┘
 Server (server.py, stdlib only): static files + /api/health + /api/tts.
-GPU engine (tts_engine.py): Kokoro-82M default, XTTS v2 optional,
-every synthesized clip cached in tts_cache/ by content hash.
-CI (.github/workflows/compile.yml): py_compile + node --check + tools/verify.py on every push.
+Security (security.py + server.py): loopback bind, Host allowlist, Origin and
+Sec-Fetch-Site checks, JSON-only POST, 64 KB cap, thread-safe rate limit,
+exact clip routing, atomic cache writes, generic error responses.
+TTS engine (tts_engine.py): kokoro-onnx int8 (af_heart) by default, torch
+Kokoro or XTTS v2 optional; every synthesized clip cached in tts_cache/ by
+content hash. tools/compose_audio.py rebuilds static/audio/*.wav from the
+curriculum text in index.html and refreshes manifest byte sizes.
+CI (.github/workflows/compile.yml): py_compile + node --check + verify.py +
+tests/test_security.py + tests/app.test.js + tests/tests9.js on every push.
 ```
 
 ## Design rules
