@@ -44,7 +44,7 @@ def main():
         ".agents/skills/sie-verify/SKILL.md",
         ".agents/skills/sie-verify/scripts/run_all.ps1",
         ".agents/skills/sie-curriculum-author/SKILL.md",
-        "static/index.html", "static/favicon.svg", "static/css/app.css",
+        "static/index.html", "static/favicon.svg", "static/favicon.ico", "static/css/app.css",
         "static/audio/manifest.json", "static/audio/lessons/manifest.json",
         "static/js/app.js",
         "static/js/core/util.js", "static/js/core/store.js", "static/js/core/audio.js",
@@ -56,7 +56,7 @@ def main():
         "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",
         "tools/content_lib.py", "tools/validate_content.py", "tools/verify.py",
         "tools/verify_dom.py", "tools/verify_exhaustive.py", "tools/verify_hell.py",
-        "tools/compose_audio.py", "tools/visual_capture.py",
+        "tools/compose_audio.py", "tools/visual_capture.py", "tools/launch.py",
         ".github/workflows/compile.yml", ".github/workflows/pages.yml",
     ] + [f"static/js/data/units/unit-{i}.js" for i in range(9)]
 

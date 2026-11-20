@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 .shots/
+.sie_server.pid
 tts_cache/*.wav
 
 # local TTS model files (download with tools/compose_audio.py --help)

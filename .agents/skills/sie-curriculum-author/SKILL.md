@@ -60,4 +60,4 @@ If you modify text inside [overviews.js](../../../static/js/data/overviews.js) o
 
 ## 5. Validate
 
-Run the `sie-verify` skill ([run_all.ps1](../sie-verify/scripts/run_all.ps1)) to confirm lesson schema validity, exam uniqueness (`75` unique stems, `12 / 33 / 23 / 7` mix across all 5 difficulty tiers), `codespell`, WAV/MP3 byte parity, and `413`-hash `tools/bit_manifest.json` integrity.
+Run the `sie-verify` skill ([run_all.ps1](../sie-verify/scripts/run_all.ps1)) to confirm lesson schema validity, exam uniqueness (`75` unique stems, `12 / 33 / 23 / 7` mix across all 5 difficulty tiers), `codespell`, WAV/MP3 byte parity, and `415`-hash `tools/bit_manifest.json` integrity.

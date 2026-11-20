@@ -1,15 +1,15 @@
 {
   ".agents/skills/sie-curriculum-author/SKILL.md": {
     "bytes": 3895,
-    "sha256": "61d744b530c72814afcf5eb9cd269a6d7f60ff1d2f2e8d14db51d90edb96ac72"
+    "sha256": "907f1f5da903326bde221a566e5a799c84a75a638028e2247e775fe70355c3d1"
   },
   ".agents/skills/sie-verify/SKILL.md": {
     "bytes": 2195,
-    "sha256": "2caeca0eab975e5ad1da9107348f3a51955a835efab3c0872e4393669ae0ae08"
+    "sha256": "0a1b2c05c688d02b2bdcfdc402aba88c58a04ec05f8b2ca2f7c3cb32a9f7575f"
   },
   ".agents/skills/sie-verify/scripts/run_all.ps1": {
-    "bytes": 4731,
-    "sha256": "09f1b673140ad337c03e42f6a3a7bb559d0b413b3281df40bc6d202c6cf6fc42"
+    "bytes": 4771,
+    "sha256": "93fe3dc8cf447ad024395c19d75199868bd3ef02dd37c810ae10c470650e6c55"
   },
   ".github/workflows/compile.yml": {
     "bytes": 1577,
@@ -21,7 +21,7 @@
   },
   "AGENTS.md": {
     "bytes": 6573,
-    "sha256": "c122e255e3d21eac3f75c515d9db843e456a64f4049796feaa65959c5c1eae7e"
+    "sha256": "c457273e68fd9d3d67b8ec17ceff320d1a2a1f0934c8f3263b4cd33c7bd50611"
   },
   "ARCHITECTURE.md": {
     "bytes": 4703,
@@ -1487,6 +1487,10 @@
     "bytes": 15033,
     "sha256": "03812defe71cb777c9fb1587247e182afc7f9314e06a63df26268d1971104fc1"
   },
+  "static/favicon.ico": {
+    "bytes": 17490,
+    "sha256": "564cf3542ebf1099339b83606766fa280f2efba94cdb026161a043fdb632dda9"
+  },
   "static/favicon.svg": {
     "bytes": 241,
     "sha256": "da78bfe37347c7ea5985f1f65be4fa11fc337dd1bd0ea8af20260bc5496294a1"
@@ -1622,6 +1626,10 @@
   "tools/content_lib.py": {
     "bytes": 7840,
     "sha256": "127e70eac791c9bb1cad463bb487c4bc2ea0cdd12ef796586b5e0e16b9dddaae"
+  },
+  "tools/launch.py": {
+    "bytes": 7006,
+    "sha256": "e53eed7e97b060029b5d7862127f75e4e77037172af80700cf27c05034a50a4b"
   },
   "tools/validate_content.py": {
     "bytes": 1486,

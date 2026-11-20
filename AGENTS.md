@@ -35,4 +35,4 @@ These rules apply across `sie-mastery-app` (canonical branch: `main`). Keep chan
 
 ## Verification Gate
 
-- Before committing any change, run the full 12-suite verification pipeline via the `sie-verify` skill (`powershell -ExecutionPolicy Bypass -File .agents/skills/sie-verify/scripts/run_all.ps1`) and ensure `codespell`, Playwright DOM/exhaustive/chaos checks (`tools/verify_hell.py`, `0` console errors), idempotent `413`-hash `tools/bit_manifest.json` verification, and clean port teardown (`PORT 8765` closed) all pass.
+- Before committing any change, run the full 12-suite verification pipeline via the `sie-verify` skill (`powershell -ExecutionPolicy Bypass -File .agents/skills/sie-verify/scripts/run_all.ps1`) and ensure `codespell`, Playwright DOM/exhaustive/chaos checks (`tools/verify_hell.py`, `0` console errors), idempotent `415`-hash `tools/bit_manifest.json` verification, and clean port teardown (`PORT 8765` closed) all pass.

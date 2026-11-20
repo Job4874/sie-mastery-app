@@ -17,7 +17,7 @@ function Invoke-Step {
 Push-Location $Root
 try {
     Invoke-Step "1. py_compile + JS syntax + content schema" {
-        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tests/test_security.py tests/grammar_audit.py
+        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tools/visual_capture.py tools/launch.py tests/test_security.py tests/grammar_audit.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         python tools/validate_content.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
