@@ -1,11 +1,11 @@
 {
   ".agents/skills/sie-curriculum-author/SKILL.md": {
-    "bytes": 2624,
-    "sha256": "fe2a28aaa93fb9c7efd69ba144838f746f1ca45f3072fe6a25e86b4b2191dec5"
+    "bytes": 3895,
+    "sha256": "61d744b530c72814afcf5eb9cd269a6d7f60ff1d2f2e8d14db51d90edb96ac72"
   },
   ".agents/skills/sie-verify/SKILL.md": {
-    "bytes": 1819,
-    "sha256": "0fe9243c2e7ef16c03c6883d1589c3f2a0261136765da087d8b2363fc6f03f07"
+    "bytes": 2195,
+    "sha256": "2caeca0eab975e5ad1da9107348f3a51955a835efab3c0872e4393669ae0ae08"
   },
   ".agents/skills/sie-verify/scripts/run_all.ps1": {
     "bytes": 4731,
@@ -20,16 +20,16 @@
     "sha256": "b8abb9adc4cd0f4d621558edebdf1eb16df9ea6d9874ce2615db9ed5a918f461"
   },
   "AGENTS.md": {
-    "bytes": 4886,
-    "sha256": "7c97ffca4bdca4d08e8c4f18b94b338d4e043060207735885aa12154cb656927"
+    "bytes": 6573,
+    "sha256": "c122e255e3d21eac3f75c515d9db843e456a64f4049796feaa65959c5c1eae7e"
   },
   "ARCHITECTURE.md": {
     "bytes": 4703,
     "sha256": "89524712d2fa3f25b63244867f307a74bc5104f302389e4a5017842e45cc6bcb"
   },
   "PUSH_AUDIO.md": {
-    "bytes": 1724,
-    "sha256": "7d3274d17e7bfcbda26767f2c238be5a9d5f726b210a0c00f2cd152bb3ca9b48"
+    "bytes": 2789,
+    "sha256": "09a2c5ea2957c5302a064ad27e8aa9bd3cf7e56ce4b5a0402fbbf928b0f5539f"
   },
   "README.md": {
     "bytes": 8746,
@@ -1644,8 +1644,8 @@
     "sha256": "e9e15f92567b03194d69eb568579bab01b947b34c1cdd60c3135924741eb73a4"
   },
   "tools/visual_capture.py": {
-    "bytes": 1538,
-    "sha256": "cbe85d51f319f1dd974593cba95cefd8db3db407ecce4f52b40616bfa6e22e4d"
+    "bytes": 1828,
+    "sha256": "8c5086a88946f13f1f4df2e1a880574de35b6283014f88c76c8d878753bce9e5"
   },
   "tts_engine.py": {
     "bytes": 6734,
