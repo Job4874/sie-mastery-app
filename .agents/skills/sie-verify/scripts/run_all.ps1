@@ -17,7 +17,7 @@ function Invoke-Step {
 Push-Location $Root
 try {
     Invoke-Step "1. py_compile + JS syntax + content schema" {
-        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tools/visual_capture.py tools/launch.py tests/test_security.py tests/grammar_audit.py
+        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tools/verify_asymmetric.py tools/visual_capture.py tools/launch.py tests/test_security.py tests/grammar_audit.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         python tools/validate_content.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -76,9 +76,10 @@ try {
         Invoke-Step "9. tools/verify_dom.py" { python tools/verify_dom.py }
         Invoke-Step "10. tools/verify_exhaustive.py" { python tools/verify_exhaustive.py }
         Invoke-Step "11. tools/verify_hell.py" { python tools/verify_hell.py }
-        Invoke-Step "12a. tools/verify_bits.py (pass 1)" { python tools/verify_bits.py }
+        Invoke-Step "12. tools/verify_asymmetric.py (browser + hardware + security)" { python tools/verify_asymmetric.py --use-running-server }
+        Invoke-Step "13a. tools/verify_bits.py (pass 1)" { python tools/verify_bits.py }
         $hash1 = (Get-FileHash (Join-Path $Root "tools/bit_manifest.json") -Algorithm SHA256).Hash
-        Invoke-Step "12b. tools/verify_bits.py (pass 2)" { python tools/verify_bits.py }
+        Invoke-Step "13b. tools/verify_bits.py (pass 2)" { python tools/verify_bits.py }
         $hash2 = (Get-FileHash (Join-Path $Root "tools/bit_manifest.json") -Algorithm SHA256).Hash
         if ($hash1 -ne $hash2) {
             throw "tools/bit_manifest.json is not idempotent across consecutive runs ($hash1 vs $hash2)"
@@ -94,7 +95,7 @@ try {
         }
     }
 
-    Write-Host "`n=== ALL 12 SIE-VERIFY SUITES PASSED ==="
+    Write-Host "`n=== ALL 13 SIE-VERIFY SUITES PASSED ==="
 } finally {
     Pop-Location
 }

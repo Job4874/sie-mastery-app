@@ -1,15 +1,15 @@
 {
   ".agents/skills/sie-curriculum-author/SKILL.md": {
     "bytes": 3895,
-    "sha256": "907f1f5da903326bde221a566e5a799c84a75a638028e2247e775fe70355c3d1"
+    "sha256": "571039bb7dc72bb94724bd8d7249e679c738e257a0fb0ebd898816b8ad5d435a"
   },
   ".agents/skills/sie-verify/SKILL.md": {
-    "bytes": 2195,
-    "sha256": "0a1b2c05c688d02b2bdcfdc402aba88c58a04ec05f8b2ca2f7c3cb32a9f7575f"
+    "bytes": 2368,
+    "sha256": "06ad60087f57d9dc36788d44770a72128198f287052800c90f3160df05b95434"
   },
   ".agents/skills/sie-verify/scripts/run_all.ps1": {
-    "bytes": 4771,
-    "sha256": "93fe3dc8cf447ad024395c19d75199868bd3ef02dd37c810ae10c470650e6c55"
+    "bytes": 4943,
+    "sha256": "c5b6d8989d0eb3704a0e1e5d62eba5fd709d66ab5bce55e269671cfca6158751"
   },
   ".github/workflows/compile.yml": {
     "bytes": 1577,
@@ -20,8 +20,8 @@
     "sha256": "b8abb9adc4cd0f4d621558edebdf1eb16df9ea6d9874ce2615db9ed5a918f461"
   },
   "AGENTS.md": {
-    "bytes": 6573,
-    "sha256": "c457273e68fd9d3d67b8ec17ceff320d1a2a1f0934c8f3263b4cd33c7bd50611"
+    "bytes": 6631,
+    "sha256": "d5f322fbf6471acc19861dbd00e35c96adf467a116a91e9bc033eeafa945e35f"
   },
   "ARCHITECTURE.md": {
     "bytes": 4703,
@@ -1638,6 +1638,10 @@
   "tools/verify.py": {
     "bytes": 3921,
     "sha256": "4a60bbbbd3fe5970f12407a01846664f1ef9f09e2ef177349d5d0cf9b41680cc"
+  },
+  "tools/verify_asymmetric.py": {
+    "bytes": 30153,
+    "sha256": "6a11d81a42b49afbf9025a2be06a2831c3f6518706562adabaa905d69a912310"
   },
   "tools/verify_dom.py": {
     "bytes": 9162,

@@ -55,7 +55,7 @@ def main():
         "tests/load_app.js", "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",
         "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",
         "tools/content_lib.py", "tools/validate_content.py", "tools/verify.py",
-        "tools/verify_dom.py", "tools/verify_exhaustive.py", "tools/verify_hell.py",
+        "tools/verify_dom.py", "tools/verify_exhaustive.py", "tools/verify_hell.py", "tools/verify_asymmetric.py",
         "tools/compose_audio.py", "tools/visual_capture.py", "tools/launch.py",
         ".github/workflows/compile.yml", ".github/workflows/pages.yml",
     ] + [f"static/js/data/units/unit-{i}.js" for i in range(9)]
