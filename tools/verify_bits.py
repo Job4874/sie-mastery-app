@@ -49,7 +49,7 @@ def main():
         "static/js/app.js",
         "static/js/core/util.js", "static/js/core/store.js", "static/js/core/audio.js",
         "static/js/core/teacher.js", "static/js/core/quiz.js",
-        "static/js/data/registry.js", "static/js/data/questions.js", "static/js/data/short.js",
+        "static/js/data/registry.js", "static/js/data/questions.js", "static/js/data/extreme.js", "static/js/data/short.js",
         "static/js/data/library.js", "static/js/data/overviews.js",
         "static/js/ui/router.js", "static/js/ui/views.js",
         "tests/load_app.js", "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",

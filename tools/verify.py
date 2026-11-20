@@ -34,7 +34,7 @@ for rel in scripts:
         combined_js.append(p.read_text(encoding="utf-8"))
 all_js = "\n".join(combined_js)
 
-for marker in ["const GEN=", "const LESSONS=", "const UNIT_OVERVIEWS=", "const SHORT=",
+for marker in ["const GEN=", "const EXTREME_GEN=", "const LESSONS=", "const UNIT_OVERVIEWS=", "const SHORT=",
                "function startQuiz", "function recordPerf", "function diagnose",
                "function adaptiveSet", "const AudioMan=", "function gradeShort",
                "function answerShort", "const Router=", "function runSelfCheck"]:

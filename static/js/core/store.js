@@ -52,8 +52,9 @@ function loadPrefs(){
  let p={}; try{ p=JSON.parse(localStorage.getItem(PREFS_KEY)||"{}"); }catch(e){ p={}; }
  if(!isPlainObj(p)) p={};
  let rate=null; try{ rate=localStorage.getItem(VRATE_KEY); }catch(e){}
+ const rawLv=p.level==="master"?"extreme":p.level;
  return {
-  level:["easy","hard","veryhard","master"].includes(p.level)?p.level:"hard",
+  level:["easy","standard","hard","veryhard","extreme"].includes(rawLv)?rawLv:"hard",
   voice:Object.prototype.hasOwnProperty.call(VOICES,p.voice)?p.voice:"af_heart",
   voiceOn:p.voiceOn!==false,
   autoplay:p.autoplay===true,

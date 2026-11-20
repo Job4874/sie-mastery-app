@@ -15,7 +15,8 @@ static/
     core/quiz.js              Quiz & exam engine, timers, rubric grading, live self-check
     data/registry.js          SIE.registerUnit() + deterministic per-screen audio paths
     data/units/unit-0..8.js   42 step-through lessons / 266 screens (strict JSON inside registerUnit)
-    data/questions.js         89 dynamic MC generators + topic/unit/difficulty maps + levels
+    data/questions.js         89 dynamic MC generators + topic/unit/difficulty maps + 5 difficulty levels
+    data/extreme.js           33 Extremely Hard multi-step trap upgrades for normally easy exam topics
     data/short.js             12 short-response rubrics with clause-scoped regulator/role bindings
     data/library.js           6 "Why the rules exist" deep dives
     data/overviews.js         8 full-unit audio overviews

@@ -17,7 +17,7 @@ const ACTIONS={
  "trap":()=>startQuiz("trap",10),
  "missed":()=>startQuiz("missed",10),
  "exam":()=>startQuiz("exam",75),
- "set-level":el=>{ prefs.level=el.getAttribute("data-level"); savePrefs(); Router.render(); },
+ "set-level":el=>{ prefs.level=el.getAttribute("data-level"); savePrefs(); LP.screens=null; LP.picked={}; Router.render(); },
  "lesson-check":el=>lessonCheck(Number(el.getAttribute("data-i"))),
  "lesson-prev":()=>lessonGo(-1),
  "lesson-next":()=>lessonGo(1),
@@ -38,6 +38,7 @@ const ACTIONS={
  "reset-progress":()=>resetProgress()
 };
 const CHANGE_ACTIONS={
+ "set-level-select":el=>{ if(LEVELS[el.value]){ prefs.level=el.value; savePrefs(); LP.screens=null; LP.picked={}; Router.render(); } },
  "set-voice":el=>{ prefs.voice=el.value; savePrefs(); },
  "set-rate":el=>{ prefs.rate=parseFloat(el.value)||1; savePrefs(); try{audio.playbackRate=getVoiceRate()}catch(e){} },
  "set-voice-on":el=>{ prefs.voiceOn=el.checked; savePrefs(); if(!el.checked) stopAudio(); },

@@ -137,7 +137,8 @@ def test_focus_theme_lesson_shortcuts(page, vp_name):
     page.keyboard.press("f")
     page.keyboard.press("t")
 
-    # Lesson player keyboard navigation + check lock + audio clip
+    # Lesson player keyboard navigation + check lock + audio clip (test Extreme bonus trap screen too)
+    page.evaluate("prefs.level='extreme'; savePrefs()")
     page.goto(BASE + "/#/learn/unit/1/lesson/1", wait_until="networkidle")
     assert_clean_page(page, f"{vp_name}:u1-l1-s1")
     assert_no_overflow(page, vp_name, "lesson-player")
@@ -146,7 +147,10 @@ def test_focus_theme_lesson_shortcuts(page, vp_name):
     check("audio/lessons/u1-l1-s1.mp3" in page.evaluate("audio.src"), f"{vp_name}: u1-l1-s1.mp3 plays")
     page.evaluate("stopAudio()")
 
-    n_screens = page.evaluate("SIE.units[1].lessons[0].screens.length")
+    base_len = page.evaluate("SIE.units[1].lessons[0].screens.length")
+    n_screens = page.evaluate("LP.screens.length")
+    check(n_screens == base_len + 1 and page.evaluate("LP.screens.some(s => s.bonus && s.extremeTrap)"),
+          f"{vp_name}: Extremely Hard lesson adds bonus Extreme trap check ({base_len}->{n_screens})")
     for _ in range(n_screens):
         if page.locator("[data-action='lesson-check']").count():
             step_before = page.evaluate("LP.s")
@@ -158,6 +162,7 @@ def test_focus_theme_lesson_shortcuts(page, vp_name):
         page.keyboard.press("ArrowRight")
     page.wait_for_selector(".done-card", timeout=5000)
     check(page.evaluate("Boolean(store.lp['1-1'] && store.lp['1-1'].done)"), f"{vp_name}: keyboard completed Unit 1 Lesson 1")
+    page.evaluate("prefs.level='hard'; savePrefs()")
 
     # Quiz keyboard navigation (1-4, A-D, Enter, ArrowRight) + typing guard
     page.goto(BASE + "/#/practice", wait_until="networkidle")
@@ -182,11 +187,11 @@ def test_master_timeouts_ssn_and_missed(ctx, vp_name):
         page.goto(BASE + "/#/learn", wait_until="networkidle")
         page.evaluate("localStorage.clear()")
         page.reload(wait_until="networkidle")
-        page.evaluate("prefs.voiceOn=false; prefs.level='master'; savePrefs()")
+        page.evaluate("prefs.voiceOn=false; prefs.level='extreme'; savePrefs()")
         page.goto(BASE + "/#/practice", wait_until="networkidle")
 
-        # Force deterministic [short, mc] Master quiz
-        page.evaluate("beginSession('sprint',[prepareShort(SHORT[4]), prepare(GEN[0]())],{back:'#/practice',backLabel:'Practice',replay:()=>startQuiz('sprint',5)})")
+        # Force deterministic [short, mc] Extremely Hard quiz (45s per-question timer)
+        page.evaluate("beginSession('sprint',[prepareShort(SHORT[4]), prepare(hardenQuestion(GEN[0]()))],{back:'#/practice',backLabel:'Practice',replay:()=>startQuiz('sprint',5)})")
         page.wait_for_selector("#shortAns", timeout=5000)
 
         # Typing F/T inside textarea must NOT trigger shortcuts
@@ -201,17 +206,17 @@ def test_master_timeouts_ssn_and_missed(ctx, vp_name):
         page.click("[data-action='submit-short']")
         check(page.evaluate("!answered"), f"{vp_name}: SSN-only short submission blocked")
 
-        # Advance 61s -> short timeout
-        page.clock.run_for(61000)
+        # Advance 46s -> short timeout
+        page.clock.run_for(46000)
         check(page.evaluate("answered === true") and page.locator("#shortAns").is_disabled(),
-              f"{vp_name}: Master 60s short timeout locked textarea")
+              f"{vp_name}: Extreme 45s short timeout locked textarea")
         check("Time's up" in page.locator("#explain").inner_text(), f"{vp_name}: short timeout shows Time's up")
         page.click("#nextBtn")
 
-        # Advance 61s -> MC timeout
-        page.clock.run_for(61000)
+        # Advance 46s -> MC timeout
+        page.clock.run_for(46000)
         check(page.evaluate("answered === true") and "Time's up" in page.locator("#explain").inner_text(),
-              f"{vp_name}: Master 60s MC timeout scored & explained")
+              f"{vp_name}: Extreme 45s MC timeout scored & explained")
         page.click("#nextBtn")
         page.wait_for_selector("#result:not(.hidden)", timeout=5000)
 

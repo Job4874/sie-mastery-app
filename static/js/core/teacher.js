@@ -31,17 +31,19 @@ function prescribe(u){ const d=diagnose(u);
  return ["Unit quiz","#/practice/unit/"+u]; }
 function weakestUnit(){ return UNIT_IDS.slice().sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt)[0]; }
 function adaptiveSet(n,trapFirst){
- const L=LEVELS[curLevel()]||LEVELS.hard; const idxs=GEN.map((_,i)=>i);
+ const lv=curLevel(), L=LEVELS[lv]||LEVELS.hard; const idxs=GEN.map((_,i)=>i);
  const w=i=>{ const q0=GEN[i](); const u=UNIT_BY_TOPIC[q0.topic]||7, d=DIFF_BY_TOPIC[q0.topic]||2;
    let weight=(1-unitStats(u).bkt)*3+0.3;
-   if(L.trapOnly&&d<3) weight*=0.05; else if(d>L.maxDiff) weight*=0.15;
+   if(lv==="easy"){ if(d===1) weight*=2.2; else if(d>1) weight*=0.15; }
+   else if(lv==="standard"){ if(d===3) weight*=0.65; }
+   else if(L.trapOnly&&d<3){ weight*=EXTREME_GEN[q0.topic]?1.4:0.25; }
+   else if(d>L.maxDiff) weight*=0.15;
    if(store.t.openGaps&&store.t.openGaps[q0.topic]) weight*=2.5; if(trapFirst&&(i===0||i===1||i===2)) weight*=2; return weight };
  const chosen=[]; const pool=[...idxs];
  while(chosen.length<n&&pool.length){ const ws=pool.map(w); const tot=ws.reduce((a,b)=>a+b,0); let r=Math.random()*tot,k=0;
    while(k<ws.length-1&&r>ws[k]){r-=ws[k];k++} chosen.push(pool.splice(k,1)[0]); }
- const arr=chosen.map(i=>prepare(GEN[i]()));
- const lv=curLevel();
- if(lv==="veryhard"||lv==="master"){ const want=lv==="master"?Math.ceil(arr.length/2):Math.min(2,arr.length);
+ const arr=chosen.map(i=>{ const raw=GEN[i](); return prepare(L.hardenEasy?hardenQuestion(raw):raw); });
+ if(L.shortMix){ const want=lv==="extreme"?Math.ceil(arr.length/2):Math.min(2,arr.length);
    const weak=[...new Set(arr.map(q=>q.unit))].sort((a,b)=>unitStats(a).bkt-unitStats(b).bkt);
    let shorts=shuffle(SHORT.filter(s=>weak.includes(s.unit)).concat(SHORT.filter(s=>!weak.includes(s.unit))));
    for(let k=0;k<want&&k<shorts.length;k++) arr[arr.length-1-k]=prepareShort(shorts[k]); }
@@ -57,7 +59,7 @@ function awardBadges(){ window._newBadges=[]; const pct=quiz.length?score/quiz.l
  const avg=(window._qt&&window._qt.length)?window._qt.reduce((a,b)=>a+b,0)/window._qt.length/1000:999;
  const add=b=>{ if(!store.t.badges.includes(b)){store.t.badges.push(b);window._newBadges.push(b)} };
  if(pct===100)add("Perfect Run"); if(pct>=80&&avg<9)add("Speed Demon");
- if(pct>=80&&curLevel()==="master")add("Trap Slayer"); if(pct>=80&&mode==="unit")add("Unit Cleared");
+ if(pct>=80&&curLevel()==="extreme")add("Trap Slayer"); if(pct>=80&&mode==="unit")add("Unit Cleared");
  window._qt=[]; save(); }
 function coachLine(pct){
  const unitsInQuiz=[...new Set(quiz.map(q=>q.unit))].filter(u=>UNIT_IDS.includes(u));

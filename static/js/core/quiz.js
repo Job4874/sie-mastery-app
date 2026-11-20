@@ -3,46 +3,59 @@ let quiz=[],qi=0,score=0,mode="trap",timerInt=null,timeLeft=0,current=null,answe
 let session=null; /* {mode,title,back,backLabel,replay,finished} */
 const MODE_TITLES={trap:"Trap drill",sprint:"Sprint quiz",exam:"Practice exam",missed:"Missed questions",unit:"Unit quiz",gap:"Gap closer",final:"Final review",zero:"Start-here check",placement:"Placement check"};
 
-function buildExam(n){
+function buildExam(n,lv){
+ lv=lv||curLevel(); const L=LEVELS[lv]||LEVELS.hard;
  const weights={1:.16,2:.44,3:.31,4:.09},out=[];
- Object.keys(weights).forEach(s=>{const cnt=Math.round(n*weights[s]);const ids=GEN.map((g,i)=>i).filter(i=>GEN[i]().sec==s);
-  if(!ids.length)return; const seen=new Set(),pool=[];let guard=0,cursor=0;
-  while(pool.length<cnt&&guard++<cnt*80){const q=GEN[ids[cursor++%ids.length]]();if(!seen.has(q.text)){seen.add(q.text);pool.push(q)}}
-  while(pool.length<cnt)pool.push(GEN[pick(ids)]());
-  out.push(...pool)});
- while(out.length<n)out.push(GEN[R(0,GEN.length-1)]());
+ Object.keys(weights).forEach(s=>{
+  const cnt=Math.round(n*weights[s]);
+  let ids=shuffle(GEN.map((g,i)=>i).filter(i=>GEN[i]().sec==s));
+  if(!ids.length) return;
+  if(lv==="easy") ids.sort((a,b)=>(DIFF_BY_TOPIC[GEN[a]().topic]||2)-(DIFF_BY_TOPIC[GEN[b]().topic]||2));
+  else if(lv==="hard"||lv==="veryhard") ids.sort((a,b)=>(DIFF_BY_TOPIC[GEN[b]().topic]||2)-(DIFF_BY_TOPIC[GEN[a]().topic]||2));
+  const seen=new Set(),pool=[]; let guard=0,cursor=0;
+  while(pool.length<cnt&&guard++<cnt*80){
+   let q=GEN[ids[cursor++%ids.length]]();
+   if(L.hardenEasy) q=hardenQuestion(q);
+   if(!seen.has(q.text)){ seen.add(q.text); pool.push(q); }
+  }
+  while(pool.length<cnt){ let q=GEN[pick(ids)](); if(L.hardenEasy) q=hardenQuestion(q); pool.push(q); }
+  out.push(...pool);
+ });
+ while(out.length<n){ let q=GEN[R(0,GEN.length-1)](); if(L.hardenEasy) q=hardenQuestion(q); out.push(q); }
  return shuffle(out).slice(0,n).map(prepare);
 }
-function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer),unit:UNIT_BY_TOPIC[q.topic]||7,diff:DIFF_BY_TOPIC[q.topic]||2}}
+function prepare(q){const idx=shuffle(q.choices.map((c,i)=>i));return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer),unit:UNIT_BY_TOPIC[q.topic]||7,diff:q.diff||DIFF_BY_TOPIC[q.topic]||2}}
 function haltSession(){ clearInterval(timerInt); clearInterval(perQInt); stopAudio(); }
 
 /* ---------- starting sessions ---------- */
 function beginSession(m,questions,opts){
  haltSession();
  opts=opts||{};
+ const L=LEVELS[curLevel()]||LEVELS.hard;
  mode=m; quiz=questions; qi=0; score=0; answered=false; current=null; window._qt=[]; window._ms=null;
- session={mode:m,title:opts.title||MODE_TITLES[m]||"Quiz",back:opts.back||"#/practice",backLabel:opts.backLabel||"Practice",replay:opts.replay,finished:false};
- if(m==="exam"){ timeLeft=105*60; timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000); }
+ const baseTitle=opts.title||(m==="exam"?"Practice exam \u00b7 "+L.label:MODE_TITLES[m]||"Quiz");
+ session={mode:m,title:baseTitle,back:opts.back||"#/practice",backLabel:opts.backLabel||"Practice",replay:opts.replay,finished:false};
+ if(m==="exam"){ timeLeft=(L.examMins||105)*60; timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0)finish()},1000); }
  Router.go("#/quiz",true);
 }
-function startQuiz(m,n){ m=m||"trap"; n=n||10; let qs;
+function startQuiz(m,n){ m=m||"trap"; n=n||10; let qs; const L=LEVELS[curLevel()]||LEVELS.hard;
  if(m==="missed"){ const miss=Object.values(store.missed); if(!miss.length){ showToast("Your missed-question bank is empty. Miss something first."); return false }
   const ordered=miss.slice().sort((a,b)=>(a._cleared||0)-(b._cleared||0)||(a.ts||0)-(b.ts||0));
   qs=ordered.slice(0,n).map(x=>x.type==="short"?{...x}:prepare(x)) }
  else if(m==="exam"){ qs=buildExam(75); n=75 }
- else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(GEN[i]())); const rest=adaptiveSet(n,true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3) rest.push(prepare(GEN[R(0,GEN.length-1)]())); qs=[...seeded,...rest.slice(0,Math.max(0,n-3))] }
+ else if(m==="trap"){ const seeded=[0,1,2].map(i=>prepare(L.hardenEasy?hardenQuestion(GEN[i]()):GEN[i]())); const rest=adaptiveSet(n,true).filter(q=>q.type==="short"||!seeded.some(s=>s.topic===q.topic)); while(rest.length<n-3){ const raw=GEN[R(0,GEN.length-1)](); rest.push(prepare(L.hardenEasy?hardenQuestion(raw):raw)); } qs=[...seeded,...rest.slice(0,Math.max(0,n-3))] }
  else { qs=adaptiveSet(n,false) }
  lastQuizLen=n;
  beginSession(m,qs,{back:m==="exam"?"#/exam":"#/practice",backLabel:m==="exam"?"Exam":"Practice",replay:()=>startQuiz(m,n)});
  return true;
 }
 function gensForUnit(u){ return GEN.map((g,i)=>i).filter(i=>UNIT_BY_TOPIC[GEN[i]().topic]===u) }
-function startUnitQuiz(u){ u=Number(u); if(!UNIT_IDS.includes(u)) return; window._unit=u; const pool=gensForUnit(u);
- let qs=[],seen=new Set(),guard=0; while(qs.length<5&&pool.length&&guard++<100){ const q=GEN[pick(pool)](); if(!seen.has(q.text)){ seen.add(q.text); qs.push(q) } }
- while(qs.length<5) qs.push(GEN[pick(pool.length?pool:GEN.map((_,i)=>i))]());
+function startUnitQuiz(u){ u=Number(u); if(!UNIT_IDS.includes(u)) return; window._unit=u; const pool=gensForUnit(u); const L=LEVELS[curLevel()]||LEVELS.hard;
+ let qs=[],seen=new Set(),guard=0; while(qs.length<5&&pool.length&&guard++<100){ let q=GEN[pick(pool)](); if(L.hardenEasy) q=hardenQuestion(q); if(!seen.has(q.text)){ seen.add(q.text); qs.push(q) } }
+ while(qs.length<5){ let q=GEN[pick(pool.length?pool:GEN.map((_,i)=>i))](); if(L.hardenEasy) q=hardenQuestion(q); qs.push(q); }
  qs=shuffle(qs).map(prepare);
- if(curLevel()==="veryhard"||curLevel()==="master"){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) qs[qs.length-1]=prepareShort(pick(ss)); }
- beginSession("unit",qs,{title:"Unit "+u+" quiz: "+unitTitle(u),back:"#/learn/unit/"+u,backLabel:"Unit "+u,replay:()=>startUnitQuiz(u)}); }
+ if(L.shortMix){ const ss=SHORT.filter(s=>s.unit===u); if(ss.length) qs[qs.length-1]=prepareShort(pick(ss)); }
+ beginSession("unit",qs,{title:"Unit "+u+" quiz ("+L.label+"): "+unitTitle(u),back:"#/learn/unit/"+u,backLabel:"Unit "+u,replay:()=>startUnitQuiz(u)}); }
 function startFinalReview(){ if(Object.keys(store.t.done||{}).length<8){ showToast("Final review unlocks after you pass all 8 unit quizzes."); return false }
  beginSession("final",adaptiveSet(25,false),{back:"#/exam",backLabel:"Exam",replay:startFinalReview}); return true; }
 function beginGapDrill(topic){ topic=topic||window._gapTopic; window._gapTopic=topic; const gi=GEN.map((g,i)=>i).filter(i=>GEN[i]().topic===topic);
@@ -60,8 +73,8 @@ function tick(){ const el=$("timer"); if(el) el.textContent=Math.floor(timeLeft/
 function startPerQ(){ clearInterval(perQInt); const L=LEVELS[curLevel()]; const el=$("timer");
  if(mode==="exam"){ tick(); return }
  if(!L||!L.perQ||mode==="zero"||mode==="placement"){ if(el) el.textContent="Untimed"; return }
- let left=L.perQ; if(el) el.textContent=left+"s (Master)";
- perQInt=setInterval(()=>{ left--; const t=$("timer"); if(t) t.textContent=left+"s (Master)"; if(left<=0){clearInterval(perQInt); if(!answered){ current&&current.type==="short"?timeoutShort():answer(-1) }} },1000); }
+ let left=L.perQ; if(el) el.textContent=left+"s ("+(L.short||L.label)+")";
+ perQInt=setInterval(()=>{ left--; const t=$("timer"); if(t) t.textContent=left+"s ("+(L.short||L.label)+")"; if(left<=0){clearInterval(perQInt); if(!answered){ current&&current.type==="short"?timeoutShort():answer(-1) }} },1000); }
 
 /* ---------- one question ---------- */
 function showQ(){
@@ -69,7 +82,9 @@ function showQ(){
  answered=false; current=quiz[qi]; window._qStart=Date.now(); startPerQ();
  $("progress").textContent="Question "+(qi+1)+" of "+quiz.length;
  $("pbar").style.width=(qi/quiz.length*100)+"%";
- $("qMeta").textContent=(current.sec?"Section "+current.sec:"Short response")+" \u00b7 "+current.topic;
+ const meta=$("qMeta");
+ meta.textContent=(current.sec?"Section "+current.sec:"Short response")+" \u00b7 "+current.topic+(current.extremeTrap?" \u00b7 Extreme trap":"");
+ meta.className=current.extremeTrap?"kind-tag extreme-tag":"kind-tag";
  $("qText").textContent=current.text; $("explain").classList.add("hidden"); $("explain").innerHTML=""; $("nextBtn").classList.add("hidden");
  if(current.type==="short"){
   $("opts").innerHTML=`<p class="muted">Short response: write the rule in your own words. Key concepts and numbers are graded.</p><label class="sr-only" for="shortAns">Your answer</label><textarea id="shortAns" maxlength="1200" placeholder="Type your answer..."></textarea><div class="row"><button type="button" class="btn primary" data-action="submit-short">Submit answer</button></div>`;
@@ -173,14 +188,17 @@ function runSelfCheck(onDone){
  SHORT.forEach((s,idx)=>{ if(gradeShort(prepareShort(s),s.model).verdict!=="full") issues.push("SHORT["+idx+"]"); });
  if(gradeShort(prepareShort(SHORT[4]),"Initial margin is 25% set by FINRA and maintenance is 50% set by the Federal Reserve.").verdict!=="wrong") issues.push("RegT swap trap");
  if(gradeShort(prepareShort(SHORT[4]),"Reg T 50% = Fed. Maintenance 25% = FINRA.").verdict!=="full") issues.push("RegT short rule");
- const ex=buildExam(75), secC={1:0,2:0,3:0,4:0}; ex.forEach(q=>secC[q.sec]++);
+ const ex=buildExam(75,"standard"), secC={1:0,2:0,3:0,4:0}; ex.forEach(q=>secC[q.sec]++);
  if(ex.length!==75||new Set(ex.map(q=>q.text)).size!==75||secC[1]!==12||secC[2]!==33||secC[3]!==23||secC[4]!==7) issues.push("buildExam(75)");
+ const exE=buildExam(75,"extreme"), secE={1:0,2:0,3:0,4:0}; exE.forEach(q=>secE[q.sec]++);
+ if(exE.length!==75||new Set(exE.map(q=>q.text)).size!==75||secE[1]!==12||secE[2]!==33||secE[3]!==23||secE[4]!==7||!exE.every(q=>q.extremeTrap)) issues.push("buildExam(75,extreme)");
+ Object.keys(DIFF_BY_TOPIC).filter(t=>DIFF_BY_TOPIC[t]===1).forEach(t=>{ if(!EXTREME_GEN[t]) issues.push("EXTREME_GEN missing "+t); else { const q=EXTREME_GEN[t](); if(!q.text||q.choices.length!==4||new Set(q.choices).size!==4) issues.push("EXTREME_GEN "+t); } });
  const units=UNIT_IDS.map(u=>SIE.units[u]).filter(Boolean);
  if(units.length!==8||!SIE.units[0]) issues.push("curriculum units ("+units.length+"/8 + start)");
  let screens=0; SIE.units.forEach(u=>u&&u.lessons.forEach(l=>{screens+=l.screens.length}));
  let lsOk=true; try{localStorage.setItem("_sie_chk","1"); lsOk=localStorage.getItem("_sie_chk")==="1"; localStorage.removeItem("_sie_chk");}catch(e){lsOk=false}
  if(!lsOk) issues.push("localStorage");
- const msg=issues.length?"FAILED: "+issues.join(", "):`LIVE SELF-CHECK OK: ${GEN.length} MC generators, ${SHORT.length} short rubrics, ${screens} lesson screens, 75-Q exam mix (12/33/23/7), Reg T swap trap, localStorage, voice: ${VOICE_STATE.label}`;
+ const msg=issues.length?"FAILED: "+issues.join(", "):`LIVE SELF-CHECK OK: ${GEN.length} MC generators, ${Object.keys(EXTREME_GEN).length} extreme traps, ${SHORT.length} short rubrics, ${screens} lesson screens, 75-Q exam mix (12/33/23/7) across 5 levels, Reg T swap trap, localStorage, voice: ${VOICE_STATE.label}`;
  const out=$("selfCheckOut"); if(out){ out.textContent=msg; out.classList.remove("hidden") }
  showToast(issues.length?"Self-check found "+issues.length+" issue(s)":"Self-check passed");
  const result={ok:issues.length===0,issues,msg}; if(typeof onDone==="function") onDone(result); return result;

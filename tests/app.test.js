@@ -124,10 +124,40 @@ const result = vm.runInContext(`(() => {
     return Boolean(p && p.route.pattern === pat);
   });
 
+  const examByLevel = ["easy", "standard", "hard", "veryhard", "extreme"].map(lv => {
+    const ex = buildExam(75, lv), c = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    ex.forEach(q => c[q.sec]++);
+    return {
+      lv, n: ex.length, unique: new Set(ex.map(q => q.text)).size, c,
+      allHardened: ex.every(q => q.extremeTrap === true && q.diff === 3)
+    };
+  });
+  const easyTopics = Object.keys(DIFF_BY_TOPIC).filter(t => DIFF_BY_TOPIC[t] === 1);
+  const missingExtreme = easyTopics.filter(t => typeof EXTREME_GEN[t] !== "function");
+  const extremeBad = [];
+  Object.entries(EXTREME_GEN).forEach(([topic, fn]) => {
+    for (let k = 0; k < 200; k++) {
+      const q = fn(), p = prepare(q);
+      if (!q.text || q.choices.length !== 4 || new Set(q.choices).size !== 4) extremeBad.push([topic, "shape"]);
+      if (p.choices[p.answer] !== q.choices[q.answer]) extremeBad.push([topic, "prepare"]);
+      if (![1, 2, 3, 4].includes(q.sec)) extremeBad.push([topic, "sec"]);
+    }
+  });
+  const baseU1L1 = SIE.units[1].lessons[0].screens.length;
+  prefs.level = "easy"; const lsEasy = buildLessonScreens(1, 1);
+  prefs.level = "hard"; const lsHard = buildLessonScreens(1, 1);
+  prefs.level = "extreme"; const lsExtreme = buildLessonScreens(1, 1);
+  prefs.level = "hard";
+
   return {
     gen: GEN.length, bad, splitBad, marginBad, placements, exams, exam150Valid, secAligned, maps,
     model, empty, swapped, swappedBut, shortRule, bare, role, negCmo, negSipc, commBoundary,
-    norm1000k: normNums("$1,000k"), unitCount, lessonCount, screenCount, badLessons, routeChecks
+    norm1000k: normNums("$1,000k"), unitCount, lessonCount, screenCount, badLessons, routeChecks,
+    levelKeys: Object.keys(LEVELS), examByLevel, easyTopicCount: easyTopics.length,
+    missingExtreme, extremeBad, baseU1L1,
+    lsEasyLen: lsEasy.length, lsHardLen: lsHard.length, lsExtremeLen: lsExtreme.length,
+    lsExtremeHasTrap: lsExtreme.some(s => s.bonus && s.extremeTrap),
+    lsExtremeRecapOrig: lsExtreme[lsExtreme.length - 1]._origIdx
   };
 })()`, sandbox);
 
@@ -152,6 +182,18 @@ function ok(cond, name) {
   ok(result.exams.length === 20 && result.exams.every(e => e.n === 75), "exam length 75 across 20 runs");
   ok(result.exams.every(e => e.unique === 75), "exam has 75 unique stems across 20 runs");
   ok(result.exams.every(e => e.c[1] === 12 && e.c[2] === 33 && e.c[3] === 23 && e.c[4] === 7), "exam section mix 12/33/23/7 across 20 runs");
+  ok(JSON.stringify(result.levelKeys) === JSON.stringify(["easy", "standard", "hard", "veryhard", "extreme"]),
+     "all 5 difficulty levels defined (easy -> extreme)");
+  ok(result.examByLevel.every(e => e.n === 75 && e.unique === 75 && e.c[1] === 12 && e.c[2] === 33 && e.c[3] === 23 && e.c[4] === 7),
+     "buildExam(75, level) yields 75 unique stems with 12/33/23/7 mix across all 5 levels");
+  ok(result.examByLevel.find(e => e.lv === "extreme").allHardened,
+     "Extremely Hard exam upgrades 100% of items (zero softballs)");
+  ok(result.easyTopicCount === 33 && result.missingExtreme.length === 0 && result.extremeBad.length === 0,
+     `all ${result.easyTopicCount} normally-easy topics have valid EXTREME_GEN trap upgrades (missing=${result.missingExtreme.join(",")})`);
+  ok(result.lsEasyLen === result.baseU1L1 && result.lsHardLen === result.baseU1L1 + 1 &&
+     result.lsExtremeLen === result.baseU1L1 + 1 && result.lsExtremeHasTrap &&
+     result.lsExtremeRecapOrig === result.baseU1L1 - 1,
+     "lesson player injects Hard/Extreme bonus trap check before Recap while preserving Recap audio index");
   ok(result.exam150Valid, "buildExam(150) fallback returns 150 items with 4 choices");
   ok(result.secAligned, "FINRA SIE section tags aligned across original + 2026 Social Security/IRA/ERISA/product topics");
   ok(result.maps.unit.length === 0, "every topic has a unit map: " + JSON.stringify(result.maps.unit));

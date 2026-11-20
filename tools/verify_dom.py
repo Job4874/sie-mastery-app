@@ -121,18 +121,24 @@ def main():
         page.wait_for_selector(".unit-report", timeout=5000)
         check(page.locator(".unit-report .card").count() == 8, "Progress shows all 8 units")
 
-        # ---- Exam view + 75-Q Practice Exam ----
+        # ---- Exam view + 5-level selector + 75-Q Extremely Hard Exam ----
         page.click("a[data-nav='exam']")
         page.wait_for_selector("[data-action='exam']", timeout=5000)
+        check(page.locator("[data-action='set-level']").count() == 5, "Exam page displays all 5 difficulty levels")
+        page.click("[data-action='set-level'][data-level='extreme']")
         page.click("[data-action='exam']")
         page.wait_for_selector("#quiz", timeout=5000)
         check(page.evaluate("quiz.length") == 75, "exam has 75 questions")
         check(page.evaluate("new Set(quiz.map(q=>q.text)).size") == 75, "exam has 75 unique stems")
         ecounts = page.evaluate("JSON.stringify(quiz.reduce((a,q)=>{a[q.sec]=(a[q.sec]||0)+1;return a},{}))")
         check(ecounts == '{"1":12,"2":33,"3":23,"4":7}', f"exam section mix ({ecounts})")
+        check(page.evaluate("quiz.every(q => q.extremeTrap === true && q.diff === 3)"),
+              "Extremely Hard exam hardens 100% of questions including normally easy topics")
         etimer = page.locator("#timer").inner_text()
-        check("105:00" in etimer or "104:59" in etimer, f"exam timer starts at 105:00 ({etimer!r})")
+        check("75:00" in etimer or "74:59" in etimer, f"Extremely Hard exam timer starts at 75:00 ({etimer!r})")
         page.click("#quitBtn")
+        page.wait_for_selector("[data-action='set-level']", timeout=5000)
+        page.click("[data-action='set-level'][data-level='hard']")
 
         # ---- Settings: live self-check + welcome clip ----
         page.click("a[data-nav='settings']")
