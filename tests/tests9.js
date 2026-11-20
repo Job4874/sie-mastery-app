@@ -17,8 +17,9 @@ function ok(cond, name) {
   else { fail++; failures.push(name); }
 }
 
-function extractBlock(src, selector) {
-  const i = src.indexOf(selector);
+function extractBlock(src, selectorRe) {
+  const m = selectorRe instanceof RegExp ? selectorRe.exec(src) : null;
+  const i = m ? m.index : (typeof selectorRe === "string" ? src.indexOf(selectorRe) : -1);
   if (i < 0) return null;
   const start = src.indexOf("{", i);
   if (start < 0) return null;
@@ -40,6 +41,7 @@ function parseTokens(block) {
 }
 
 function hexToRgb(hex) {
+  if (typeof hex !== "string") return null;
   let h = hex.replace("#", "").trim();
   if (h.length === 3) h = h.split("").map(c => c + c).join("");
   if (h.length === 8) h = h.slice(0, 6);
@@ -66,8 +68,8 @@ function contrast(a, b) {
 }
 
 /* ---------- 1. token blocks ---------- */
-const lightBlock = extractBlock(css, ':root,:root[data-theme="light"]');
-const darkBlock = extractBlock(css, ':root[data-theme="dark"]');
+const lightBlock = extractBlock(css, /:root\s*,\s*:root\[data-theme="light"\]\s*\{/);
+const darkBlock = extractBlock(css, /:root\[data-theme="dark"\]\s*\{/);
 ok(lightBlock !== null, ':root,:root[data-theme="light"] token block exists');
 ok(darkBlock !== null, ':root[data-theme="dark"] token block exists');
 
@@ -111,8 +113,8 @@ for (const [name, tokens] of [["light", light], ["dark", dark]]) {
 
 /* ---------- 3. zero raw color leaks outside token blocks ---------- */
 let scanCss = css
-  .replace(/:root,:root\[data-theme="light"\]\{[\s\S]*?\}/, "")
-  .replace(/:root\[data-theme="dark"\]\{[\s\S]*?\}/, "");
+  .replace(/:root\s*,\s*:root\[data-theme="light"\]\s*\{[\s\S]*?\}/, "")
+  .replace(/:root\[data-theme="dark"\]\s*\{[\s\S]*?\}/, "");
 const hexLeaks = scanCss.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
 ok(hexLeaks.length === 0, `zero raw hex outside CSS token blocks (found ${hexLeaks.length}: ${hexLeaks.slice(0, 5).join(",")})`);
 const rgbLeaks = scanCss.match(/rgba?\(/g) || [];
@@ -150,13 +152,13 @@ const dupes = Object.entries(ids).filter(([, n]) => n > 1).map(([k]) => k);
 ok(dupes.length === 0, `zero duplicate ids in index.html (found: ${dupes.join(",") || "none"})`);
 
 /* ---------- 6. theme, focus mode & keyboard engine ---------- */
-ok(allJs.includes('const THEME_KEY="tibin_sie_theme"'), "THEME_KEY is tibin_sie_theme");
-ok(allJs.includes('ADHD_KEY="tibin_sie_adhd"'), "ADHD_KEY is tibin_sie_adhd");
+ok(/const\s+THEME_KEY\s*=\s*"tibin_sie_theme"/.test(allJs), "THEME_KEY is tibin_sie_theme");
+ok(/ADHD_KEY\s*=\s*"tibin_sie_adhd"/.test(allJs), "ADHD_KEY is tibin_sie_adhd");
 ok(html.includes('data-action="toggle-theme"'), "theme toggle control present");
 ok(html.includes('data-action="toggle-adhd"'), "focus mode toggle control present");
 ok(allJs.includes("function applyTheme") && allJs.includes("function toggleTheme") && allJs.includes("function initTheme"), "theme functions defined");
 ok(allJs.includes("localStorage.setItem(THEME_KEY"), "theme persisted to localStorage");
-ok(/e\.key==="t"/.test(allJs) && /e\.key==="f"/.test(allJs), "T and F keyboard shortcuts wired");
+ok(/e\.key\s*===\s*"t"/.test(allJs) && /e\.key\s*===\s*"f"/.test(allJs), "T and F keyboard shortcuts wired");
 ok(/tagName\.toLowerCase\(\)/.test(allJs), "keyboard shortcuts ignore typing targets");
 
 /* ---------- 7. targeted updates / no full option re-render on answer ---------- */
