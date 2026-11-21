@@ -5,6 +5,18 @@ __pycache__/
 .sie_server.pid
 tts_cache/*.wav
 
+# Never commit logs, credentials, accounts, or external security research vaults
+*.log
+*.key
+*.pem
+.env
+.env.*
+logs/
+*cyber_kb*
+*cyber_se_bank*
+*custom_tools_forge*
+*d2l_security_research*
+
 # local TTS model files (download with tools/compose_audio.py --help)
 models/*.onnx
 models/*.bin
