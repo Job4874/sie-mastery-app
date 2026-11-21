@@ -250,6 +250,19 @@ function finish(){ clearInterval(timerInt); clearInterval(perQInt); clearInterva
  let gapClosed=null;
  if(mode==="gap"&&window._gapTopic&&pct>=66){ delete store.t.openGaps[window._gapTopic]; store.t.gapsClosed=(store.t.gapsClosed||0)+1; gapClosed=window._gapTopic; }
  if(mode==="exam"&&pass) store.streak++;
+ if(!Array.isArray(store.sessions)) store.sessions=[];
+ store.sessions.push({
+  id:"s-"+Date.now()+"-"+Math.random().toString(36).slice(2,6),
+  mode,
+  title:session.title,
+  score:Number(score),
+  total:quiz.length,
+  pct,
+  at:Date.now(),
+  unit:mode==="unit"?Number(window._unit||0):0,
+  level:curLevel()
+ });
+ if(store.sessions.length>60) store.sessions=store.sessions.slice(-60);
  save(); session.finished=true;
  const scoreText=Number.isInteger(score)?score:score.toFixed(1);
  const note=mode==="zero"?"Primer check done. Next: a 10-question placement check so the teacher knows where to start you.":

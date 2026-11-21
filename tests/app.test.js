@@ -384,7 +384,35 @@ function ok(cond, name) {
     const impOk = importProgressJson(snap);
     const impBad = importProgressJson("{broken json");
     const impRestored = store.xp === 420 && Boolean(store.t.fsrs["Reg T margin"]);
-    return { has2026New, pairsValid, contrastAlt, xssSafe, qualToggleWorks, dueFirst, impOk, impBad, impRestored };
+
+    /* Granular + full reset system: session, lesson, unit, sessions-only, lessons-only, factory */
+    store.lp["0-1"] = { done: true, at: Date.now() };
+    store.lp["1-1"] = { done: true, at: Date.now() };
+    store.lp["2-1"] = { done: true, at: Date.now() };
+    store.t.done[1] = 1; store.t.done[2] = 1;
+    recordPerf({ unit: 1, diff: 2, topic: "Primary vs secondary", text: "Test?" }, true, 4000);
+    recordPerf({ unit: 2, diff: 2, topic: "Common vs preferred", text: "Test2?" }, false, 4000);
+    store.sessions = [
+      { id: "s1", mode: "sprint", title: "Sprint 1", score: 4, total: 5, pct: 80, at: 1000, unit: 0, level: "hard" },
+      { id: "s2", mode: "unit", title: "Unit 1 quiz", score: 5, total: 5, pct: 100, at: 2000, unit: 1, level: "hard" }
+    ];
+    resetSessionById("s1");
+    const resetSessOk = store.sessions.length === 1 && store.sessions[0].id === "s2";
+    resetLessonProgress(0, 1);
+    const resetLessonOk = !store.lp["0-1"] && Boolean(store.lp["1-1"]) && Boolean(store.lp["2-1"]);
+    resetUnitProgress(1);
+    const resetUnitOk = !store.lp["1-1"] && !store.t.done[1] && !store.t.fsrs["Primary vs secondary"] &&
+      store.sessions.length === 0 && Boolean(store.lp["2-1"]) && Boolean(store.t.done[2]);
+    resetSessionsHistory();
+    const resetSessionsOnlyOk = Object.keys(store.t.done).length === 0 && Object.keys(store.t.fsrs).length === 0 && Boolean(store.lp["2-1"]);
+    resetLessonsHistory();
+    const resetLessonsOnlyOk = Object.keys(store.lp).length === 0;
+    prefs.level = "extreme"; savePrefs();
+    resetAllData(true);
+    const resetFactoryOk = prefs.level === "hard" && store.xp === 0 && store.sessions.length === 0 && Object.keys(store.lp).length === 0;
+
+    return { has2026New, pairsValid, contrastAlt, xssSafe, qualToggleWorks, dueFirst, impOk, impBad, impRestored,
+      resetSessOk, resetLessonOk, resetUnitOk, resetSessionsOnlyOk, resetLessonsOnlyOk, resetFactoryOk };
   })()`, stSb);
   ok(v6Res.has2026New, "2026 Reg S-P 30-day breach notice + SECURE 2.0 529-to-Roth & RMD 25%/10% penalty generators present");
   ok(v6Res.pairsValid, "all 13 FINRA CONFUSION_PAIRS map cleanly to distinct GEN topics with rules");
@@ -392,6 +420,8 @@ function ok(cond, name) {
   ok(v6Res.xssSafe && v6Res.qualToggleWorks, "highlightQualifiersHtml escapes XSS first and honors prefs.qualHighlight toggle");
   ok(v6Res.dueFirst, "startDueReview prioritizes lowest-retrievability FSRS topic first");
   ok(v6Res.impOk && !v6Res.impBad && v6Res.impRestored, "exportProgressJson / importProgressJson round-trips state and rejects malformed JSON");
+  ok(v6Res.resetSessOk && v6Res.resetLessonOk && v6Res.resetUnitOk && v6Res.resetSessionsOnlyOk && v6Res.resetLessonsOnlyOk && v6Res.resetFactoryOk,
+     "granular reset helpers (session, lesson, unit, sessions-only, lessons-only, factory) isolate state accurately");
 
   /* Genuine voice allocation: non-af_heart voice on localhost routes AudioMan.clip() via /api/tts */
   let postedVoice = null, ttsCalls = 0;

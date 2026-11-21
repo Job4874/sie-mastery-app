@@ -13,6 +13,20 @@ function cleanLessonProgress(raw){
  Object.keys(raw).forEach(k=>{ if(/^\d-\d$/.test(k)&&isPlainObj(raw[k])&&raw[k].done===true) out[k]={done:true,at:Number.isFinite(raw[k].at)?raw[k].at:0}; });
  return out;
 }
+function cleanSessions(raw){
+ if(!Array.isArray(raw)) return [];
+ return raw.filter(x=>isPlainObj(x)&&typeof x.id==="string"&&x.id&&typeof x.title==="string"&&Number.isFinite(x.total)&&x.total>0&&Number.isFinite(x.score)&&x.score>=0).slice(-60).map(x=>({
+  id:String(x.id).slice(0,48),
+  mode:typeof x.mode==="string"?x.mode:"quiz",
+  title:String(x.title).slice(0,120),
+  score:Math.max(0,Math.min(x.total,Number(x.score))),
+  total:Math.max(1,Math.round(Number(x.total))),
+  pct:Number.isFinite(x.pct)?Math.max(0,Math.min(100,Math.round(x.pct))):Math.round(x.score/x.total*100),
+  at:Number.isFinite(x.at)&&x.at>0?x.at:0,
+  unit:Number.isInteger(x.unit)&&x.unit>=0&&x.unit<=8?x.unit:0,
+  level:typeof x.level==="string"?x.level:"hard"
+ }));
+}
 function cleanFsrsMap(raw){
  const out={}; if(!isPlainObj(raw)) return out;
  Object.keys(raw).forEach(k=>{
@@ -64,6 +78,7 @@ function sanitizeStoreObject(s){
   day:isPlainObj(s.day)&&typeof s.day.d==="string"&&Number.isFinite(s.day.n)?s.day:undefined,
   zero:isPlainObj(s.zero)?s.zero:undefined,
   lp:cleanLessonProgress(s.lp),
+  sessions:cleanSessions(s.sessions),
   last:isPlainObj(s.last)&&Number.isInteger(s.last.u)&&Number.isInteger(s.last.l)?{u:s.last.u,l:s.last.l}:undefined,
   t:{
    units:isPlainObj(rt.units)?rt.units:{},
@@ -99,6 +114,81 @@ function importProgressJson(raw){
   save();
   return true;
  }catch(e){ return false; }
+}
+
+/* ---------- granular & full reset helpers (strictly localStorage) ---------- */
+function resetLessonProgress(u,l){
+ u=Number(u); l=Number(l);
+ const key=u+"-"+l;
+ const existed=Boolean(store.lp[key]);
+ delete store.lp[key];
+ if(u===0) store.zero=undefined;
+ if(store.last&&store.last.u===u&&store.last.l===l) store.last=undefined;
+ if(typeof LP!=="undefined"&&LP.u===u&&LP.l===l){ LP.picked={}; LP.s=1; LP.done=false; }
+ save();
+ return existed;
+}
+function resetUnitProgress(u){
+ u=Number(u);
+ const un=typeof SIE!=="undefined"&&SIE.units?SIE.units[u]:null;
+ const nLessons=un&&Array.isArray(un.lessons)?un.lessons.length:6;
+ for(let l=1;l<=nLessons;l++) delete store.lp[u+"-"+l];
+ if(u===0) store.zero=undefined;
+ if(store.last&&store.last.u===u) store.last=undefined;
+ if(store.t&&store.t.units) delete store.t.units[u];
+ if(store.t&&store.t.done) delete store.t.done[u];
+ const map=(typeof UNIT_BY_TOPIC!=="undefined")?UNIT_BY_TOPIC:{};
+ const isUnitTopic=tp=>map[tp]===u;
+ if(store.t&&store.t.fsrs) Object.keys(store.t.fsrs).forEach(tp=>{ if(isUnitTopic(tp)) delete store.t.fsrs[tp]; });
+ if(store.t&&store.t.openGaps) Object.keys(store.t.openGaps).forEach(tp=>{ if(isUnitTopic(tp)||(store.t.openGaps[tp]&&store.t.openGaps[tp].unit===u)) delete store.t.openGaps[tp]; });
+ if(store.t&&store.t.topicMiss) Object.keys(store.t.topicMiss).forEach(tp=>{ if(isUnitTopic(tp)) delete store.t.topicMiss[tp]; });
+ if(store.missed) Object.keys(store.missed).forEach(k=>{ const m=store.missed[k]; if(m&&(m.unit===u||isUnitTopic(m.topic))) delete store.missed[k]; });
+ if(Array.isArray(store.sessions)) store.sessions=store.sessions.filter(s=>s.unit!==u);
+ if(store.t&&store.t.patterns&&Array.isArray(store.t.patterns.recent)) store.t.patterns.recent=store.t.patterns.recent.filter(r=>r.unit!==u);
+ if(typeof LP!=="undefined"&&LP.u===u){ LP.picked={}; LP.s=1; LP.done=false; }
+ save();
+ return true;
+}
+function resetSessionById(id){
+ if(!id||!Array.isArray(store.sessions)) return false;
+ const before=store.sessions.length;
+ store.sessions=store.sessions.filter(s=>s.id!==id);
+ save();
+ return store.sessions.length<before;
+}
+function resetSessionsHistory(){
+ store.sessions=[];
+ store.missed={};
+ store.sec={};
+ store.day=undefined;
+ store.streak=0;
+ store.seen=0;
+ store.t={units:{},theta:1000,badges:[],done:{},placed:false,openGaps:{},topicMiss:{},gapsClosed:0,fsrs:{},patterns:cleanPatterns({})};
+ save();
+ return true;
+}
+function resetLessonsHistory(){
+ store.lp={};
+ store.zero=undefined;
+ store.last=undefined;
+ if(typeof LP!=="undefined"){ LP.picked={}; LP.screens=null; LP.s=1; LP.done=false; }
+ save();
+ return true;
+}
+function resetAllData(includePrefs){
+ try{ localStorage.removeItem("sie"); }catch(e){}
+ if(includePrefs){
+  [THEME_KEY,ADHD_KEY,VRATE_KEY,PREFS_KEY].forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
+  prefs=loadPrefs();
+  applyTheme("light");
+  applyAdhd(false);
+ }
+ store=loadStore();
+ if(typeof LP!=="undefined"){ LP.picked={}; LP.screens=null; LP.s=1; LP.done=false; }
+ if(typeof haltSession==="function") haltSession();
+ if(typeof session!=="undefined") session=null;
+ if(typeof quiz!=="undefined") quiz=[];
+ return true;
 }
 
 /* ---------- settings (separate keys so a corrupt progress blob never resets preferences) ---------- */

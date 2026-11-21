@@ -622,6 +622,23 @@ def verify_browser_asymmetric(headed: bool) -> None:
         check("LIVE SELF-CHECK OK" in sc_out and "92 MC generators" in sc_out and "33 extreme traps" in sc_out and "13 confusion pairs" in sc_out and "FSRS-DSR" in sc_out,
               f"Settings self-check: {sc_out}")
 
+        # Integrated Reset Center: selective lesson reset preserves XP, factory reset wipes to brand new
+        check(pg.locator("#resetCenter").count() == 1 and pg.locator("[data-action='reset-factory']").count() == 1,
+              "Settings renders integrated Reset Center (unit, lesson, session, full & factory resets)")
+        pg.once("dialog", lambda d: d.accept())
+        pg.select_option("#resetLessonSel", "0-1")
+        pg.click("[data-action='reset-lesson-select']")
+        pg.wait_for_timeout(120)
+        sel_reset = pg.evaluate("() => ({l01: Boolean(store.lp['0-1']), xp: store.xp})")
+        check(sel_reset["l01"] is False and sel_reset["xp"] > 0,
+              f"Selective lesson reset cleared Lesson 0-1 while keeping XP ({sel_reset})")
+        pg.once("dialog", lambda d: d.accept())
+        pg.click("[data-action='reset-factory']")
+        pg.wait_for_timeout(180)
+        fac_reset = pg.evaluate("() => ({xp: store.xp, lp: Object.keys(store.lp).length, sessions: (store.sessions||[]).length, theme: document.documentElement.getAttribute('data-theme'), lv: curLevel()})")
+        check(fac_reset["xp"] == 0 and fac_reset["lp"] == 0 and fac_reset["sessions"] == 0 and fac_reset["theme"] == "light" and fac_reset["lv"] == "hard",
+              f"Brand-new factory reset restored clean defaults ({fac_reset})")
+
         # Mobile viewport geometry + hit-test + zero overflow
         pg.evaluate("() => { const t = document.getElementById('toast'); if (t) t.classList.remove('show'); }")
         pg.set_viewport_size({"width": 390, "height": 844})

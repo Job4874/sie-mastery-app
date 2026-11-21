@@ -71,7 +71,8 @@ function viewLearn(app){
  const unitRow=u=>{
   const un=SIE.units[u]; if(!un) return "";
   const p=unitLessonProgress(u), cleared=u===0?(p.done===p.total):Boolean(store.t.done[u]);
-  const bktPct=u===0?(p.total?Math.round(p.done/p.total*100):0):Math.round(unitStats(u).bkt*100);
+  const st=u===0?null:unitStats(u);
+  const bktPct=u===0?(p.total?Math.round(p.done/p.total*100):0):(st.a===0&&p.done===0?0:Math.round(st.bkt*100));
   const status=cleared?`<span class="chip good">Done</span>`:p.done?`<span class="chip accent">${p.done}/${p.total} lessons</span>`:`<span class="chip muted">${p.total} lessons</span>`;
   const secTag=SECTION_SHORT[un.section]?`<span class="chip muted">${esc(SECTION_SHORT[un.section])}</span>`:"";
   return `<li><a class="unit-row${cleared?" cleared":""}" href="#/learn/unit/${u}"><span class="unit-num" aria-hidden="true">${cleared?"\u2713":u}</span><span class="unit-text"><span class="unit-title-row"><span class="unit-title">${u===0?"":"Unit "+u+": "}${esc(un.title)}</span>${secTag}</span><span class="unit-sub">${esc(un.summary)}</span></span><span class="unit-meta-col">${status}<span class="unit-mini" aria-hidden="true"><i style="width:${cleared?100:bktPct}%"></i></span></span></a></li>`;
@@ -106,15 +107,16 @@ function viewUnit(app,p){
  const u=Number(p.u), un=SIE.units[u]; if(!un){ app.innerHTML=notFound(); return "Not found"; }
  const pr=unitLessonProgress(u), s=u?unitStats(u):null, ov=u?UNIT_OVERVIEWS[u-1]:null, lv=curLevel(), L=LEVELS[lv]||LEVELS.hard;
  const extraStep=(u>=1&&(lv==="hard"||lv==="veryhard"||lv==="extreme"))?1:0;
+ const hasUnitData=pr.done>0||Boolean(s&&s.a>0)||Boolean(store.t.done[u]);
  app.innerHTML=`<section class="page">
  <nav class="crumbs" aria-label="Breadcrumb"><a href="#/learn">Learn</a><span aria-hidden="true">/</span><span>${u===0?"Start here":"Unit "+u}</span></nav>
  <p class="eyebrow">${esc(SECTION_NAMES[un.section]||"")}</p>
  <h1 class="page-title">${esc(un.title)}</h1>
  <p class="lead">${esc(un.summary)}</p>
- ${pctBar(pr.total?Math.round(pr.done/pr.total*100):0,"Lessons completed")}<p class="muted small">${pr.done} of ${pr.total} lessons done</p>
+ ${pctBar(pr.total?Math.round(pr.done/pr.total*100):0,"Lessons completed")}<div class="row between"><p class="muted small">${pr.done} of ${pr.total} lessons done</p>${hasUnitData?`<button type="button" class="btn ghost small" data-action="reset-unit" data-u="${u}">Reset ${u===0?"Start here":"Unit "+u}</button>`:""}</div>
  ${u?levelPickerHtml("unit"):""}
  <ol class="lesson-list">${un.lessons.map((ls,i)=>{ const l=i+1, d=lessonDone(u,l);
-  return `<li><a class="lesson-row${d?" done":""}" href="#/learn/unit/${u}/lesson/${l}"><span class="lesson-check" aria-hidden="true">${d?"\u2713":l}</span><span class="lesson-text"><span class="lesson-title">${esc(ls.title)}</span><span class="lesson-sub">${ls.screens.length+extraStep} steps \u00b7 ${ls.minutes} min${extraStep?(lv==="extreme"?" \u00b7 +Extreme trap":" \u00b7 +Challenge"):""}${d?" \u00b7 done":""}</span></span><span class="lesson-go">${d?"Review":"Start"}</span></a></li>`; }).join("")}</ol>
+  return `<li class="lesson-item"><a class="lesson-row${d?" done":""}" href="#/learn/unit/${u}/lesson/${l}"><span class="lesson-check" aria-hidden="true">${d?"\u2713":l}</span><span class="lesson-text"><span class="lesson-title">${esc(ls.title)}</span><span class="lesson-sub">${ls.screens.length+extraStep} steps \u00b7 ${ls.minutes} min${extraStep?(lv==="extreme"?" \u00b7 +Extreme trap":" \u00b7 +Challenge"):""}${d?" \u00b7 done":""}</span></span><span class="lesson-go">${d?"Review":"Start"}</span></a>${d?`<button type="button" class="btn ghost small lesson-reset" data-action="reset-lesson" data-u="${u}" data-l="${l}" aria-label="Reset lesson ${esc(ls.title)}">Reset</button>`:""}</li>`; }).join("")}</ol>
  ${u?`<div class="card"><div class="row between"><h2>Unit quiz</h2>${levelChipHtml(lv)}</div><p class="muted">5 fresh questions from this unit (${esc(L.label)}). Score 80% to clear it.${store.t.done[u]?" You've cleared this unit.":""}</p>
   <p class="small">Mastery estimate: <b>${Math.round(s.bkt*100)}%</b> \u00b7 ${esc(diagnose(u))}</p>
   <div class="row"><button type="button" class="btn primary" data-action="unit-quiz" data-u="${u}">Take the unit quiz</button>${ov&&ov.audio?`<button type="button" class="btn ghost" data-action="unit-overview-audio" data-u="${u}">Listen to the unit overview</button>`:""}</div></div>`:
@@ -200,7 +202,7 @@ function renderLessonScreen(app){
    <span class="chip muted" id="audioVoicePill">${esc(voicePillText())}</span>
   </div>
  </article>
- <div class="lesson-nav"><button type="button" class="btn ghost" data-action="lesson-prev"${LP.s===1?" disabled":""}>Back</button>
+ <div class="lesson-nav"><div class="row tight"><button type="button" class="btn ghost" data-action="lesson-prev"${LP.s===1?" disabled":""}>Back</button>${LP.s>1||lessonDone(LP.u,LP.l)?`<button type="button" class="btn ghost small" data-action="restart-lesson">Restart lesson</button>`:""}</div>
   <button type="button" class="btn primary" data-action="lesson-next"${locked?" disabled":""}>${last?"Finish lesson":isCheck&&locked?"Answer to continue":"Next"}</button></div>
  </section>`;
  syncListenButtons(); syncAudioBar();
@@ -238,6 +240,7 @@ function finishLesson(){
  <p class="muted">${checks?`You got ${right} of ${checks} check question${checks>1?"s":""} right. `:""}+${Math.round(10*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1))} XP</p>
  <div class="row center">${nextL?`<a class="btn primary big" href="#/learn/unit/${u}/lesson/${nextL}">Next lesson: ${esc(un.lessons[nextL-1].title)}</a>`:
    u===0?`<button type="button" class="btn primary big" data-action="start-placement">Take the placement check</button>`:`<button type="button" class="btn primary big" data-action="unit-quiz" data-u="${u}">Take the unit quiz</button>`}
+ <button type="button" class="btn ghost" data-action="restart-lesson">Reset &amp; replay lesson</button>
  <a class="btn ghost" href="#/learn/unit/${u}">Back to ${u===0?"Start here":"Unit "+u}</a></div></div></section>`;
  const h=$("app").querySelector("h1"); if(h){ h.setAttribute("tabindex","-1"); try{h.focus()}catch(e){} }
 }
@@ -385,6 +388,9 @@ function viewProgress(app){
   return `<div class="card"><div class="row between"><h3>Unit ${u}: ${esc(unitTitle(u))}</h3><span class="chip${store.t.done[u]?" good":""}">${store.t.done[u]?"Cleared":Math.round(s.bkt*100)+"% mastery"}</span></div>
   ${pctBar(Math.round(s.bkt*100),"Unit "+u+" mastery")}<p class="small muted">${s.a?`Accuracy ${Math.round(s.c/s.a*100)}% \u00b7 ${(s.time/s.a/1000).toFixed(1)}s per answer \u00b7 fast misses ${s.fastWrong} \u00b7 slow corrects ${s.slowRight}`:"No answers yet"}</p>
   <p>${esc(diagnose(u))}</p><a class="btn ghost small" href="${pr[1]}">${esc(pr[0])}</a></div>`}).join("")}</div>
+  <div class="card"><h2>Session history</h2>
+  ${Array.isArray(store.sessions)&&store.sessions.length?`<p class="small muted">Remove any individual session or reset all quiz and exam history while keeping completed lessons.</p><ul class="session-list">${store.sessions.slice().reverse().slice(0,12).map(ss=>`<li class="session-row"><div><span class="session-title">${esc(ss.title)}</span><div class="xs muted">${ss.score}/${ss.total} (${ss.pct}%)${ss.at?" \u00b7 "+new Date(ss.at).toLocaleString([],{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}):""}</div></div><button type="button" class="btn ghost small" data-action="reset-session" data-id="${esc(ss.id)}" aria-label="Remove session ${esc(ss.title)}">Remove</button></li>`).join("")}</ul><div class="row"><button type="button" class="btn ghost small" data-action="reset-sessions">Reset all sessions</button><a class="btn ghost small" href="#/settings">Open full Reset Center</a></div>`:`<p class="small muted">No completed quiz or exam sessions yet. Completed sprints, unit quizzes, contrast drills, and exams appear here with per-session reset controls.</p><div class="row"><a class="btn ghost small" href="#/settings">Open Reset Center</a></div>`}
+ </div>
  <div class="card soft"><h2>How the teacher reads you</h2><p class="muted">Corbett-Anderson BKT tracks unit mastery, Elo tracks difficulty calibration, FSRS-DSR tracks per-topic forgetting curves, and the ADHD error classifier separates impulsive misses (&lt;6s), NOT/EXCEPT skimming traps, post-error cascades, and genuine rule gaps after every single answer.</p>
   <p class="small">XP: ${store.xp} \u00b7 Badges: ${store.t.badges.length?store.t.badges.map(esc).join(" \u00b7 "):"none yet"} \u00b7 Gaps closed: ${store.t.gapsClosed} \u00b7 Open gaps: ${gaps.length} \u00b7 Exam passes: ${store.streak}</p></div>
  </section>`;
@@ -439,9 +445,23 @@ function viewSettings(app){
   <p class="small muted">Focus mode hides secondary chrome, enlarges text, and turns off motion. Keyboard: <kbd>F</kbd> focus mode, <kbd>T</kbd> theme, <kbd>L</kbd> listen/stop, <kbd>1</kbd>-<kbd>4</kbd> or <kbd>A</kbd>-<kbd>D</kbd> answer, <kbd>Enter</kbd> or <kbd>\u2192</kbd> next, <kbd>\u2190</kbd> back.</p></div>
  <div class="card"><h2>Troubleshooting</h2><p class="small muted">Checks all 92 MC generators, 33 extreme traps, 12 short rubrics, 13 confusion pairs, FSRS-DSR identity, 266 lesson screens, 75-Q exam mix across 5 levels, and localStorage right here in your browser.</p>
   <button type="button" class="btn" data-action="self-check">Run self-check</button><p id="selfCheckOut" class="mono small hidden" role="status"></p></div>
- <div class="card"><h2>Your data (100% local)</h2><p class="small muted">Progress stays strictly on-device in localStorage. Export a JSON snapshot anytime to back up or move between browsers.</p>
+ <div class="card" id="resetCenter"><h2>Your data &amp; reset center (100% local)</h2><p class="small muted">Progress stays strictly on-device in localStorage. Back up anytime, reset a single lesson, unit, or session, or wipe everything for a brand-new start.</p>
   <input type="file" id="importFile" class="sr-only" accept=".json,application/json" data-action="import-progress-file" aria-label="Import progress JSON file">
-  <div class="row"><button type="button" class="btn ghost" data-action="export-progress">Export progress (JSON)</button><button type="button" class="btn ghost" data-action="import-progress">Import progress (JSON)</button><button type="button" class="btn danger" data-action="reset-progress">Reset all progress</button></div></div>
+  <div class="row"><button type="button" class="btn ghost" data-action="export-progress">Export progress (JSON)</button><button type="button" class="btn ghost" data-action="import-progress">Import progress (JSON)</button></div>
+  <div class="reset-grid">
+   <div class="reset-box">
+    <h3>Selective reset (unit, lesson, or session)</h3>
+    <div class="reset-row"><label class="sr-only" for="resetUnitSel">Choose unit to reset</label><select id="resetUnitSel">${[0,...UNIT_IDS].map(u=>{const un=SIE.units[u];const pr=unitLessonProgress(u);return `<option value="${u}">${u===0?"Start here":"Unit "+u}: ${esc(un?un.title:"Unit "+u)} (${pr.done}/${pr.total} lessons)</option>`;}).join("")}</select><button type="button" class="btn ghost small" data-action="reset-unit-select">Reset unit</button></div>
+    <div class="reset-row"><label class="sr-only" for="resetLessonSel">Choose lesson to reset</label><select id="resetLessonSel">${[0,...UNIT_IDS].map(u=>{const un=SIE.units[u];if(!un) return "";return `<optgroup label="${u===0?"Start here":"Unit "+u+": "+esc(un.title)}">${un.lessons.map((ls,idx)=>{const l=idx+1,d=lessonDone(u,l);return `<option value="${u}-${l}">${d?"\u2713 ":""}${u===0?"Primer":"U"+u} L${l}: ${esc(ls.title)}</option>`;}).join("")}</optgroup>`;}).join("")}</select><button type="button" class="btn ghost small" data-action="reset-lesson-select">Reset lesson</button></div>
+    <div class="row tight"><button type="button" class="btn ghost small" data-action="reset-sessions">Reset quiz &amp; session history only</button><button type="button" class="btn ghost small" data-action="reset-lessons">Reset lessons only</button></div>
+    ${Array.isArray(store.sessions)&&store.sessions.length?`<details class="more-pairs"><summary>Remove individual sessions (${store.sessions.length})</summary><ul class="session-list">${store.sessions.slice().reverse().slice(0,20).map(ss=>`<li class="session-row"><div><span class="session-title">${esc(ss.title)}</span><div class="xs muted">${ss.score}/${ss.total} (${ss.pct}%)</div></div><button type="button" class="btn ghost small" data-action="reset-session" data-id="${esc(ss.id)}">Remove</button></li>`).join("")}</ul></details>`:""}
+   </div>
+   <div class="reset-box">
+    <h3>Full reset (fresh start)</h3>
+    <p class="small muted">Reset all progress keeps your voice &amp; theme; Brand-new factory reset clears every setting back to defaults.</p>
+    <div class="row tight"><button type="button" class="btn danger" data-action="reset-progress">Reset all progress</button><button type="button" class="btn danger" data-action="reset-factory">Brand-new factory reset</button></div>
+   </div>
+  </div></div>
  </section>`;
  return "Settings";
 }

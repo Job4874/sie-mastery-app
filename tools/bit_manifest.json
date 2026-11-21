@@ -1488,8 +1488,8 @@
     "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
   },
   "static/css/app.css": {
-    "bytes": 21339,
-    "sha256": "e28c3befc617725be90e2adee2c2eccbab100f01b3dbc69f49ea80b65d9ecdce"
+    "bytes": 22275,
+    "sha256": "5b6d70154565cb2a13d3cdafed5c7b7604a4b679bd3d0a50488d42cc6b896e3f"
   },
   "static/favicon.ico": {
     "bytes": 17490,
@@ -1504,20 +1504,20 @@
     "sha256": "f2bb7c5bce42ae09eb41c5a421f0487559fdd2fca8bb880455d3fcbd10d44ba6"
   },
   "static/js/app.js": {
-    "bytes": 7400,
-    "sha256": "266f21e071c56a0177037df83c55ea38fb58eacf8dc57d23b0c7fc95ef733b4f"
+    "bytes": 9713,
+    "sha256": "941e8e908dce5f86e315677e22f122c6be66e1ce1697afd22d702ca033034414"
   },
   "static/js/core/audio.js": {
     "bytes": 8823,
     "sha256": "459be6104bc2fadb591b6abb88d1137be2cb16301c61f5fd9dbf1bc412813707"
   },
   "static/js/core/quiz.js": {
-    "bytes": 24662,
-    "sha256": "00db4cc250cf2005cd6eef9830eb11efaf70d6e5ad014827a1c274ab92c9bdce"
+    "bytes": 25047,
+    "sha256": "022e0083416510337815fc9900392ea8fe8d6fe531fe5d748d500ebb42db551c"
   },
   "static/js/core/store.js": {
-    "bytes": 7259,
-    "sha256": "21da654b43a66ad8e10b0ce78d86368637993b21efab57875768e6950ed32a99"
+    "bytes": 11206,
+    "sha256": "33fef8e1ce5377162a0374c809baf4fe8506fa63a56cbdea6ef6b67f36bfb71f"
   },
   "static/js/core/teacher.js": {
     "bytes": 21156,
@@ -1592,12 +1592,12 @@
     "sha256": "37a0b4cd26fef05f933b72089668a787c529986478ff564954dedef521a0bb4a"
   },
   "static/js/ui/views.js": {
-    "bytes": 46785,
-    "sha256": "bf008dca42238fbfaa3134a2d3818df7ec63ac274b7a86dafff753c83db76c05"
+    "bytes": 51196,
+    "sha256": "fef220223a2d49c101f0eb1446a8093fb1fdef6e68e9f604cafbbf8ff150d36d"
   },
   "tests/app.test.js": {
-    "bytes": 23760,
-    "sha256": "a9ce58c117e3d345d5e9be8378c9bb27b368c61d6a25af94fddcfed4fcf14c59"
+    "bytes": 25837,
+    "sha256": "035b0145e452ebd6af4bdbe9c75401490e9a490cd8d79fb8f6d57e96ecb14480"
   },
   "tests/grammar_audit.py": {
     "bytes": 2532,
@@ -1648,8 +1648,8 @@
     "sha256": "4a60bbbbd3fe5970f12407a01846664f1ef9f09e2ef177349d5d0cf9b41680cc"
   },
   "tools/verify_asymmetric.py": {
-    "bytes": 36718,
-    "sha256": "b95b49c1cba796d89c6641be1fdfdcdef66bd62d58e860d0d14903313f7b885d"
+    "bytes": 38052,
+    "sha256": "8069d4a9993fd08ff7cfa682d7d49d2783964f47ee4214ae03a90ebd4d317634"
   },
   "tools/verify_dom.py": {
     "bytes": 9162,

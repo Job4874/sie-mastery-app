@@ -2,8 +2,22 @@
    local JSON backup, and keyboard shortcuts. Loaded last. */
 let toastTimer=null;
 function showToast(msg){ const t=$("toast"); if(!t) return; t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),3200); }
-function resetProgress(){ if(!window.confirm("Reset all lessons, scores, FSRS memory history, and saved questions? This cannot be undone.")) return;
- try{ localStorage.removeItem("sie"); }catch(e){} store=loadStore(); LP.picked={}; showToast("Progress reset."); Router.go("#/learn",true); }
+function resetProgress(){ if(!window.confirm("Reset all lessons, quiz sessions, scores, FSRS memory history, and saved questions? This cannot be undone.")) return;
+ resetAllData(false); showToast("All progress reset."); Router.go("#/learn",true); }
+function resetFactory(){ if(!window.confirm("Brand-new factory reset? This clears all progress, sessions, lessons, and restores default theme, voice, and difficulty settings.")) return;
+ resetAllData(true); showToast("Everything reset to brand-new defaults."); Router.go("#/learn",true); }
+function resetSessionsUi(){ if(!window.confirm("Reset all quiz & exam sessions, scores, FSRS memory curves, and missed questions? Completed lessons will be kept.")) return;
+ resetSessionsHistory(); showToast("Quiz and session history reset."); Router.render(); }
+function resetLessonsUi(){ if(!window.confirm("Reset all completed lesson checkmarks? Quiz scores and FSRS memory curves will be kept.")) return;
+ resetLessonsHistory(); showToast("All lesson checkmarks reset."); Router.render(); }
+function resetUnitUi(u){ u=Number(u); const label=u===0?"Start here":"Unit "+u;
+ if(!window.confirm("Reset all completed lessons, mastery, FSRS cards, and unit quizzes for "+label+"?")) return;
+ resetUnitProgress(u); showToast(label+" reset."); Router.render(); }
+function resetLessonUi(u,l){ u=Number(u); l=Number(l); const un=SIE.units[u], ls=un&&un.lessons[l-1], name=ls?ls.title:("Lesson "+u+"-"+l);
+ if(!window.confirm("Reset lesson \""+name+"\"?")) return;
+ resetLessonProgress(u,l); showToast("Lesson reset: "+name); Router.render(); }
+function restartCurrentLesson(){ stopAudio(); resetLessonProgress(LP.u,LP.l); LP.screens=buildLessonScreens(LP.u,LP.l); LP.s=1; LP.picked={}; LP.done=false;
+ showToast("Lesson restarted from step 1."); Router.go("#/learn/unit/"+LP.u+"/lesson/"+LP.l+"/1",true); }
 function downloadProgressJson(){
  try{
   const blob=new Blob([exportProgressJson()],{type:"application/json"});
@@ -54,7 +68,16 @@ const ACTIONS={
  "self-check":()=>runSelfCheck(),
  "export-progress":()=>downloadProgressJson(),
  "import-progress":()=>{ const inp=$("importFile"); if(inp) inp.click(); },
- "reset-progress":()=>resetProgress()
+ "reset-progress":()=>resetProgress(),
+ "reset-factory":()=>resetFactory(),
+ "reset-sessions":()=>resetSessionsUi(),
+ "reset-lessons":()=>resetLessonsUi(),
+ "reset-unit":el=>resetUnitUi(Number(el.getAttribute("data-u"))),
+ "reset-lesson":el=>resetLessonUi(Number(el.getAttribute("data-u")),Number(el.getAttribute("data-l"))),
+ "reset-unit-select":()=>{ const sel=$("resetUnitSel"); if(sel) resetUnitUi(Number(sel.value)); },
+ "reset-lesson-select":()=>{ const sel=$("resetLessonSel"); if(sel&&sel.value&&sel.value.includes("-")){ const [u,l]=sel.value.split("-").map(Number); resetLessonUi(u,l); } },
+ "reset-session":el=>{ const id=el.getAttribute("data-id"); if(id&&resetSessionById(id)){ showToast("Session removed from history."); Router.render(); } },
+ "restart-lesson":()=>restartCurrentLesson()
 };
 const CHANGE_ACTIONS={
  "set-level-select":el=>{ if(LEVELS[el.value]){ prefs.level=el.value; savePrefs(); LP.screens=null; LP.picked={}; Router.render(); } },
