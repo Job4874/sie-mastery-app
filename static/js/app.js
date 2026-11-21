@@ -42,6 +42,7 @@ const ACTIONS={
  "quit":()=>quitQuiz(),
  "next":()=>nextQ(),
  "hear-question":()=>{ if(current) AudioMan.say(questionSpeechText(current),true); },
+ "set-conf":el=>{ const c=el.getAttribute("data-conf")||""; window._qConf=window._qConf===c?"":c; document.querySelectorAll("[data-action='set-conf']").forEach(b=>{ const on=b.getAttribute("data-conf")===window._qConf; b.setAttribute("aria-pressed",on?"true":"false"); b.classList.toggle("active",on); }); },
  "answer":(el,ev)=>answer(Number(el.getAttribute("data-i")),el,ev),
  "submit-short":()=>answerShort(),
  "replay":()=>replaySession(),

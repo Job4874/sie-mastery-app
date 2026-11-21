@@ -34,7 +34,9 @@ const CONFUSION_PAIRS=[
  {id:"comm-disc",label:"Rule 2210 Communications vs. Discretion",a:"Communications",b:"Discretionary accounts",
   rule:"Retail communication = >25 retail investors in 30 days (principal pre-approval). Discretion needs BOTH customer & firm written approval."},
  {id:"sipc-prohib",label:"SIPC Separate Capacity vs. Prohibited Acts",a:"SIPC separate capacity",b:"Prohibited activities",
-  rule:"SIPC protects $500k per separate capacity ($250k cash) against BD failure — never market loss or rep misconduct like front running/churning."}
+  rule:"SIPC protects $500k per separate capacity ($250k cash) against BD failure — never market loss or rep misconduct like front running/churning."},
+ {id:"secure2-529-rmd",label:"SECURE 2.0: 529-to-Roth vs. RMD Penalties",a:"529-to-Roth IRA rollover",b:"RMD excise penalty (SECURE 2.0)",
+  rule:"529->Roth IRA: 15-yr account age, $35k lifetime cap, annual Roth limit. Missed RMD penalty dropped from 50% to 25% (10% if timely corrected); Roth 401(k) has no lifetime owner RMDs."}
 ];
 
 function unitInfo(u){ return (SIE.units&&SIE.units[u])||{id:u,title:"Unit "+u,lessons:[]}; }
@@ -110,8 +112,8 @@ function memorySummary(now){
  return {tracked:items.length,dueCount,avgR,avgS,topRisk:items.slice(0,5)};
 }
 
-/* ---------- Core BKT + Elo + FSRS + ADHD pattern update ---------- */
-function recordPerf(q,right,ms){
+/* ---------- Core BKT + Elo + FSRS + ADHD pattern & metacognitive calibration update ---------- */
+function recordPerf(q,right,ms,conf){
  const s=unitStats(q.unit); s.a++; s.time+=ms; if(right)s.c++;
  if(!right&&ms<8000)s.fastWrong++; if(right&&ms>25000)s.slowRight++;
  const slip=0.10,guess=0.25; let post;
@@ -122,9 +124,12 @@ function recordPerf(q,right,ms){
  store.t.theta=Math.max(600,Math.min(1600, Math.round(store.t.theta+24*((right?1:0)-exp))));
  /* FSRS per-topic update */
  if(q.topic) fsrsUpdate(q.topic,right,ms,s.last);
- /* ADHD error-pattern telemetry */
+ /* ADHD error-pattern & metacognitive calibration telemetry */
  if(!isPlainObj(store.t.patterns)) store.t.patterns=cleanPatterns({});
  const pat=store.t.patterns;
+ if(!isPlainObj(pat.cal)) pat.cal={sureRight:0,sureWrong:0,guessRight:0,guessWrong:0};
+ if(conf==="sure"){ if(right) pat.cal.sureRight++; else pat.cal.sureWrong++; }
+ else if(conf==="guess"){ if(right) pat.cal.guessRight++; else pat.cal.guessWrong++; }
  const isQual=hasNegativeQualifier(q.text);
  const recentWrong=pat.lastWrongAt&&(s.last-pat.lastWrongAt)<180000;
  if(!right){
@@ -142,11 +147,22 @@ function recordPerf(q,right,ms){
   window._lastFastMiss=false;
  }
  if(q.topic){
-  pat.recent.push({topic:q.topic,unit:q.unit,right:Boolean(right),ms:Math.round(ms),qual:isQual});
+  pat.recent.push({topic:q.topic,unit:q.unit,right:Boolean(right),ms:Math.round(ms),qual:isQual,conf:conf||""});
   if(pat.recent.length>40) pat.recent=pat.recent.slice(-40);
  }
  (window._qt=window._qt||[]).push(ms);
  const today=new Date().toDateString(); if(!store.day||store.day.d!==today) store.day={d:today,n:0}; store.day.n++; save();
+}
+
+function calibrationMetrics(){
+ const pat=isPlainObj(store.t.patterns)?store.t.patterns:cleanPatterns({});
+ const c=isPlainObj(pat.cal)?pat.cal:{sureRight:0,sureWrong:0,guessRight:0,guessWrong:0};
+ const sureTot=c.sureRight+c.sureWrong, guessTot=c.guessRight+c.guessWrong, total=sureTot+guessTot;
+ const sureAccPct=sureTot?Math.round(c.sureRight/sureTot*100):null;
+ const overconfPct=sureTot?Math.round(c.sureWrong/sureTot*100):0;
+ /* Brier score using nominal subjective probabilities: sure=0.90, guess=0.35 (0.00 = perfect, lower is better) */
+ const brier=total?Math.round(((c.sureRight*0.01+c.sureWrong*0.81+c.guessRight*0.4225+c.guessWrong*0.1225)/total)*1000)/1000:null;
+ return {total,sureTot,guessTot,sureRight:c.sureRight,sureWrong:c.sureWrong,guessRight:c.guessRight,guessWrong:c.guessWrong,sureAccPct,overconfPct,brier};
 }
 
 function topConfusionPairs(){
@@ -166,7 +182,11 @@ function adhdCognitiveProfile(){
   actionType:"sprint5",
   signals:pat
  };
+ const cal=calibrationMetrics();
  const candidates=[
+  {key:"overconfidence",score:(cal.sureWrong>=2&&cal.overconfPct>=30)?cal.sureWrong*2.4:0,headline:"Metacognitive overconfidence (high-confidence misses)",
+   detail:`You marked "Sure" on ${cal.sureWrong} missed item${cal.sureWrong>1?"s":""} (${cal.overconfPct}% overconfidence rate). ADHD research shows online confidence blind spots cause premature study stops — drill twin contrast pairs to replace intuition with exact FINRA rule triggers.`,
+   actionLabel:"Run a Contrast Drill",actionType:"contrast"},
   {key:"postErrorCascade",score:pat.postErrorCascade*2.2,headline:"Post-error cascade detected",
    detail:"After a miss, your next answer often arrives under 8 seconds and misses again — a classic ADHD inhibitory-control loop. Turn on Impulse Brake in Settings and take a 3-second breath after any red feedback.",
    actionLabel:"Run a calm Contrast Drill",actionType:"contrast"},

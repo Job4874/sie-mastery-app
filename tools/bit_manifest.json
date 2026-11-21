@@ -36,12 +36,12 @@
     "sha256": "09a2c5ea2957c5302a064ad27e8aa9bd3cf7e56ce4b5a0402fbbf928b0f5539f"
   },
   "README.md": {
-    "bytes": 10868,
-    "sha256": "ed01e863bfac0cfb0832d828459c7983fda56afe67ef33672067876f40dc4fb5"
+    "bytes": 11475,
+    "sha256": "50635ba965e898bfa13b4bf9d9a1a294b64c85f4a7cfaa3577ebf8c03b0989d2"
   },
   "RESEARCH_ADHD.md": {
-    "bytes": 15789,
-    "sha256": "34ab849e55eb7179394eb458abcf755341b409d9c81930c490d0dbec5f7f3ae5"
+    "bytes": 16500,
+    "sha256": "3fa887b5585a2f3154d2c6646e58c650e33638c5e39432c35297360eebb2564d"
   },
   "SECURITY.md": {
     "bytes": 3254,
@@ -1488,8 +1488,8 @@
     "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
   },
   "static/css/app.css": {
-    "bytes": 21197,
-    "sha256": "78a46c88b8e4848f45ec705e84dbfe0c91e62cb1399e605d6b2b988b1f8d3f3a"
+    "bytes": 21339,
+    "sha256": "e28c3befc617725be90e2adee2c2eccbab100f01b3dbc69f49ea80b65d9ecdce"
   },
   "static/favicon.ico": {
     "bytes": 17490,
@@ -1504,24 +1504,24 @@
     "sha256": "f2bb7c5bce42ae09eb41c5a421f0487559fdd2fca8bb880455d3fcbd10d44ba6"
   },
   "static/js/app.js": {
-    "bytes": 7091,
-    "sha256": "d986683a6df4f143ed49d1690e11cf79a82f39e800591b43f2f9e9644dc3b702"
+    "bytes": 7400,
+    "sha256": "266f21e071c56a0177037df83c55ea38fb58eacf8dc57d23b0c7fc95ef733b4f"
   },
   "static/js/core/audio.js": {
     "bytes": 8823,
     "sha256": "459be6104bc2fadb591b6abb88d1137be2cb16301c61f5fd9dbf1bc412813707"
   },
   "static/js/core/quiz.js": {
-    "bytes": 24326,
-    "sha256": "a469cbed04925e5cb23be2074089590d9778fa3e8bb140a617e67d6443991736"
+    "bytes": 24662,
+    "sha256": "00db4cc250cf2005cd6eef9830eb11efaf70d6e5ad014827a1c274ab92c9bdce"
   },
   "static/js/core/store.js": {
-    "bytes": 7077,
-    "sha256": "a204f5cfb6578d1616287fcbfb5f53b08ba75b6c864e1b8df8beec08c0890430"
+    "bytes": 7259,
+    "sha256": "21da654b43a66ad8e10b0ce78d86368637993b21efab57875768e6950ed32a99"
   },
   "static/js/core/teacher.js": {
-    "bytes": 19118,
-    "sha256": "bf701931440d0e29e3827555d5912d49c9e13ca364d79dd22fb81e2884dff89c"
+    "bytes": 21156,
+    "sha256": "d0561e1b8ed593b68e0d18cb1c383b7cb4a1925227c4401efed91bf53ea38e06"
   },
   "static/js/core/util.js": {
     "bytes": 1146,
@@ -1540,8 +1540,8 @@
     "sha256": "f1aae96be891165fde40d468ada235f54b6c01f368edab8cbd5ab1e03710d431"
   },
   "static/js/data/questions.js": {
-    "bytes": 56990,
-    "sha256": "eb21009e162f4d309d877d7d941e46fb350fca43c851020ba3eee3fedd33c45b"
+    "bytes": 60337,
+    "sha256": "853c25c5381325ec887aeb41da86ed1909f05386866c751d37906864bf354e5e"
   },
   "static/js/data/registry.js": {
     "bytes": 814,
@@ -1592,12 +1592,12 @@
     "sha256": "37a0b4cd26fef05f933b72089668a787c529986478ff564954dedef521a0bb4a"
   },
   "static/js/ui/views.js": {
-    "bytes": 44721,
-    "sha256": "a9501f306952634c1dde9190705b434403cddeffa45a3a3d40d528cf6c43201a"
+    "bytes": 46785,
+    "sha256": "bf008dca42238fbfaa3134a2d3818df7ec63ac274b7a86dafff753c83db76c05"
   },
   "tests/app.test.js": {
-    "bytes": 23436,
-    "sha256": "ff57cc8913f3caef8f809eec0478605e13c4fcd1307ee88932cb9bbb0cca32d8"
+    "bytes": 23760,
+    "sha256": "a9ce58c117e3d345d5e9be8378c9bb27b368c61d6a25af94fddcfed4fcf14c59"
   },
   "tests/grammar_audit.py": {
     "bytes": 2532,
@@ -1608,8 +1608,8 @@
     "sha256": "270aac52b80d5d7320fc645075308b73ad76aeda3e8ee857d467f70f04cb9988"
   },
   "tests/ml_verify.js": {
-    "bytes": 10052,
-    "sha256": "a189f658a6daa50872b006f0d5e722d09e3b5473cc7f0d8987f71a58d3c10f3c"
+    "bytes": 11066,
+    "sha256": "367caa1e44819bef24ba0b5979710bc073978ace6b34c4eaf875749dd2ef623a"
   },
   "tests/test_security.py": {
     "bytes": 13875,
@@ -1648,12 +1648,12 @@
     "sha256": "4a60bbbbd3fe5970f12407a01846664f1ef9f09e2ef177349d5d0cf9b41680cc"
   },
   "tools/verify_asymmetric.py": {
-    "bytes": 36402,
-    "sha256": "c1799b3394bbec6222736613f3f8a97c9198ad0bbd0861a015128e2be98354c0"
+    "bytes": 36718,
+    "sha256": "b95b49c1cba796d89c6641be1fdfdcdef66bd62d58e860d0d14903313f7b885d"
   },
   "tools/verify_dom.py": {
     "bytes": 9162,
-    "sha256": "5203e40e22723a5d79ffc8534c52df544372f1957823504cb070c5e13effb7b5"
+    "sha256": "3883b32ede602f553d04f5fb90419ee4b5e66f925179c36c9fb09e0fa1797072"
   },
   "tools/verify_exhaustive.py": {
     "bytes": 7975,

@@ -33,6 +33,7 @@ function cleanPatterns(raw){
  const pairs={};
  if(isPlainObj(p.pairs)) Object.keys(p.pairs).forEach(k=>{ if(Number.isInteger(p.pairs[k])&&p.pairs[k]>0) pairs[k]=p.pairs[k]; });
  const recent=Array.isArray(p.recent)?p.recent.filter(x=>isPlainObj(x)&&typeof x.topic==="string"&&typeof x.right==="boolean"&&Number.isFinite(x.ms)).slice(-40):[];
+ const rc=isPlainObj(p.cal)?p.cal:{};
  return {
   impulsiveMiss:num(p.impulsiveMiss),
   qualifierTrap:num(p.qualifierTrap),
@@ -42,7 +43,13 @@ function cleanPatterns(raw){
   totalMiss:num(p.totalMiss),
   lastWrongAt:Number.isFinite(p.lastWrongAt)?p.lastWrongAt:0,
   pairs,
-  recent
+  recent,
+  cal:{
+   sureRight:num(rc.sureRight),
+   sureWrong:num(rc.sureWrong),
+   guessRight:num(rc.guessRight),
+   guessWrong:num(rc.guessWrong)
+  }
  };
 }
 function sanitizeStoreObject(s){

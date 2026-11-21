@@ -405,6 +405,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
         verify_audio_decode_in_browser(pg, "[data-action='unit-overview-audio']", "audio/lesson-1-regulators.wav", "lesson-1-regulators.wav")
         pg.goto(BASE + "/#/library", wait_until="networkidle")
         verify_audio_decode_in_browser(pg, "[data-action='library-audio']", "audio/lesson-1-sipc.wav", "lesson-1-sipc.wav")
+        check(pg.locator("#ruleAnchors").is_visible(), "Library includes 2026 Rapid Rule Anchors working-memory sheet")
         pg.go_back(wait_until="networkidle")
         check("#/learn/unit/1" in pg.url, f"Browser Back returned to Unit 1 ({pg.url})")
 
@@ -447,6 +448,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
             pg.fill("#shortAns", "completely wrong nonsense")
             pg.click("[data-action='submit-short']")
         else:
+            pg.click("[data-action='set-conf'][data-conf='sure']")
             wrong_idx = pg.evaluate("(current.answer + 1) % current.choices.length")
             pg.locator("#opts .opt").nth(wrong_idx).click()
         q1_state_after = pg.evaluate("""(u) => ({
@@ -455,6 +457,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
             score: score,
             missed: Object.keys(store.missed).length,
             impulsive: store.t.patterns.impulsiveMiss,
+            sureWrong: store.t.patterns.cal.sureWrong,
             fsrsCount: Object.keys(store.t.fsrs || {}).length
         })""", q1_state_before["u"])
         check(
@@ -464,7 +467,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
             and q1_state_after["missed"] == q1_state_before["missed"] + 1
             and q1_state_after["impulsive"] >= 1
             and q1_state_after["fsrsCount"] >= 1,
-            f"Asymmetry (WRONG): score flat, BKT {q1_state_before['bkt']:.3f}->{q1_state_after['bkt']:.3f}, Elo {q1_state_before['theta']}->{q1_state_after['theta']}, Missed+1, ADHD impulsive={q1_state_after['impulsive']}, FSRS={q1_state_after['fsrsCount']}",
+            f"Asymmetry (WRONG): score flat, BKT {q1_state_before['bkt']:.3f}->{q1_state_after['bkt']:.3f}, Elo {q1_state_before['theta']}->{q1_state_after['theta']}, Missed+1, ADHD impulsive={q1_state_after['impulsive']}, sureWrong={q1_state_after['sureWrong']}, FSRS={q1_state_after['fsrsCount']}",
         )
         pg.click("#nextBtn")
         brake_vis = pg.locator("#brakeCue:not(.hidden)").is_visible()
@@ -616,7 +619,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
         pg.select_option("#voiceSel", "af_heart")
         pg.click("[data-action='self-check']")
         sc_out = pg.locator("#selfCheckOut").inner_text().strip()
-        check("LIVE SELF-CHECK OK" in sc_out and "33 extreme traps" in sc_out and "12 confusion pairs" in sc_out and "FSRS-DSR" in sc_out,
+        check("LIVE SELF-CHECK OK" in sc_out and "92 MC generators" in sc_out and "33 extreme traps" in sc_out and "13 confusion pairs" in sc_out and "FSRS-DSR" in sc_out,
               f"Settings self-check: {sc_out}")
 
         # Mobile viewport geometry + hit-test + zero overflow

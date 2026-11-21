@@ -184,6 +184,8 @@ table.facts th{font-weight:650;color:var(--text-2);background:var(--surface-2)}
 .feedback-head{font-weight:700;margin-bottom:.3em}
 .feedback p:last-child{margin-bottom:0}
 .brake-cue{border-radius:var(--r-sm);padding:10px 14px;margin:0 0 12px;border-left:4px solid var(--warn);background:var(--warn-bg);color:var(--warn);font-size:.92rem;font-weight:600}
+.conf-strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 4px}
+.conf-strip .pill-btn{padding:4px 11px;font-size:.82rem}
 .pair-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;margin:10px 0 0;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);font-size:.9rem;font-weight:600}
 .rule{font-size:.95rem}
 .quiz-page{max-width:780px}

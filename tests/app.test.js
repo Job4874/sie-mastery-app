@@ -351,10 +351,11 @@ function ok(cond, name) {
   ok(raceRejected.src === "audio/welcome.wav" && raceRejected.gpuFail === 0 && !raceRejected.busy && raceRejected.browserSpoke === 0,
     "aborted /api/tts rejection does not overwrite welcome.wav, bump gpuFail, or trigger browser TTS");
 
-  /* v6 ADHD ML, Confusion Pairs, Qualifier Highlighting XSS-safety, JSON Export/Import & Genuine Voice Allocation */
+  /* v6.1 ADHD ML, 13 Confusion Pairs, 2026 Reg S-P / SECURE 2.0, Metacognitive Calibration, XSS-safe Highlights & Genuine Voice Allocation */
   const v6Res = vm.runInContext(`(() => {
     const genTopics = new Set(GEN.map(g => g().topic));
-    const pairsValid = CONFUSION_PAIRS.length === 12 &&
+    const has2026New = genTopics.has("Reg S-P breach notice") && genTopics.has("529-to-Roth IRA rollover") && genTopics.has("RMD excise penalty (SECURE 2.0)");
+    const pairsValid = CONFUSION_PAIRS.length === 13 &&
       CONFUSION_PAIRS.every(p => p.a !== p.b && genTopics.has(p.a) && genTopics.has(p.b) && p.rule.length > 20);
     startContrastDrill("margin-pdt");
     const contrastAlt = quiz.length === 6 &&
@@ -383,9 +384,10 @@ function ok(cond, name) {
     const impOk = importProgressJson(snap);
     const impBad = importProgressJson("{broken json");
     const impRestored = store.xp === 420 && Boolean(store.t.fsrs["Reg T margin"]);
-    return { pairsValid, contrastAlt, xssSafe, qualToggleWorks, dueFirst, impOk, impBad, impRestored };
+    return { has2026New, pairsValid, contrastAlt, xssSafe, qualToggleWorks, dueFirst, impOk, impBad, impRestored };
   })()`, stSb);
-  ok(v6Res.pairsValid, "all 12 FINRA CONFUSION_PAIRS map cleanly to distinct GEN topics with rules");
+  ok(v6Res.has2026New, "2026 Reg S-P 30-day breach notice + SECURE 2.0 529-to-Roth & RMD 25%/10% penalty generators present");
+  ok(v6Res.pairsValid, "all 13 FINRA CONFUSION_PAIRS map cleanly to distinct GEN topics with rules");
   ok(v6Res.contrastAlt, "startContrastDrill builds 6 strictly alternating A-B-A-B-A-B micro-interleaved items");
   ok(v6Res.xssSafe && v6Res.qualToggleWorks, "highlightQualifiersHtml escapes XSS first and honors prefs.qualHighlight toggle");
   ok(v6Res.dueFirst, "startDueReview prioritizes lowest-retrievability FSRS topic first");

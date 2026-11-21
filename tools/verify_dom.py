@@ -145,7 +145,7 @@ def main():
         page.wait_for_selector("[data-action='self-check']", timeout=5000)
         page.click("[data-action='self-check']")
         sc_text = page.locator("#selfCheckOut").inner_text()
-        check("LIVE SELF-CHECK OK" in sc_text and "89 MC generators" in sc_text,
+        check("LIVE SELF-CHECK OK" in sc_text and "92 MC generators" in sc_text,
               f"Settings live self-check OK ({sc_text})")
         page.click("[data-action='welcome']")
         page.wait_for_timeout(200)

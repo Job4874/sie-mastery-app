@@ -310,7 +310,9 @@ function viewQuiz(app){
  <div class="quiz-top"><div><p class="eyebrow">${esc(session.title)}</p><h1 class="sr-only">${esc(session.title)}</h1></div>
   <div class="quiz-status"><span id="progress" class="small"></span><span id="timer" class="chip"></span></div></div>
  <section id="quiz"><div class="bar"><i id="pbar" style="width:0%"></i></div>${pairBanner}
-  <article class="card question"><div id="brakeCue" class="brake-cue hidden" role="status"></div><p id="qMeta" class="kind-tag"></p><h2 id="qText" class="q" tabindex="-1"></h2><div id="opts" class="opts" role="group" aria-label="Answer choices"></div>
+  <article class="card question"><div id="brakeCue" class="brake-cue hidden" role="status"></div><p id="qMeta" class="kind-tag"></p><h2 id="qText" class="q" tabindex="-1"></h2>
+   <div class="conf-strip" role="group" aria-label="Optional confidence check"><span class="xs muted">Confidence (optional):</span><button type="button" class="pill-btn" data-action="set-conf" data-conf="guess" aria-pressed="false">Guess</button><button type="button" class="pill-btn" data-action="set-conf" data-conf="sure" aria-pressed="false">Sure</button></div>
+   <div id="opts" class="opts" role="group" aria-label="Answer choices"></div>
    <div id="explain" class="hidden" role="status"></div></article>
   <div class="lesson-nav"><button type="button" id="quitBtn" class="btn ghost" data-action="quit">Quit</button><button type="button" class="btn ghost" data-action="hear-question">Hear question</button><button type="button" id="nextBtn" class="btn primary hidden" data-action="next">Next question</button></div>
  </section>
@@ -338,7 +340,7 @@ function viewGap(app,p){
 
 /* ---------- Progress (teacher + ADHD cognitive profile + FSRS memory report) ---------- */
 function viewProgress(app){
- const rd=readiness(), mem=memorySummary(), prof=adhdCognitiveProfile(), sig=prof.signals||{};
+ const rd=readiness(), mem=memorySummary(), prof=adhdCognitiveProfile(), sig=prof.signals||{}, cal=calibrationMetrics();
  const secs={1:"Capital Markets",2:"Products and Risks",3:"Trading, Accounts and Prohibited Activities",4:"Regulatory Framework"};
  const gaps=Object.keys(store.t.openGaps||{});
  const topPairs=topConfusionPairs().slice(0,3);
@@ -352,7 +354,7 @@ function viewProgress(app){
  </div>
 
  <div class="card adhd-profile">
-  <div class="row between"><p class="eyebrow">Recursive ADHD pattern recognition</p><span class="chip ${prof.ready?"accent":"muted"}">${prof.ready?"Live model":"Calibrating"}</span></div>
+  <div class="row between"><p class="eyebrow">Recursive ADHD pattern recognition &amp; metacognitive calibration</p><span class="chip ${prof.ready?"accent":"muted"}">${prof.ready?"Live model":"Calibrating"}</span></div>
   <h2>${esc(prof.headline)}</h2>
   <p class="muted">${esc(prof.detail)}</p>
   <div class="signal-grid" aria-label="ADHD error pattern counters">
@@ -360,7 +362,7 @@ function viewProgress(app){
    <div class="signal-item"><span class="signal-val">${sig.qualifierTrap||0}</span><span class="signal-lbl">NOT/EXCEPT misses</span></div>
    <div class="signal-item"><span class="signal-val">${sig.postErrorCascade||0}</span><span class="signal-lbl">Error cascades</span></div>
    <div class="signal-item"><span class="signal-val">${sig.conceptGap||0}</span><span class="signal-lbl">Deep gaps (&gt;15s)</span></div>
-   <div class="signal-item"><span class="signal-val">${sig.speedBottleneck||0}</span><span class="signal-lbl">Slow corrects (&gt;25s)</span></div>
+   <div class="signal-item"><span class="signal-val">${cal.sureWrong||0}</span><span class="signal-lbl">High-conf misses${cal.brier!==null?` (Brier ${cal.brier})`:""}</span></div>
   </div>
   <div class="row"><button type="button" class="btn primary small" data-action="${esc(prof.actionType)}">${esc(prof.actionLabel)}</button><button type="button" class="btn ghost small" data-action="speak-report">Hear my report</button></div>
  </div>
@@ -396,6 +398,18 @@ function viewLibrary(app){
  app.innerHTML=`<section class="page">
  <nav class="crumbs" aria-label="Breadcrumb"><a href="#/learn">Learn</a><span aria-hidden="true">/</span><span>Library</span></nav>
  <div class="page-head"><h1 class="page-title">Why the rules exist</h1><p class="page-sub">Every FINRA and SEC rule answers a historical abuse. Learn the abuse and the rule's shape becomes predictable.</p></div>
+ <div class="card tinted"><h2>2026 FINRA SIE rapid rule anchors</h2><p class="small muted">Low-working-memory lookup table for high-frequency 2026 numerical thresholds.</p>
+  <details class="more-pairs" id="ruleAnchors"><summary>Open 2026 numerical anchors &amp; formulas</summary>
+   <table class="facts"><tbody>
+    <tr><td><b>Margin (Reg T vs. 4210)</b></td><td>50% initial (Fed Reg T, $2k basic min) &middot; 25% long / 30% short maintenance (FINRA 4210) &middot; $25k classic PDT equity.</td></tr>
+    <tr><td><b>Settlement &amp; Cash Traps</b></td><td>T+1 regular way (equities, corps, munis, options, Treasuries). 1 Freeriding or 3 GFVs in 12 mo = 90-day settled-funds freeze.</td></tr>
+    <tr><td><b>SIPC &amp; Privacy (Reg S-P)</b></td><td>SIPC $500k per separate capacity ($250k cash; BD failure only). Reg S-P update: written incident response + 30-day customer breach notice.</td></tr>
+    <tr><td><b>2026 Gifts &amp; Communications</b></td><td>FINRA Rule 3220 gift cap = $300/person/yr (Notice 26-05). Rule 2210 retail comm = &gt;25 retail investors in 30 days (principal pre-approval).</td></tr>
+    <tr><td><b>SECURE 2.0 (ABLE / 529 / RMD)</b></td><td>ABLE onset &lt; age 46 (2026). 529&rarr;Roth IRA: 15-yr age, $35k lifetime cap. RMD age 73; missed penalty 25% (10% if timely corrected); no lifetime Roth 401(k) RMDs.</td></tr>
+    <tr><td><b>Options &amp; Bond Yield Ladder</b></td><td>Call Up (Strike + Prem = BE) &middot; Put Down (Strike &minus; Prem = BE). Discount: Nom &lt; CY &lt; YTM. Premium: YTC &lt; YTM &lt; CY &lt; Nom.</td></tr>
+   </tbody></table>
+  </details>
+ </div>
  ${LESSONS.map((l,i)=>`<article class="card article"><p class="eyebrow">${esc(l.s)}</p><h2>${esc(l.t)}</h2><div class="screen-body"><p>${l.b}</p></div><div class="row"><button type="button" class="btn ghost small" data-action="library-audio" data-i="${i}">Listen</button><button type="button" class="btn ghost small" data-action="trap">Drill traps</button></div></article>`).join("")}
  </section>`;
  return "Library";
@@ -423,7 +437,7 @@ function viewSettings(app){
    <label for="impulseBrake">3-second Impulse Brake after fast misses</label><input type="checkbox" id="impulseBrake" data-action="set-impulse-brake"${prefs.impulseBrake?" checked":""}>
   </div>
   <p class="small muted">Focus mode hides secondary chrome, enlarges text, and turns off motion. Keyboard: <kbd>F</kbd> focus mode, <kbd>T</kbd> theme, <kbd>L</kbd> listen/stop, <kbd>1</kbd>-<kbd>4</kbd> or <kbd>A</kbd>-<kbd>D</kbd> answer, <kbd>Enter</kbd> or <kbd>\u2192</kbd> next, <kbd>\u2190</kbd> back.</p></div>
- <div class="card"><h2>Troubleshooting</h2><p class="small muted">Checks all 89 MC generators, 33 extreme traps, 12 short rubrics, 12 confusion pairs, FSRS-DSR identity, 266 lesson screens, 75-Q exam mix across 5 levels, and localStorage right here in your browser.</p>
+ <div class="card"><h2>Troubleshooting</h2><p class="small muted">Checks all 92 MC generators, 33 extreme traps, 12 short rubrics, 13 confusion pairs, FSRS-DSR identity, 266 lesson screens, 75-Q exam mix across 5 levels, and localStorage right here in your browser.</p>
   <button type="button" class="btn" data-action="self-check">Run self-check</button><p id="selfCheckOut" class="mono small hidden" role="status"></p></div>
  <div class="card"><h2>Your data (100% local)</h2><p class="small muted">Progress stays strictly on-device in localStorage. Export a JSON snapshot anytime to back up or move between browsers.</p>
   <input type="file" id="importFile" class="sr-only" accept=".json,application/json" data-action="import-progress-file" aria-label="Import progress JSON file">

@@ -183,5 +183,20 @@ ok(adhdRes.topPair.id === "margin-pdt" && adhdRes.topPair.misses === 2,
 ok(adhdRes.path.length === 3 && adhdRes.path.some(s => s.action === "due") && adhdRes.path.some(s => s.action === "contrast" && s.pairId === "margin-pdt"),
    "Accelerated ADHD path: dynamically prescribes FSRS review + top confusion pair contrast drill");
 
+// ---------- 6. ADHD Metacognitive Confidence Calibration & Brier Score ----------
+freshStore();
+const calRes = vm.runInContext(`(() => {
+  recordPerf({ unit: 5, diff: 2, topic: "529-to-Roth IRA rollover", text: "Test 1" }, false, 12000, "sure");
+  recordPerf({ unit: 7, diff: 2, topic: "RMD excise penalty (SECURE 2.0)", text: "Test 2" }, false, 12000, "sure");
+  recordPerf({ unit: 7, diff: 2, topic: "Reg S-P breach notice", text: "Test 3" }, true, 10000, "sure");
+  const cal = calibrationMetrics();
+  const prof = adhdCognitiveProfile();
+  return { cal, prof };
+})()`, ctx);
+ok(calRes.cal.sureWrong === 2 && calRes.cal.sureRight === 1 && calRes.cal.overconfPct === 67 && calRes.cal.brier > 0.5,
+   "Metacognitive calibration: computes high-confidence miss rate (" + calRes.cal.overconfPct + "%) & Brier score (" + calRes.cal.brier + ")");
+ok(calRes.prof.headline.toLowerCase().includes("overconfidence"),
+   "ADHD profile: diagnoses metacognitive overconfidence blind spot (" + calRes.prof.headline + ")");
+
 console.log("\n=== ML VERIFICATION: " + pass + " passed, " + fail + " failed ===");
 process.exit(fail ? 1 : 0);

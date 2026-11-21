@@ -144,7 +144,8 @@ function startPerQ(){ clearInterval(perQInt); const L=LEVELS[curLevel()]; const 
 function showQ(){
  if(!quiz.length||!$("qText")) return;
  clearInterval(brakeInt);
- answered=false; current=quiz[qi]; window._qStart=Date.now(); startPerQ();
+ answered=false; current=quiz[qi]; window._qStart=Date.now(); window._qConf=""; startPerQ();
+ document.querySelectorAll("[data-action='set-conf']").forEach(b=>{ b.setAttribute("aria-pressed","false"); b.classList.remove("active"); });
  $("progress").textContent="Question "+(qi+1)+" of "+quiz.length;
  $("pbar").style.width=(qi/quiz.length*100)+"%";
  const meta=$("qMeta");
@@ -188,15 +189,15 @@ function answer(i,btn,ev){
  if(ev&&ev.detail>1&&i>=0) return; /* ignore the second click of a double-tap that landed on the next question */
  if(!current||current.type==="short"){ timeoutShort(); return }
  answered=true; clearInterval(perQInt); clearInterval(brakeInt);
- const right=i===current.answer; const ms=Date.now()-(window._qStart||Date.now());
+ const right=i===current.answer; const ms=Date.now()-(window._qStart||Date.now()); const conf=window._qConf||"";
  if(!right&&ms<6000) window._sessFastMiss=(window._sessFastMiss||0)+1;
- recordPerf(current,right,ms);
+ recordPerf(current,right,ms,conf);
  document.querySelectorAll("#opts .opt").forEach((b,j)=>{ b.disabled=true; b.setAttribute("aria-pressed",j===i?"true":"false"); if(j===current.answer) b.classList.add("right"); if(j===i&&!right) b.classList.add("wrong"); });
  store.seen++; store.sec[current.sec]=store.sec[current.sec]||{a:0,c:0}; store.sec[current.sec].a++;
  const key=current.topic+current.text.slice(0,40);
  if(right){ score++; store.xp+=Math.round((mode==="exam"?10:15)*(LEVELS[curLevel()]?LEVELS[curLevel()].mult:1)); store.sec[current.sec].c++; if(store.missed[key]){ store.missed[key]._cleared=(store.missed[key]._cleared||0)+1; if(store.missed[key]._cleared>=2) delete store.missed[key] } }
  else store.missed[key]={sec:current.sec,topic:current.topic,text:current.text,choices:current.choices,answer:current.answer,explain:current.explain,rule:current.rule,ts:Date.now()};
- const head=right?"Correct.":(i<0?"Time's up.":(ms<6000?"Fast miss ("+(ms/1000).toFixed(1)+"s) — pause before clicking.":"Not quite."));
+ const head=right?(conf==="guess"?"Correct (lucky guess — lock in the rule below).":"Correct."):(i<0?"Time's up.":(conf==="sure"?"High-confidence miss — update this rule anchor now.":(ms<6000?"Fast miss ("+(ms/1000).toFixed(1)+"s) — pause before clicking.":"Not quite.")));
  showFeedback(head, right, `${esc(current.explain)}`, current.rule);
  registerGap(current,right); trackMissStreak(right); save();
  if(!right||mode!=="trap") speak((right?"Correct. ":"")+current.explain);
