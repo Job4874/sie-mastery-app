@@ -285,18 +285,19 @@ def image_non_blank(p: Path) -> tuple[bool, float]:
         return std > 8.0, std
 
 
-def verify_audio_decode_in_browser(page, trigger_selector: str, expected_substr: str, label: str) -> None:
-    page.evaluate("stopAudio()")
+def verify_audio_decode_in_browser(page, trigger_selector: str, expected_substr: str, label: str) -> dict:
+    page.evaluate("() => { stopAudio(); try { audio.removeAttribute('src'); audio.load(); } catch(e) {} }")
     page.locator(trigger_selector).first.click()
     page.wait_for_function(
         "(sub) => audio && audio.src && audio.src.includes(sub) && audio.readyState >= 2 && Number.isFinite(audio.duration) && audio.duration > 0.5",
         arg=expected_substr,
-        timeout=8000,
+        timeout=15000,
     )
     info = page.evaluate("() => ({src: audio.src, readyState: audio.readyState, duration: audio.duration, err: audio.error ? audio.error.code : null})")
     page.evaluate("stopAudio()")
     check(info["err"] is None and info["duration"] > 0.5,
-          f"Browser <audio> decoded {label} (readyState={info['readyState']}, duration={info['duration']:.1f}s)")
+          f"Browser <audio> decoded {label} (readyState={info['readyState']}, duration={info['duration']:.1f}s, src={info['src'].split('/')[-1]})")
+    return info
 
 
 def assert_hit_test(page, selector: str, label: str) -> None:
@@ -336,14 +337,18 @@ def verify_browser_asymmetric(headed: bool) -> None:
 
         check(pg.evaluate("document.documentElement.getAttribute('data-theme')") == "light", "Learn default warm light theme")
         check(pg.locator(".unit-list li").count() == 9, "Learn displays 9 units (Start Here + 1..8)")
+        check(pg.locator(".path-list .path-step").count() == 3, "Learn displays 3-step Accelerated ADHD Study Path")
         assert_hit_test(pg, ".continue-card a.btn.primary", "Learn primary Continue CTA")
+        assert_hit_test(pg, ".path-list .path-step .btn", "Accelerated ADHD Path Step 1 CTA")
+        pg.evaluate("window.scrollTo(0, 0)")
+        pg.wait_for_timeout(200)
         shot_light = SHOTS / "01_learn_light.png"
-        pg.screenshot(path=str(shot_light))
+        pg.screenshot(path=str(shot_light), full_page=True)
         ok_nb, std_l = image_non_blank(shot_light)
         check(ok_nb, f"Visual proof: Learn light PNG non-blank (std={std_l:.1f})")
 
         pg.click("[data-action='toggle-theme']")
-        pg.wait_for_timeout(200)
+        pg.wait_for_timeout(250)
         shot_dark = SHOTS / "02_learn_dark.png"
         pg.screenshot(path=str(shot_dark))
         diff_ld = image_diff_mean(shot_light, shot_dark)
@@ -354,11 +359,21 @@ def verify_browser_asymmetric(headed: bool) -> None:
         pg.wait_for_timeout(150)
         check(pg.evaluate("isAdhd()"), "Focus mode toggled on")
         pg.click("[data-action='toggle-adhd']")
+        pg.evaluate("() => { const t = document.getElementById('toast'); if (t) t.classList.remove('show'); }")
 
-        # ---- 2. Lesson Player + Real Audio Decode + Asymmetric Check Lock & Extreme Trap Injection ----
+        # ---- 2. Lesson Player + Real Audio Decode + Pause/Resume + Asymmetric Check Lock & Extreme Trap Injection ----
         pg.click(".continue-card a.btn.primary")
         pg.wait_for_selector(".lesson-page", timeout=5000)
         verify_audio_decode_in_browser(pg, "[data-action='listen']", "audio/lessons/u0-l1-s1.mp3", "u0-l1-s1.mp3")
+        # Verify Calm Audio Deck Pause/Resume controls genuinely pause and resume <audio>
+        pg.locator("[data-action='listen']").first.click()
+        pg.wait_for_selector("#audioPauseBtn:not(.hidden)", timeout=5000)
+        pg.click("#audioPauseBtn")
+        paused_ok = pg.evaluate("() => AudioMan.paused === true && audio.paused === true && document.getElementById('audioPauseBtn').textContent === 'Resume'")
+        pg.click("#audioPauseBtn")
+        resumed_ok = pg.evaluate("() => AudioMan.paused === false && document.getElementById('audioPauseBtn').textContent === 'Pause'")
+        pg.locator("[data-action='listen']").first.click()  # stop
+        check(paused_ok and resumed_ok, "Audio deck: Pause/Resume genuinely pauses & resumes playback")
         pg.evaluate("prefs.voiceOn=false; savePrefs()")
         shot_lesson = SHOTS / "03_lesson_player.png"
         pg.screenshot(path=str(shot_lesson))
@@ -393,15 +408,34 @@ def verify_browser_asymmetric(headed: bool) -> None:
         pg.go_back(wait_until="networkidle")
         check("#/learn/unit/1" in pg.url, f"Browser Back returned to Unit 1 ({pg.url})")
 
-        # ---- 4. Asymmetric Grading Proof: Wrong vs Right (BKT, Elo, XP, Score, Missed Bank, Open Gaps) ----
+        # ---- 4. Practice v6 + Contrast Drill (A-B-A-B-A-B Micro-Interleaving) + Asymmetric Grading ----
         pg.goto(BASE + "/#/practice", wait_until="networkidle")
+        pg.wait_for_timeout(200)
+        shot_practice = SHOTS / "04_practice_v6.png"
+        pg.screenshot(path=str(shot_practice))
+        assert_hit_test(pg, "[data-action='contrast']", "Practice Contrast Drill CTA")
+        pg.locator("[data-action='contrast']").first.click()
+        pg.wait_for_selector(".pair-banner", timeout=5000)
+        contrast_info = pg.evaluate("""() => ({
+            len: quiz.length,
+            pairId: session && session.pair ? session.pair.id : null,
+            topics: quiz.map(q => q.topic),
+            alternates: quiz.length === 6 && quiz[0].topic === quiz[2].topic && quiz[2].topic === quiz[4].topic &&
+                        quiz[1].topic === quiz[3].topic && quiz[3].topic === quiz[5].topic && quiz[0].topic !== quiz[1].topic
+        })""")
+        shot_contrast = SHOTS / "05_contrast_drill.png"
+        pg.screenshot(path=str(shot_contrast))
+        check(contrast_info["alternates"], f"ADHD Contrast Drill strictly alternates A-B-A-B-A-B ({contrast_info['pairId']})")
+        pg.click("#quitBtn")
+        pg.wait_for_selector("[data-action='sprint5']", timeout=5000)
+
         pg.click("[data-action='set-level'][data-level='extreme']")
         pg.click("[data-action='sprint5']")
         pg.wait_for_selector("#quiz", timeout=5000)
         check("45s" in pg.locator("#timer").inner_text() and "Extreme" in pg.locator("#timer").inner_text(),
               f"Extremely Hard sprint clock active ({pg.locator('#timer').inner_text()})")
 
-        # Q1: Deliberate WRONG -> BKT down, Elo down, score unchanged, Missed Bank +1
+        # Q1: Deliberate FAST WRONG (<6s) -> BKT down, Elo down, Missed Bank +1, ADHD impulsiveMiss +1, Brake Cue on Q2
         q1_state_before = pg.evaluate("""() => ({
             u: current.unit,
             bkt: (store.t.units[current.unit] ? store.t.units[current.unit].bkt : 0.35),
@@ -419,16 +453,22 @@ def verify_browser_asymmetric(headed: bool) -> None:
             bkt: store.t.units[u].bkt,
             theta: store.t.theta,
             score: score,
-            missed: Object.keys(store.missed).length
+            missed: Object.keys(store.missed).length,
+            impulsive: store.t.patterns.impulsiveMiss,
+            fsrsCount: Object.keys(store.t.fsrs || {}).length
         })""", q1_state_before["u"])
         check(
             q1_state_after["score"] == q1_state_before["score"]
             and q1_state_after["bkt"] < q1_state_before["bkt"]
             and q1_state_after["theta"] < q1_state_before["theta"]
-            and q1_state_after["missed"] == q1_state_before["missed"] + 1,
-            f"Asymmetry (WRONG): score flat, BKT {q1_state_before['bkt']:.3f}->{q1_state_after['bkt']:.3f}, Elo {q1_state_before['theta']}->{q1_state_after['theta']}, Missed+1",
+            and q1_state_after["missed"] == q1_state_before["missed"] + 1
+            and q1_state_after["impulsive"] >= 1
+            and q1_state_after["fsrsCount"] >= 1,
+            f"Asymmetry (WRONG): score flat, BKT {q1_state_before['bkt']:.3f}->{q1_state_after['bkt']:.3f}, Elo {q1_state_before['theta']}->{q1_state_after['theta']}, Missed+1, ADHD impulsive={q1_state_after['impulsive']}, FSRS={q1_state_after['fsrsCount']}",
         )
         pg.click("#nextBtn")
+        brake_vis = pg.locator("#brakeCue:not(.hidden)").is_visible()
+        check(brake_vis, "ADHD scaffold: calm Brake Cue appears automatically on next Q after fast miss (<6s)")
 
         # Q2: Deliberate RIGHT -> BKT up, Elo up, score +1, XP +
         q2_state_before = pg.evaluate("""() => ({
@@ -522,7 +562,7 @@ def verify_browser_asymmetric(headed: bool) -> None:
             mix: JSON.stringify(quiz.reduce((a,q)=>{a[q.sec]=(a[q.sec]||0)+1;return a},{})),
             timer: document.getElementById('timer').innerText
         })""")
-        shot_exam = SHOTS / "04_extreme_exam.png"
+        shot_exam = SHOTS / "06_extreme_exam.png"
         pg.screenshot(path=str(shot_exam))
         check(
             ext_stats["len"] == 75 and ext_stats["unique"] == 75
@@ -535,23 +575,61 @@ def verify_browser_asymmetric(headed: bool) -> None:
         pg.click("#quitBtn")
         pg.wait_for_selector("[data-action='exam']", timeout=5000)
 
-        # ---- 7. Progress + Settings Welcome WAV + Self-Check + Mobile Geometry ----
+        # ---- 7. Progress (ADHD Cognitive Profile + FSRS Queue) + Genuine Non-Default Voice Allocation + Self-Check ----
         pg.goto(BASE + "/#/progress", wait_until="networkidle")
         pg.wait_for_selector(".unit-report", timeout=5000)
         check(pg.locator(".unit-report .card").count() == 8, "Progress shows all 8 units")
+        check(pg.locator(".adhd-profile").is_visible() and pg.locator(".fsrs-card").is_visible(),
+              "Progress renders live ADHD Cognitive Pattern Profile & FSRS Spaced-Repetition Queue")
+        check(pg.locator(".fsrs-list .fsrs-row").count() >= 1, "FSRS Memory Queue populated with live tracked topics")
+        shot_progress = SHOTS / "07_progress_adhd_fsrs.png"
+        pg.screenshot(path=str(shot_progress))
+
+        # Test FSRS Memory Review launch directly from Progress
+        pg.locator(".fsrs-card [data-action='due']").click()
+        pg.wait_for_selector("#quiz", timeout=5000)
+        check("FSRS memory review" in pg.locator(".quiz-top .eyebrow").inner_text(), "FSRS Memory Review launches from Progress")
+        pg.click("#quitBtn")
+
+        # Settings: Welcome WAV + Genuine Non-Default Voice Allocation (am_michael) + Self-Check
         pg.goto(BASE + "/#/settings", wait_until="networkidle")
         verify_audio_decode_in_browser(pg, "[data-action='welcome']", "audio/welcome.wav", "welcome.wav")
+
+        # Switch to Michael (am_michael) and prove genuine live Kokoro synthesis on Settings AND Lesson 0-1 (distinct clips!)
+        pg.select_option("#voiceSel", "am_michael")
+        mv_audio = verify_audio_decode_in_browser(pg, "[data-action='verify-voice']", "/tts/", "live Kokoro am_michael verify-voice")
+        mv_check = pg.evaluate("() => ({voice: AudioMan.activeVoice, src: AudioMan.activeSource})")
+        check(mv_check["voice"] == "am_michael" and mv_check["src"] == "kokoro-live",
+              f"Genuine voice allocation (Settings): am_michael -> {mv_check}")
+
+        pg.goto(BASE + "/#/learn/unit/0/lesson/1/1", wait_until="networkidle")
+        ml_audio = verify_audio_decode_in_browser(pg, "[data-action='listen']", "/tts/", "live Kokoro am_michael on Lesson 0-1")
+        ml_check = pg.evaluate("() => ({voice: AudioMan.activeVoice, src: AudioMan.activeSource, pill: document.getElementById('audioVoicePill').textContent})")
+        check(
+            ml_check["voice"] == "am_michael" and ml_check["src"] == "kokoro-live"
+            and ml_audio["src"] != mv_audio["src"] and ml_audio["duration"] > 15.0,
+            f"Genuine voice allocation (Lesson 0-1): distinct fresh am_michael clip ({ml_audio['src'].split('/')[-1]}, {ml_audio['duration']:.1f}s != {mv_audio['duration']:.1f}s)",
+        )
+
+        # Restore default af_heart voice & run Settings self-check
+        pg.goto(BASE + "/#/settings", wait_until="networkidle")
+        pg.select_option("#voiceSel", "af_heart")
         pg.click("[data-action='self-check']")
         sc_out = pg.locator("#selfCheckOut").inner_text().strip()
-        check("LIVE SELF-CHECK OK" in sc_out and "33 extreme traps" in sc_out, f"Settings self-check: {sc_out}")
+        check("LIVE SELF-CHECK OK" in sc_out and "33 extreme traps" in sc_out and "12 confusion pairs" in sc_out and "FSRS-DSR" in sc_out,
+              f"Settings self-check: {sc_out}")
 
         # Mobile viewport geometry + hit-test + zero overflow
+        pg.evaluate("() => { const t = document.getElementById('toast'); if (t) t.classList.remove('show'); }")
         pg.set_viewport_size({"width": 390, "height": 844})
         for route in ["#/learn", "#/practice", "#/exam", "#/progress", "#/settings"]:
             pg.goto(BASE + "/" + route, wait_until="networkidle")
+            pg.wait_for_timeout(200)
             overflow = pg.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
             check(overflow <= 2, f"Mobile 390x844 zero overflow on {route} (diff={overflow}px)")
-        shot_mobile = SHOTS / "05_mobile_settings.png"
+            if route == "#/learn":
+                pg.screenshot(path=str(SHOTS / "08_mobile_learn.png"))
+        shot_mobile = SHOTS / "09_mobile_settings.png"
         pg.screenshot(path=str(shot_mobile))
 
         browser.close()

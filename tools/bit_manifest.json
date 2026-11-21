@@ -8,36 +8,40 @@
     "sha256": "06ad60087f57d9dc36788d44770a72128198f287052800c90f3160df05b95434"
   },
   ".agents/skills/sie-verify/scripts/run_all.ps1": {
-    "bytes": 5027,
-    "sha256": "a9e5fa8133bdd25de70ad4b09dd3676eebc5a958ef49f055b940d1b159c25763"
+    "bytes": 5147,
+    "sha256": "019e1dca2027204a3860efee224efe9c87c76ad5c86c28aa107c63ea73bddb51"
   },
   ".github/workflows/compile.yml": {
-    "bytes": 1577,
-    "sha256": "a96c3eba3d7d27f24e9c23ddf9468f94e2140fc618e306ce11e64de3a2fff0f4"
+    "bytes": 1641,
+    "sha256": "3843bf08bf13b9462ab3a712b4a5c3807f40ccb45b73541651dcb0057b9b39c7"
   },
   ".github/workflows/pages.yml": {
     "bytes": 620,
     "sha256": "b8abb9adc4cd0f4d621558edebdf1eb16df9ea6d9874ce2615db9ed5a918f461"
   },
   "AGENTS.md": {
-    "bytes": 6640,
-    "sha256": "e49eeb1204a2da6b744f34d6b1b93192c74409f865a95d533cd5384aaa07016b"
+    "bytes": 7196,
+    "sha256": "2e4ab47608456b87033133b0f0575af2131d7b53fed8728bd5f992d7755958ea"
   },
   "ARCHITECTURE.md": {
-    "bytes": 4703,
-    "sha256": "89524712d2fa3f25b63244867f307a74bc5104f302389e4a5017842e45cc6bcb"
+    "bytes": 5882,
+    "sha256": "9ec3a8ae16b2a890251f50f3dfd2f949981a7ef8b46bf5d8e8b472cb53026237"
+  },
+  "HOSTING.md": {
+    "bytes": 5310,
+    "sha256": "77b74cd8a759e598acd1c9cb9c59bc4ed369dab7ddca6b49e2a60a1c85b1b0ba"
   },
   "PUSH_AUDIO.md": {
     "bytes": 2789,
     "sha256": "09a2c5ea2957c5302a064ad27e8aa9bd3cf7e56ce4b5a0402fbbf928b0f5539f"
   },
   "README.md": {
-    "bytes": 8746,
-    "sha256": "9acb54b6dbd658a6fe57542d1024f2619670e1f920e16c085f016705626e969e"
+    "bytes": 10868,
+    "sha256": "ed01e863bfac0cfb0832d828459c7983fda56afe67ef33672067876f40dc4fb5"
   },
   "RESEARCH_ADHD.md": {
-    "bytes": 11052,
-    "sha256": "ab527f73c9850c2239ca9c284fd88404c5bdc68bbdf742688e133cb5b5553760"
+    "bytes": 15789,
+    "sha256": "34ab849e55eb7179394eb458abcf755341b409d9c81930c490d0dbec5f7f3ae5"
   },
   "SECURITY.md": {
     "bytes": 3254,
@@ -52,8 +56,8 @@
     "sha256": "d1161bcac9515d2a7437be056b06354b8867da85a74274b2c3ac81ff80297a7d"
   },
   "server.py": {
-    "bytes": 13809,
-    "sha256": "0d88b6bb961199ff09e982c2fa967572b7657f0f332b3e5b99d5a9879955346f"
+    "bytes": 14091,
+    "sha256": "0c8906cfadab0ba919235e3ec562c4081e7f98a7330134f08de2db0e9c50998b"
   },
   "static/audio/lesson-1-regulators.wav": {
     "bytes": 7461484,
@@ -1484,8 +1488,8 @@
     "sha256": "67857deeae441238ad44f58c60953fd6c7c34c0e96b5c3ed833a387a4b9db28d"
   },
   "static/css/app.css": {
-    "bytes": 15033,
-    "sha256": "03812defe71cb777c9fb1587247e182afc7f9314e06a63df26268d1971104fc1"
+    "bytes": 21197,
+    "sha256": "78a46c88b8e4848f45ec705e84dbfe0c91e62cb1399e605d6b2b988b1f8d3f3a"
   },
   "static/favicon.ico": {
     "bytes": 17490,
@@ -1500,24 +1504,24 @@
     "sha256": "f2bb7c5bce42ae09eb41c5a421f0487559fdd2fca8bb880455d3fcbd10d44ba6"
   },
   "static/js/app.js": {
-    "bytes": 4913,
-    "sha256": "b842f4c198b49611bf2734be90834a4e517be28c92aa528ae158981490461d58"
+    "bytes": 7091,
+    "sha256": "d986683a6df4f143ed49d1690e11cf79a82f39e800591b43f2f9e9644dc3b702"
   },
   "static/js/core/audio.js": {
-    "bytes": 4929,
-    "sha256": "abc6fe1e61f9f21a791ac08b4899e016b9eabc2eab253d2293ce363d739c79bb"
+    "bytes": 8823,
+    "sha256": "459be6104bc2fadb591b6abb88d1137be2cb16301c61f5fd9dbf1bc412813707"
   },
   "static/js/core/quiz.js": {
-    "bytes": 19010,
-    "sha256": "76472c92f8638e20ce72685eb4095a94b605b577f75c32dc9418ec9d29f638b9"
+    "bytes": 24326,
+    "sha256": "a469cbed04925e5cb23be2074089590d9778fa3e8bb140a617e67d6443991736"
   },
   "static/js/core/store.js": {
-    "bytes": 5002,
-    "sha256": "671941e6cdd0016f925322cf34cff822cd163ab9ca396dcafc153c53a8e9914f"
+    "bytes": 7077,
+    "sha256": "a204f5cfb6578d1616287fcbfb5f53b08ba75b6c864e1b8df8beec08c0890430"
   },
   "static/js/core/teacher.js": {
-    "bytes": 5703,
-    "sha256": "340c2dceacc2c45b8c0599e8962350b4499f5b250e0ac2f97ab0b8edf5d3a3eb"
+    "bytes": 19118,
+    "sha256": "bf701931440d0e29e3827555d5912d49c9e13ca364d79dd22fb81e2884dff89c"
   },
   "static/js/core/util.js": {
     "bytes": 1146,
@@ -1588,24 +1592,24 @@
     "sha256": "37a0b4cd26fef05f933b72089668a787c529986478ff564954dedef521a0bb4a"
   },
   "static/js/ui/views.js": {
-    "bytes": 32635,
-    "sha256": "7df4ee325dd78bacfe8ab4d560c9547d7e3d4e882df988ee0468c791c79f3f97"
+    "bytes": 44721,
+    "sha256": "a9501f306952634c1dde9190705b434403cddeffa45a3a3d40d528cf6c43201a"
   },
   "tests/app.test.js": {
-    "bytes": 19432,
-    "sha256": "a35f5e18c910c41aa9801a3aa9d53c60bae6800089aff278ca665a4a4f6d6dca"
+    "bytes": 23436,
+    "sha256": "ff57cc8913f3caef8f809eec0478605e13c4fcd1307ee88932cb9bbb0cca32d8"
   },
   "tests/grammar_audit.py": {
-    "bytes": 2504,
-    "sha256": "06da7de26f8792df0851fbdebee9960013d1705a302a5646df72f0ab4dd1d15f"
+    "bytes": 2532,
+    "sha256": "6af83a7e89dcf1faa375a3c0fce86b74c4d2506fe29dbdd442197985c1ea1a73"
   },
   "tests/load_app.js": {
     "bytes": 4229,
     "sha256": "270aac52b80d5d7320fc645075308b73ad76aeda3e8ee857d467f70f04cb9988"
   },
   "tests/ml_verify.js": {
-    "bytes": 5335,
-    "sha256": "47750e474ff470d840294c33e1c927042811b030563402515722e30ce774b37a"
+    "bytes": 10052,
+    "sha256": "a189f658a6daa50872b006f0d5e722d09e3b5473cc7f0d8987f71a58d3c10f3c"
   },
   "tests/test_security.py": {
     "bytes": 13875,
@@ -1618,6 +1622,10 @@
   "tests/ui_enterprise.js": {
     "bytes": 2120,
     "sha256": "294de0e99f6c06f28762cce349ac98304cbbb4ab75fe921e70c2bb89a0dd74a8"
+  },
+  "tools/audit_audio.py": {
+    "bytes": 7600,
+    "sha256": "6359ae39e73f1d108757bb3d933c9b69eb6b8355ddd0b990dcc9609d530cbf9a"
   },
   "tools/compose_audio.py": {
     "bytes": 11741,
@@ -1640,8 +1648,8 @@
     "sha256": "4a60bbbbd3fe5970f12407a01846664f1ef9f09e2ef177349d5d0cf9b41680cc"
   },
   "tools/verify_asymmetric.py": {
-    "bytes": 30727,
-    "sha256": "945c9af8b414b88c258d6e3c2ec3b60ab1d5bd483cca5dfce6d69441c5e79aed"
+    "bytes": 36402,
+    "sha256": "c1799b3394bbec6222736613f3f8a97c9198ad0bbd0861a015128e2be98354c0"
   },
   "tools/verify_dom.py": {
     "bytes": 9162,

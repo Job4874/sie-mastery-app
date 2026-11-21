@@ -17,7 +17,7 @@ function Invoke-Step {
 Push-Location $Root
 try {
     Invoke-Step "1. py_compile + JS syntax + content schema" {
-        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tools/verify_asymmetric.py tools/visual_capture.py tools/launch.py tests/test_security.py tests/grammar_audit.py
+        python -m py_compile server.py security.py tts_engine.py tools/content_lib.py tools/validate_content.py tools/verify.py tools/audit_audio.py tools/compose_audio.py tools/verify_bits.py tools/verify_dom.py tools/verify_exhaustive.py tools/verify_hell.py tools/verify_asymmetric.py tools/visual_capture.py tools/launch.py tests/test_security.py tests/grammar_audit.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         python tools/validate_content.py
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -31,7 +31,8 @@ try {
     Invoke-Step "4. tests/ml_verify.js" { node tests/ml_verify.js }
     Invoke-Step "5. tests/ui_enterprise.js" { node tests/ui_enterprise.js }
     Invoke-Step "6. tools/verify.py" { python tools/verify.py }
-    Invoke-Step "7. tests/grammar_audit.py" { python tests/grammar_audit.py }
+    Invoke-Step "7a. tools/audit_audio.py (all 355 voice clips)" { python tools/audit_audio.py }
+    Invoke-Step "7b. tests/grammar_audit.py" { python tests/grammar_audit.py }
     Invoke-Step "8. unittest test_security.py" { python -m unittest discover -s tests -p "test_*.py" -v }
 
     $srv = $null

@@ -39,7 +39,7 @@ def main():
     # ---- 1. source files ----
     src = [
         "server.py", "security.py", "tts_engine.py", "requirements.txt",
-        "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
+        "README.md", "ARCHITECTURE.md", "HOSTING.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
         "SECURITY.md", "AGENTS.md",
         ".agents/skills/sie-verify/SKILL.md",
         ".agents/skills/sie-verify/scripts/run_all.ps1",
@@ -54,7 +54,7 @@ def main():
         "static/js/ui/router.js", "static/js/ui/views.js",
         "tests/load_app.js", "tests/app.test.js", "tests/tests9.js", "tests/test_security.py",
         "tests/ml_verify.js", "tests/ui_enterprise.js", "tests/grammar_audit.py",
-        "tools/content_lib.py", "tools/validate_content.py", "tools/verify.py",
+        "tools/content_lib.py", "tools/validate_content.py", "tools/verify.py", "tools/audit_audio.py",
         "tools/verify_dom.py", "tools/verify_exhaustive.py", "tools/verify_hell.py", "tools/verify_asymmetric.py",
         "tools/compose_audio.py", "tools/visual_capture.py", "tools/launch.py",
         ".github/workflows/compile.yml", ".github/workflows/pages.yml",

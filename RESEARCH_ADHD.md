@@ -157,16 +157,50 @@ level without clipping.
 | Working-memory limits | One question at a time, one voice at a time, 8-unit structure |
 | Interpretable feedback | BKT mastery % + plain-English diagnosis per unit |
 
-## 6. Limitations & honest caveats
+## 6. v6 Cognitive Upgrade — FSRS-DSR, Executive-Function Telemetry, Micro-Interleaving & W3C COGA
+
+Building on the BKT + Elo baseline above, v6 incorporates four peer-reviewed frameworks directly targeting how ADHD minds fail and succeed on high-stakes regulatory exams:
+
+### 6.1 FSRS-DSR Spaced-Repetition Memory Model
+Standard fixed-interval review queues ignore both per-topic difficulty and the spacing effect. SIE Mastery v6 adds a per-topic **FSRS (Free Spaced Repetition Scheduler) DSR** model (`static/js/core/teacher.js`) tracking three latent variables per FINRA concept:
+
+- **Difficulty** $D \in [1, 10]$ (mean-reverting toward neutral $5.0$ so an early lucky guess or bad day cannot lock a concept permanently extreme)
+- **Stability** $S$ (in days — the exact elapsed time until recall probability falls to $90\%$)
+- **Retrievability** $R(t, S)$ after $t$ elapsed days:
+
+```
+R(t, S)       = (1 + t / (9 · S))^-1      (exact identity: R(S, S) = 0.90)
+I(S, R_target) = 9 · S · (1 / R_target - 1)
+```
+
+Ratings $G \in \{1\text{ (Again)}, 2\text{ (Hard)}, 3\text{ (Good)}, 4\text{ (Easy)}\}$ are inferred automatically from correctness and response latency without adding rating-button fatigue to the ADHD learner. Reviewing a topic near its forgetting threshold ($R < 0.90$) produces strictly larger stability growth (*desirable difficulty*) than immediate repetition, while a miss contracts $S$, increments `lapses`, and marks the topic immediately due.
+
+### 6.2 Recursive ADHD Error-Pattern Recognition & Post-Error Braking
+ADHD exam errors cluster into distinct executive-function failure modes rather than uniform ignorance (Barkley, 2006; Shiels & Hawk, 2010 — impaired **post-error slowing** and reduced error-related negativity [ERN]):
+
+1. **Impulsive fast misses (`< 6s`):** premature click before parsing the complete FINRA scenario.
+2. **Negative-qualifier skimming (`NOT` / `EXCEPT` / `LEAST` / `FALSE`):** skipping inversion words in stems.
+3. **Post-error cascades:** submitting a second fast miss (`< 8s`) within 3 minutes of a prior error.
+4. **Deep concept gaps (`>= 15s` misses):** sustained effort without a valid rule model.
+5. **Speed bottlenecks (`> 25s` corrects):** accurate recall that still risks exam-day time pressure.
+
+Rather than collapsing these into one percentage score, `recordPerf()` classifies every response, updates the **ADHD Cognitive Pattern Profile** (`#/progress`), highlights negative qualifiers visually via XSS-safe `<mark class="qual">` anchors, surfaces a calm inhibitory **Brake Cue** after any fast miss, and offers an opt-in **3-second Impulse Brake** in Settings.
+
+### 6.3 Structured Confusion-Pair Micro-Interleaving
+Random domain-wide shuffling increases ADHD task-switching tax, whereas blocked single-topic drills create false fluency on look-alike FINRA rules (e.g., *Fed Reg T 50% initial* vs. *FINRA 25% maintenance / $25k PDT*, or *SEC Rule 15l-1 Reg BI* vs. *FINRA Rule 2111 Suitability*). SIE Mastery v6 curates **12 high-yield FINRA Confusion Pairs** and delivers **6-question Contrast Drills** that strictly alternate `A-B-A-B-A-B`, keeping working-memory load low while forcing crisp rule discrimination (Rohrer, 2012; Brunmair & Richter, 2019).
+
+### 6.4 W3C COGA Alignment & Genuine Multi-Voice Allocation
+The v6 interface follows the **W3C Cognitive Accessibility (COGA) 8 Design Objectives**: predictable regions, high-contrast warm editorial typography (`>= 7:1` WCAG AAA body contrast), single calm teal accent, semantic inline icons per screen type, zero noisy gradients or ALL-CAPS transforms, Focus mode (`F`), and a calm lesson audio bar with Pause/Resume, progress bar, and genuine Kokoro voice allocation (`af_heart` pre-recorded clips everywhere, plus live local Kokoro synthesis whenever a learner selects `af_bella`, `am_michael`, or `bf_emma`). Every one of the **355 shipped voice clips** (`340` lesson MP3s + `15` WAVs, `165.3` minutes total) is verified acoustically by `tools/audit_audio.py` (`24 kHz` mono, `-22.9..-22.0 dBFS` RMS, zero corrupt/silent streams).
+
+## 7. Limitations & honest caveats
 
 - The app is a study aid, not a clinical ADHD intervention; no claim of treatment.
-- BKT parameters are fixed defaults, not fitted per learner — a production system
-  would estimate P(L0), T, G, S from data (pyBKT does this).
+- BKT and FSRS weights use principled literature defaults rather than offline per-learner gradient optimization (which requires a large multi-student longitudinal dataset).
 - The source study (Stern & Halamish, 2023) used Hebrew prose texts and a 2-day
   delay; SIE content and exam timing differ, so the transfer is principled but
   not a direct replication.
 
-## Sources (fetched this session)
+## Sources (fetched across sessions)
 
 1. Stern, P. & Halamish, V. (2023). *Free-recall retrieval practice tasks for
    students with ADHD: whole-text versus section recall.* Frontiers in Psychology
@@ -175,13 +209,21 @@ level without clipping.
    Learning and Instruction*. (BKT formulation; via pyBKT docs).
 3. Badrinath, B. et al. (2021). *pyBKT: An Accessible Python Library of BKT Models.*
    https://arxiv.org/abs/2105.00385 · https://github.com/CAHLR/pyBKT
-4. Dunlosky, J. et al. (2013). Improving students' learning with effective
+4. Ye, J. et al. (2022–2025). *A Stochastic Shortest Path Algorithm for Optimizing
+   Spaced Repetition Scheduling / FSRS (DSR Memory Model).* KDD / open-spaced-repetition.
+5. W3C WAI Cognitive Accessibility Task Force. *Making Content Usable for People
+   with Cognitive and Learning Disabilities (COGA).* https://www.w3.org/TR/coga-usable/
+6. Shiels, K. & Hawk, L. W. (2010). *Self-regulation in ADHD: The role of error
+   processing (post-error slowing & ERN).* Clinical Psychology Review.
+7. Rohrer, D. (2012). *Interleaving helps students distinguish among similar concepts.*
+   Educational Psychology Review.
+8. Dunlosky, J. et al. (2013). Improving students' learning with effective
    techniques. *Psychological Science in the Public Interest.*
-5. Agarwal, P. et al. (2021). Retrieval practice. *Psychological Science in the
+9. Agarwal, P. et al. (2021). Retrieval practice. *Psychological Science in the
    Public Interest.* (via retrievalpractice.org)
-6. Roediger & Karpicke (2006). Test-enhanced learning. *Psychological Science.*
-7. EBU R128 (2014). *Loudness recommendation.* https://tech.ebu.ch/docs/r/r128.pdf
-8. hexgrad. *Kokoro-82M.* https://huggingface.co/hexgrad/Kokoro-82M
-9. Microsoft Fluent 2 Design System — Typography & Layout (fetched this session):
-   https://fluent2.microsoft.design/typography · https://fluent2.microsoft.design/layout
-10. Stripe Documentation — computed styles inspected live at https://docs.stripe.com
+10. Roediger & Karpicke (2006). Test-enhanced learning. *Psychological Science.*
+11. EBU R128 (2014). *Loudness recommendation.* https://tech.ebu.ch/docs/r/r128.pdf
+12. hexgrad. *Kokoro-82M.* https://huggingface.co/hexgrad/Kokoro-82M
+13. Microsoft Fluent 2 Design System — Typography & Layout:
+    https://fluent2.microsoft.design/typography · https://fluent2.microsoft.design/layout
+14. Stripe Documentation — computed styles inspected live at https://docs.stripe.com

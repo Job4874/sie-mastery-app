@@ -20,7 +20,7 @@ def ok(c, m):
 
 
 def main():
-    for f in ["RESEARCH_ADHD.md", "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "SECURITY.md"]:
+    for f in ["RESEARCH_ADHD.md", "README.md", "ARCHITECTURE.md", "HOSTING.md", "PUSH_AUDIO.md", "SECURITY.md"]:
         ok((ROOT / f).is_file(), f"{f} present")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -41,7 +41,7 @@ def main():
         files = [
             "static/index.html", "static/css/app.css",
             "static/js/app.js", "static/js/core", "static/js/data", "static/js/ui",
-            "README.md", "ARCHITECTURE.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
+            "README.md", "ARCHITECTURE.md", "HOSTING.md", "PUSH_AUDIO.md", "RESEARCH_ADHD.md",
             "SECURITY.md", "AGENTS.md",
             ".agents/skills/sie-verify/SKILL.md",
             ".agents/skills/sie-curriculum-author/SKILL.md",

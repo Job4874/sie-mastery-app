@@ -171,29 +171,29 @@ function ok(cond, name) {
   ok(!/<script(?![^>]*src=)/i.test(html), "index.html has zero inline <script> blocks");
   ok(!/\bonclick\s*=/i.test(html) && !/\bonclick\s*=/i.test(allJs), "zero inline onclick handlers in HTML or JS");
   ok(result.unitCount === 9 && result.lessonCount === 42 && result.screenCount >= 260 && result.badLessons === 0,
-     `curriculum loaded cleanly (${result.unitCount} units, ${result.lessonCount} lessons, ${result.screenCount} screens, bad=${result.badLessons})`);
+    `curriculum loaded cleanly (${result.unitCount} units, ${result.lessonCount} lessons, ${result.screenCount} screens, bad=${result.badLessons})`);
   ok(result.routeChecks.every(Boolean), "all 10 hash routes parse cleanly");
   ok(result.gen >= 89, "generator count >= 89 (got " + result.gen + ")");
   ok(result.bad.length === 0, "all generators structurally valid: " + JSON.stringify(result.bad.slice(0, 5)));
   ok(result.splitBad.length === 0, "GEN[23] stock splits produce integer share counts across 200 rolls");
   ok(result.marginBad.length === 0, "GEN[4] Reg T margin avoids $2k collision (amt >= $6k, call >= $3k across 200 rolls)");
   ok(result.placements.length === 20 && result.placements.every(p => p.n === 10 && p.unique === 10 && p.all8),
-     "startPlacement yields 10 unique stems covering all 8 units across 20 runs");
+    "startPlacement yields 10 unique stems covering all 8 units across 20 runs");
   ok(result.exams.length === 20 && result.exams.every(e => e.n === 75), "exam length 75 across 20 runs");
   ok(result.exams.every(e => e.unique === 75), "exam has 75 unique stems across 20 runs");
   ok(result.exams.every(e => e.c[1] === 12 && e.c[2] === 33 && e.c[3] === 23 && e.c[4] === 7), "exam section mix 12/33/23/7 across 20 runs");
   ok(JSON.stringify(result.levelKeys) === JSON.stringify(["easy", "standard", "hard", "veryhard", "extreme"]),
-     "all 5 difficulty levels defined (easy -> extreme)");
+    "all 5 difficulty levels defined (easy -> extreme)");
   ok(result.examByLevel.every(e => e.n === 75 && e.unique === 75 && e.c[1] === 12 && e.c[2] === 33 && e.c[3] === 23 && e.c[4] === 7),
-     "buildExam(75, level) yields 75 unique stems with 12/33/23/7 mix across all 5 levels");
+    "buildExam(75, level) yields 75 unique stems with 12/33/23/7 mix across all 5 levels");
   ok(result.examByLevel.find(e => e.lv === "extreme").allHardened,
-     "Extremely Hard exam upgrades 100% of items (zero softballs)");
+    "Extremely Hard exam upgrades 100% of items (zero softballs)");
   ok(result.easyTopicCount === 33 && result.missingExtreme.length === 0 && result.extremeBad.length === 0,
-     `all ${result.easyTopicCount} normally-easy topics have valid EXTREME_GEN trap upgrades (missing=${result.missingExtreme.join(",")})`);
+    `all ${result.easyTopicCount} normally-easy topics have valid EXTREME_GEN trap upgrades (missing=${result.missingExtreme.join(",")})`);
   ok(result.lsEasyLen === result.baseU1L1 && result.lsHardLen === result.baseU1L1 + 1 &&
-     result.lsExtremeLen === result.baseU1L1 + 1 && result.lsExtremeHasTrap &&
-     result.lsExtremeRecapOrig === result.baseU1L1 - 1,
-     "lesson player injects Hard/Extreme bonus trap check before Recap while preserving Recap audio index");
+    result.lsExtremeLen === result.baseU1L1 + 1 && result.lsExtremeHasTrap &&
+    result.lsExtremeRecapOrig === result.baseU1L1 - 1,
+    "lesson player injects Hard/Extreme bonus trap check before Recap while preserving Recap audio index");
   ok(result.exam150Valid, "buildExam(150) fallback returns 150 items with 4 choices");
   ok(result.secAligned, "FINRA SIE section tags aligned across original + 2026 Social Security/IRA/ERISA/product topics");
   ok(result.maps.unit.length === 0, "every topic has a unit map: " + JSON.stringify(result.maps.unit));
@@ -279,18 +279,18 @@ function ok(cond, name) {
   ok(stRes.dblBlockedAnswered === false, "answer ignores accidental multi-click bleed-through (event.detail > 1)");
   ok(stRes.ssnBlockedAnswered === false, "answerShort blocks and redacts SSN-only submission");
   ok(stRes.shortTimeoutState.answered && stRes.shortTimeoutState.disabled && stRes.shortTimeoutState.missedType === "short",
-     "timeoutShort marks answered, disables shortAns, and records short miss");
+    "timeoutShort marks answered, disables shortAns, and records short miss");
   ok(stRes.cleanedKeys.length === 1 && stRes.cleanedKeys[0] === "goodMc", "cleanMissedMap drops incomplete short and invalid sec entries");
   ok(stRes.cleanedLpKeys.length === 1 && stRes.cleanedLpKeys[0] === "1-1", "cleanLessonProgress drops invalid lesson progress entries");
   ok(stRes.selfCheck.ok && stRes.selfCheck.issues.length === 0 && stRes.selfCheck.msg.includes("LIVE SELF-CHECK OK"),
-     "runSelfCheck returns ok:true with 0 issues: " + stRes.selfCheck.msg);
+    "runSelfCheck returns ok:true with 0 issues: " + stRes.selfCheck.msg);
 
   const healthSb = createSandbox({
     fetch: url =>
       url === "/api/health"
         ? Promise.resolve({
-            json: () => Promise.resolve({ ok: true, ready: false, engine: "kokoro-onnx:missing-model", cached_clips: 0 })
-          })
+          json: () => Promise.resolve({ ok: true, ready: false, engine: "kokoro-onnx:missing-model", cached_clips: 0 })
+        })
         : Promise.reject(new Error("offline"))
   });
   await new Promise(r => setTimeout(r, 15));
@@ -304,7 +304,7 @@ function ok(cond, name) {
   });
   await new Promise(r => setTimeout(r, 15));
   ok(pagesFetched === 0 && vm.runInContext("VOICE_STATE.engine", pagesSb) === "browser",
-     "GitHub Pages origin skips /api/health probe cleanly with zero fetches");
+    "GitHub Pages origin skips /api/health probe cleanly with zero fetches");
 
   async function runAudioRaceCase(shouldReject) {
     let settleTts, ttsSignal, browserSpoke = 0;
@@ -322,7 +322,7 @@ function ok(cond, name) {
       extras: {
         AbortController,
         SpeechSynthesisUtterance: function (t) { this.text = t; },
-        speechSynthesis: { cancel() {}, speak() { browserSpoke++; } }
+        speechSynthesis: { cancel() { }, speak() { browserSpoke++; } }
       }
     });
     await new Promise(r => setTimeout(r, 10));
@@ -345,11 +345,84 @@ function ok(cond, name) {
   ok(raceResolved.aborted, "playWelcome aborts in-flight /api/tts request");
   ok(raceResolved.src === "audio/welcome.wav", "in-flight /api/tts resolution does not overwrite welcome.wav (got " + JSON.stringify(raceResolved.src) + ")");
   ok(raceResolved.gpuFail === 0 && !raceResolved.busy && raceResolved.browserSpoke === 0,
-     "stale /api/tts resolution does not flip busy, gpuFail, or browser fallback");
+    "stale /api/tts resolution does not flip busy, gpuFail, or browser fallback");
 
   const raceRejected = await runAudioRaceCase(true);
   ok(raceRejected.src === "audio/welcome.wav" && raceRejected.gpuFail === 0 && !raceRejected.busy && raceRejected.browserSpoke === 0,
-     "aborted /api/tts rejection does not overwrite welcome.wav, bump gpuFail, or trigger browser TTS");
+    "aborted /api/tts rejection does not overwrite welcome.wav, bump gpuFail, or trigger browser TTS");
+
+  /* v6 ADHD ML, Confusion Pairs, Qualifier Highlighting XSS-safety, JSON Export/Import & Genuine Voice Allocation */
+  const v6Res = vm.runInContext(`(() => {
+    const genTopics = new Set(GEN.map(g => g().topic));
+    const pairsValid = CONFUSION_PAIRS.length === 12 &&
+      CONFUSION_PAIRS.every(p => p.a !== p.b && genTopics.has(p.a) && genTopics.has(p.b) && p.rule.length > 20);
+    startContrastDrill("margin-pdt");
+    const contrastAlt = quiz.length === 6 &&
+      quiz[0].topic === "Reg T margin" && quiz[1].topic === "Pattern day trader" &&
+      quiz[2].topic === "Reg T margin" && quiz[3].topic === "Pattern day trader" &&
+      quiz[4].topic === "Reg T margin" && quiz[5].topic === "Pattern day trader" &&
+      session.pair && session.pair.id === "margin-pdt";
+
+    prefs.qualHighlight = true;
+    const xssOut = highlightQualifiersHtml('<img src=x onerror=alert(1)> Which is NOT valid EXCEPT cash?');
+    const xssSafe = !xssOut.includes("<img") && xssOut.includes("&lt;img") &&
+      xssOut.includes('<mark class="qual">NOT</mark>') && xssOut.includes('<mark class="qual">EXCEPT</mark>');
+    prefs.qualHighlight = false;
+    const noQualOut = highlightQualifiersHtml("Which is NOT valid?");
+    const qualToggleWorks = !noQualOut.includes("<mark");
+    prefs.qualHighlight = true;
+
+    store.xp = 420;
+    fsrsUpdate("Reg T margin", true, 5000, Date.now() - 10 * DAY_MS);
+    fsrsUpdate("Freeriding", true, 5000, Date.now());
+    startDueReview(2);
+    const dueFirst = quiz.length >= 2 && quiz[0].topic === "Reg T margin";
+
+    const snap = exportProgressJson();
+    store.xp = 0; store.t.fsrs = {};
+    const impOk = importProgressJson(snap);
+    const impBad = importProgressJson("{broken json");
+    const impRestored = store.xp === 420 && Boolean(store.t.fsrs["Reg T margin"]);
+    return { pairsValid, contrastAlt, xssSafe, qualToggleWorks, dueFirst, impOk, impBad, impRestored };
+  })()`, stSb);
+  ok(v6Res.pairsValid, "all 12 FINRA CONFUSION_PAIRS map cleanly to distinct GEN topics with rules");
+  ok(v6Res.contrastAlt, "startContrastDrill builds 6 strictly alternating A-B-A-B-A-B micro-interleaved items");
+  ok(v6Res.xssSafe && v6Res.qualToggleWorks, "highlightQualifiersHtml escapes XSS first and honors prefs.qualHighlight toggle");
+  ok(v6Res.dueFirst, "startDueReview prioritizes lowest-retrievability FSRS topic first");
+  ok(v6Res.impOk && !v6Res.impBad && v6Res.impRestored, "exportProgressJson / importProgressJson round-trips state and rejects malformed JSON");
+
+  /* Genuine voice allocation: non-af_heart voice on localhost routes AudioMan.clip() via /api/tts */
+  let postedVoice = null, ttsCalls = 0;
+  const allocSb = createSandbox({
+    stateful: true,
+    fetch: (url, opts) => {
+      if (url === "/api/health") {
+        return Promise.resolve({ json: () => Promise.resolve({ ok: true, ready: true, engine: "kokoro-onnx" }) });
+      }
+      if (url === "/api/tts") {
+        ttsCalls++;
+        postedVoice = JSON.parse(opts.body).voice;
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ url: "/tts/michael123.wav", engine: "kokoro-onnx" }) });
+      }
+      return Promise.reject(new Error("offline"));
+    },
+    extras: { AbortController }
+  });
+  await new Promise(r => setTimeout(r, 15));
+  vm.runInContext(`prefs.voice = "af_heart"; AudioMan.clip("audio/lessons/u0-l1-s1.mp3", "Hello world");`, allocSb);
+  await new Promise(r => setTimeout(r, 10));
+  const heartSrc = vm.runInContext("audio.src", allocSb);
+  const heartCalls = ttsCalls;
+  vm.runInContext(`prefs.voice = "am_michael"; AudioMan.clip("audio/lessons/u0-l1-s1.mp3", "Hello world in Michael voice");`, allocSb);
+  await new Promise(r => setTimeout(r, 15));
+  const michaelSrc = vm.runInContext("audio.src", allocSb);
+  const michaelVoice = vm.runInContext("AudioMan.activeVoice", allocSb);
+  vm.runInContext(`AudioMan.togglePause();`, allocSb);
+  const pausedState = vm.runInContext("AudioMan.paused", allocSb);
+  ok(heartSrc === "audio/lessons/u0-l1-s1.mp3" && heartCalls === 0, "af_heart plays saved Kokoro clip directly with 0 /api/tts calls");
+  ok(postedVoice === "am_michael" && michaelVoice === "am_michael" && michaelSrc === "/tts/michael123.wav",
+     "non-default Kokoro voice (am_michael) genuinely routes AudioMan.clip() through /api/tts");
+  ok(pausedState === true, "AudioMan.togglePause() pauses active audio cleanly");
 
   console.log("app.test: " + pass + " passed, " + fail + " failed");
   if (fail) process.exit(1);

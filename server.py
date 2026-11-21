@@ -25,9 +25,11 @@ STATIC = ROOT / "static"
 TTS_DIR = ROOT / "tts_cache"
 
 PORT = int(os.environ.get("PORT", "8765"))
-BIND = "127.0.0.1"
-HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}", "127.0.0.1", "localhost"}
-ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"}
+BIND = os.environ.get("SIE_BIND", "127.0.0.1")
+_EXTRA_HOSTS = {h.strip().lower() for h in os.environ.get("SIE_ALLOWED_HOSTS", "").split(",") if h.strip()}
+_EXTRA_ORIGINS = {o.strip().lower() for o in os.environ.get("SIE_ALLOWED_ORIGINS", "").split(",") if o.strip()}
+HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}", "127.0.0.1", "localhost"} | _EXTRA_HOSTS
+ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"} | _EXTRA_ORIGINS
 LIMITER = RateLimiter(limit=30, window=60.0)
 CLIP_RE = re.compile(r"^/tts/([a-f0-9]{32})\.wav$")
 RANGE_RE = re.compile(r"^bytes=(\d*)-(\d*)$", re.IGNORECASE)

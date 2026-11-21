@@ -1,4 +1,5 @@
-/* store.js - on-device progress + settings (localStorage), self-healing against corrupt data. */
+/* store.js - on-device progress + settings (localStorage), self-healing against corrupt data.
+   Stores BKT unit mastery, Elo theta, per-topic FSRS-DSR memory states, and ADHD error patterns. */
 function cleanMissedMap(raw){
  const out={}; if(!isPlainObj(raw)) return out;
  Object.keys(raw).forEach(k=>{ const m=raw[k]; if(!isPlainObj(m)) return;
@@ -12,8 +13,39 @@ function cleanLessonProgress(raw){
  Object.keys(raw).forEach(k=>{ if(/^\d-\d$/.test(k)&&isPlainObj(raw[k])&&raw[k].done===true) out[k]={done:true,at:Number.isFinite(raw[k].at)?raw[k].at:0}; });
  return out;
 }
-function loadStore(){
- let s=null; try{ s=JSON.parse(localStorage.getItem("sie")||"{}"); }catch(e){ s=null; }
+function cleanFsrsMap(raw){
+ const out={}; if(!isPlainObj(raw)) return out;
+ Object.keys(raw).forEach(k=>{
+  const f=raw[k]; if(!isPlainObj(f)||!k) return;
+  const d=Number.isFinite(f.d)?Math.max(1,Math.min(10,f.d)):5;
+  const s=Number.isFinite(f.s)?Math.max(0.1,Math.min(3650,f.s)):0.5;
+  const reps=Number.isInteger(f.reps)&&f.reps>=0?f.reps:0;
+  const lapses=Number.isInteger(f.lapses)&&f.lapses>=0?f.lapses:0;
+  const last=Number.isFinite(f.last)&&f.last>0?f.last:0;
+  const due=Number.isFinite(f.due)&&f.due>0?f.due:0;
+  out[k]={d,s,reps,lapses,last,due};
+ });
+ return out;
+}
+function cleanPatterns(raw){
+ const p=isPlainObj(raw)?raw:{};
+ const num=v=>Number.isInteger(v)&&v>=0?v:0;
+ const pairs={};
+ if(isPlainObj(p.pairs)) Object.keys(p.pairs).forEach(k=>{ if(Number.isInteger(p.pairs[k])&&p.pairs[k]>0) pairs[k]=p.pairs[k]; });
+ const recent=Array.isArray(p.recent)?p.recent.filter(x=>isPlainObj(x)&&typeof x.topic==="string"&&typeof x.right==="boolean"&&Number.isFinite(x.ms)).slice(-40):[];
+ return {
+  impulsiveMiss:num(p.impulsiveMiss),
+  qualifierTrap:num(p.qualifierTrap),
+  postErrorCascade:num(p.postErrorCascade),
+  conceptGap:num(p.conceptGap),
+  speedBottleneck:num(p.speedBottleneck),
+  totalMiss:num(p.totalMiss),
+  lastWrongAt:Number.isFinite(p.lastWrongAt)?p.lastWrongAt:0,
+  pairs,
+  recent
+ };
+}
+function sanitizeStoreObject(s){
  if(!isPlainObj(s)) s={};
  const rt=isPlainObj(s.t)?s.t:{};
  const st={
@@ -34,16 +66,33 @@ function loadStore(){
    placed:typeof rt.placed==="boolean"?rt.placed:undefined,
    openGaps:isPlainObj(rt.openGaps)?rt.openGaps:{},
    topicMiss:isPlainObj(rt.topicMiss)?rt.topicMiss:{},
-   gapsClosed:Number.isFinite(rt.gapsClosed)?rt.gapsClosed:0
+   gapsClosed:Number.isFinite(rt.gapsClosed)?rt.gapsClosed:0,
+   fsrs:cleanFsrsMap(rt.fsrs),
+   patterns:cleanPatterns(rt.patterns)
   }
  };
  if(st.zero===undefined&&Object.values(st.t.units).some(u=>u&&u.a>0)) st.zero={done:true,at:Date.now()};
  if(st.t.placed===undefined) st.t.placed=Object.values(st.t.units).some(u=>u&&u.a>0);
  return st;
 }
+function loadStore(){
+ let s=null; try{ s=JSON.parse(localStorage.getItem("sie")||"{}"); }catch(e){ s=null; }
+ return sanitizeStoreObject(s);
+}
 let store=loadStore();
 const SIE_HOOKS={afterSave:[]};
 function save(){ try{localStorage.setItem("sie",JSON.stringify(store))}catch(e){} SIE_HOOKS.afterSave.forEach(fn=>{try{fn()}catch(e){}}); }
+function exportProgressJson(){ return JSON.stringify({schema:"sie-mastery-v6",exportedAt:new Date().toISOString(),store,prefs},null,2); }
+function importProgressJson(raw){
+ try{
+  const parsed=JSON.parse(String(raw||""));
+  const candidate=isPlainObj(parsed)&&isPlainObj(parsed.store)?parsed.store:parsed;
+  if(!isPlainObj(candidate)) return false;
+  store=sanitizeStoreObject(candidate);
+  save();
+  return true;
+ }catch(e){ return false; }
+}
 
 /* ---------- settings (separate keys so a corrupt progress blob never resets preferences) ---------- */
 const THEME_KEY="tibin_sie_theme", ADHD_KEY="tibin_sie_adhd", VRATE_KEY="tibin_sie_vrate", PREFS_KEY="tibin_sie_prefs";
@@ -58,11 +107,13 @@ function loadPrefs(){
   voice:Object.prototype.hasOwnProperty.call(VOICES,p.voice)?p.voice:"af_heart",
   voiceOn:p.voiceOn!==false,
   autoplay:p.autoplay===true,
-  rate:["1","1.15","1.3"].includes(rate)?parseFloat(rate):1
+  qualHighlight:p.qualHighlight!==false,
+  impulseBrake:p.impulseBrake===true,
+  rate:["0.9","1","1.15","1.3"].includes(rate)?parseFloat(rate):1
  };
 }
 let prefs=loadPrefs();
-function savePrefs(){ try{ localStorage.setItem(PREFS_KEY,JSON.stringify({level:prefs.level,voice:prefs.voice,voiceOn:prefs.voiceOn,autoplay:prefs.autoplay})); localStorage.setItem(VRATE_KEY,String(prefs.rate)); }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem(PREFS_KEY,JSON.stringify({level:prefs.level,voice:prefs.voice,voiceOn:prefs.voiceOn,autoplay:prefs.autoplay,qualHighlight:prefs.qualHighlight,impulseBrake:prefs.impulseBrake})); localStorage.setItem(VRATE_KEY,String(prefs.rate)); }catch(e){} }
 function curLevel(){ return prefs.level; }
 function getVoiceRate(){ const v=prefs.rate; return Number.isFinite(v)&&v>=0.75&&v<=1.6?v:1; }
 
