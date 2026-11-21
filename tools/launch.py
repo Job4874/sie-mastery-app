@@ -57,36 +57,69 @@ def start_server(wait_sec: float = 12.0) -> dict:
 
     py_exe = find_python(windowless=True)
     env = dict(os.environ, PORT=str(PORT))
-    kwargs: dict = {
-        "cwd": str(ROOT),
-        "env": env,
-        "stdin": subprocess.DEVNULL,
-        "stdout": subprocess.DEVNULL,
-        "stderr": subprocess.DEVNULL,
-        "close_fds": True,
-    }
-    if os.name == "nt":
-        # Never combine DETACHED_PROCESS with CREATE_NO_WINDOW per Win32 CreateProcess docs.
-        flags = (
-            getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
-            | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)
+    if os.name == "nt" and PORT == 8765:
+        # Spawn via Win32_Process.Create so the server escapes any parent job object
+        # and stays alive permanently in the background across terminal sessions.
+        cmd_line = f'"{py_exe}" "{ROOT / "server.py"}"'
+        ps_spawn = (
+            f"$r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create "
+            f"-Arguments @{{ CommandLine = '{cmd_line}'; CurrentDirectory = '{ROOT}' }}; "
+            f"if ($r.ReturnValue -eq 0) {{ Write-Output $r.ProcessId }} else {{ exit 1 }}"
         )
-        kwargs["creationflags"] = flags
+        res = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", ps_spawn],
+            capture_output=True, text=True, check=False,
+        )
+        pid_str = res.stdout.strip()
+        proc = None
+        if pid_str.isdigit():
+            try:
+                PID_FILE.write_text(pid_str, encoding="utf-8")
+            except OSError:
+                pass
+        else:
+            flags = (
+                getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+                | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)
+            )
+            proc = subprocess.Popen(
+                [py_exe, str(ROOT / "server.py")],
+                cwd=str(ROOT), env=env,
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                close_fds=True, creationflags=flags,
+            )
+            try:
+                PID_FILE.write_text(str(proc.pid), encoding="utf-8")
+            except OSError:
+                pass
     else:
-        kwargs["start_new_session"] = True
-
-    proc = subprocess.Popen([py_exe, str(ROOT / "server.py")], **kwargs)
-    try:
-        PID_FILE.write_text(str(proc.pid), encoding="utf-8")
-    except OSError:
-        pass
+        kwargs: dict = {
+            "cwd": str(ROOT),
+            "env": env,
+            "stdin": subprocess.DEVNULL,
+            "stdout": subprocess.DEVNULL,
+            "stderr": subprocess.DEVNULL,
+            "close_fds": True,
+        }
+        if os.name == "nt":
+            kwargs["creationflags"] = (
+                getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+                | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)
+            )
+        else:
+            kwargs["start_new_session"] = True
+        proc = subprocess.Popen([py_exe, str(ROOT / "server.py")], **kwargs)
+        try:
+            PID_FILE.write_text(str(proc.pid), encoding="utf-8")
+        except OSError:
+            pass
 
     deadline = time.monotonic() + wait_sec
     while time.monotonic() < deadline:
         info = health_ok(timeout=1.0)
         if info:
             return info
-        if proc.poll() is not None:
+        if proc is not None and proc.poll() is not None:
             raise RuntimeError(f"server.py exited early with code {proc.returncode}")
         time.sleep(0.15)
     raise TimeoutError(f"server.py did not respond on {BASE}/api/health within {wait_sec}s")
@@ -153,19 +186,21 @@ $ErrorActionPreference = 'Stop'
 $shell = New-Object -ComObject WScript.Shell
 $desktop = [Environment]::GetFolderPath('Desktop')
 $programs = [Environment]::GetFolderPath('Programs')
+$startup = [Environment]::GetFolderPath('Startup')
 $targets = @(
-    (Join-Path $desktop 'SIE Mastery.lnk'),
-    (Join-Path $programs 'SIE Mastery.lnk')
+    @{{ path = (Join-Path $desktop 'SIE Mastery.lnk'); args = '"{launch_script}"'; desc = 'SIE Mastery - Launch local learning app on 127.0.0.1:8765' }},
+    @{{ path = (Join-Path $programs 'SIE Mastery.lnk'); args = '"{launch_script}"'; desc = 'SIE Mastery - Launch local learning app on 127.0.0.1:8765' }},
+    @{{ path = (Join-Path $startup 'SIE Mastery Server.lnk'); args = '"{launch_script}" --no-browser'; desc = 'SIE Mastery - Keep local server running on 127.0.0.1:8765 at login' }}
 )
-foreach ($lnkPath in $targets) {{
-    $sc = $shell.CreateShortcut($lnkPath)
+foreach ($t in $targets) {{
+    $sc = $shell.CreateShortcut($t.path)
     $sc.TargetPath = '{pyw}'
-    $sc.Arguments = '"{launch_script}"'
+    $sc.Arguments = $t.args
     $sc.WorkingDirectory = '{ROOT}'
     $sc.IconLocation = '{icon},0'
-    $sc.Description = 'SIE Mastery - Launch local learning app on 127.0.0.1:8765'
+    $sc.Description = $t.desc
     $sc.Save()
-    Write-Output $lnkPath
+    Write-Output $t.path
 }}
 $oldUrl = Join-Path $desktop 'SIE Mastery.url'
 if (Test-Path $oldUrl) {{

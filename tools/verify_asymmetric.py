@@ -117,7 +117,8 @@ $sh = New-Object -ComObject WScript.Shell
 $out = @()
 foreach ($loc in @(
     @{name='desktop'; path=(Join-Path ([Environment]::GetFolderPath('Desktop')) 'SIE Mastery.lnk')},
-    @{name='start_menu'; path=(Join-Path ([Environment]::GetFolderPath('Programs')) 'SIE Mastery.lnk')}
+    @{name='start_menu'; path=(Join-Path ([Environment]::GetFolderPath('Programs')) 'SIE Mastery.lnk')},
+    @{name='startup'; path=(Join-Path ([Environment]::GetFolderPath('Startup')) 'SIE Mastery Server.lnk')}
 )) {
     if (Test-Path $loc.path) {
         $lnk = $sh.CreateShortcut($loc.path)
@@ -580,6 +581,11 @@ def main() -> int:
             subprocess.run([sys.executable, str(ROOT / "tools" / "launch.py"), "--stop"], cwd=ROOT, capture_output=True)
             rem = tcp_listeners(PORT)
             check(len(rem) == 0, f"Clean OS teardown: port {PORT} closed after --stop (remaining={len(rem)})")
+            # Re-launch persistent background server on 127.0.0.1:8765 so localhost stays permanently available
+            subprocess.run([sys.executable, str(ROOT / "tools" / "launch.py"), "--no-browser"], cwd=ROOT, capture_output=True)
+            live = tcp_listeners(PORT)
+            check(len(live) >= 1 and all(x["LocalAddress"] == "127.0.0.1" for x in live),
+                  f"Persistent localhost server restored on 127.0.0.1:{PORT} (listeners={live})")
 
     SHOTS.mkdir(parents=True, exist_ok=True)
     receipt = {

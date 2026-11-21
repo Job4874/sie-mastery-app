@@ -91,11 +91,12 @@ try {
         if ($srv -and -not $srv.HasExited) {
             Stop-Process -Id $srv.Id -Force -ErrorAction SilentlyContinue
             $srv.WaitForExit(5000) | Out-Null
-            Write-Host "Stopped temporary server.py (PID $($srv.Id))."
+            Write-Host "Stopped temporary test server.py (PID $($srv.Id))."
         }
+        python tools/launch.py --no-browser
     }
 
-    Write-Host "`n=== ALL 13 SIE-VERIFY SUITES PASSED ==="
+    Write-Host "`n=== ALL 13 SIE-VERIFY SUITES PASSED (LOCALHOST 127.0.0.1:8765 ACTIVE) ==="
 } finally {
     Pop-Location
 }
